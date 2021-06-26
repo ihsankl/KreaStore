@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1007046595469",
+    "project_id": "kreastore-867f3",
+    "storage_bucket": "kreastore-867f3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1007046595469:android:242ed82007597c23bce3c4",
+        "android_client_info": {
+          "package_name": "com.kreastoreuser"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1007046595469-4pse8scohg8a8p7imo535avmmri560dr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9n1E3tcIIy0V7RwmE8T041ngUjOtkfc4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1007046595469-4pse8scohg8a8p7imo535avmmri560dr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
