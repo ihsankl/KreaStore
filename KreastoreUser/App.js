@@ -1,5 +1,4 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
@@ -8,14 +7,8 @@ import storage from './src/Redux/store';
 const { store, persistor } = storage();
 const Stack = createStackNavigator();
 
-const Home = () => {
-  return(
-    <View>
-      <Text>Hello World</Text>
-    </View>
-  )
-}
-
+// SCREENS HERE
+import Home from './src/Screens/Home';
 
 const MainStackNavigator = () => {
   return (
@@ -38,5 +31,3 @@ const App = () => {
 }
 
 export default App
-
-const styles = StyleSheet.create({})
