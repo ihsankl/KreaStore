@@ -15,6 +15,7 @@ import {
   TouchableOpacity,
 } from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather';
+import Ionic from 'react-native-vector-icons/Ionicons';
 import {ParsedDate} from '../../Utils/ParseDate';
 
 const dummy = [
@@ -24,8 +25,8 @@ const dummy = [
     label: 'Kantong Ajaib',
     funding_goal: '720.000',
     funding_total: '240.000',
-    funding_start_date: '6 juli',
-    funding_end_date: '6 agustus',
+    funding_start_date: '2021-06-20',
+    funding_end_date: '2021-07-01',
     funder: [
       {
         user_id: '1',
@@ -85,6 +86,11 @@ const Index = props => {
         keyExtractor={item => item.id}
         renderItem={({item}) => (
           <>
+            <Ionic
+              name="chevron-back-outline"
+              style={styles.back}
+              onPress={() => props.navigation.navigate('Home')}
+            />
             <Image style={styles.image} source={item.image} />
             <View style={styles.card}>
               <Text style={styles.label}>{item.label}</Text>
@@ -106,9 +112,22 @@ const Index = props => {
                 color={'#38B6FF'}
               />
               <View style={styles.funding}>
-                <Text style={styles.text}>{item.funding_start_date}</Text>
-                <Text style={styles.text}>30 hari tersisa</Text>
-                <Text style={styles.text}>30 pendukung</Text>
+                <Text style={styles.text}>
+                  {ParsedDate(item.funding_start_date, 'years')}
+                </Text>
+                <Text style={styles.text}>
+                  {Math.trunc(
+                    Math.floor(
+                      (new Date(item.funding_end_date).getTime() -
+                        new Date().getTime()) /
+                        (1000 * 60 * 60 * 24),
+                    ),
+                  )}
+                  hari tersisa
+                </Text>
+                <Text style={styles.text}>
+                  {data[0].funder.length} Pendukung
+                </Text>
               </View>
               <View style={styles.tab}>
                 <TouchableHighlight
@@ -208,6 +227,14 @@ const Index = props => {
 export default Index;
 
 const styles = StyleSheet.create({
+  back: {
+    fontSize: 25,
+    position: 'absolute',
+    top: 0,
+    zIndex: 99999,
+    color: '#FFF',
+    margin: 10,
+  },
   image: {
     width: deviceWidth,
     height: deviceHeight / 3.5,
