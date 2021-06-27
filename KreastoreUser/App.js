@@ -10,6 +10,7 @@ const Stack = createStackNavigator();
 // SCREENS HERE
 import Home from './src/Screens/Home/Home';
 import Index from './src/Screens/History/Index';
+import Detail from './src/Screens/Detail/Index';
 
 const MainStackNavigator = () => {
   return (
@@ -28,6 +29,11 @@ const MainStackNavigator = () => {
             backgroundColor: '#F0FFFE',
           },
         }}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="Detail"
+        component={Detail}
       />
     </Stack.Navigator>
   );

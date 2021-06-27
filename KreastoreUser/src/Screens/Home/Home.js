@@ -40,6 +40,12 @@ const Home = props => {
           onPress={() => props.navigation.navigate('History')}
         />
       </TouchableOpacity>
+      <TouchableOpacity>
+        <Button
+          title="Detail"
+          onPress={() => props.navigation.navigate('Detail')}
+        />
+      </TouchableOpacity>
     </View>
   );
 };
