@@ -1,17 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import storage from './src/Redux/store';
+import {Text, TouchableOpacity} from 'react-native';
 const {store, persistor} = storage();
 const Stack = createStackNavigator();
 
 // SCREENS HERE
 import Home from './src/Screens/Home/Home';
-import Index from './src/Screens/History/Index';
+import History from './src/Screens/History/Index';
+import Profile from './src/Screens/Profile/Index';
 
 const MainStackNavigator = () => {
+  const [edit, setEdit] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
       <Stack.Screen
@@ -21,7 +26,7 @@ const MainStackNavigator = () => {
       />
       <Stack.Screen
         name="History"
-        component={Index}
+        component={History}
         options={{
           title: 'Riwayat',
           headerStyle: {
@@ -29,6 +34,37 @@ const MainStackNavigator = () => {
           },
         }}
       />
+      <Stack.Screen
+        name="Profile"
+        options={{
+          title: 'Profil Pengguna',
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => {
+                if (edit === false) {
+                  setEdit(!edit);
+                } else {
+                  setModalVisible(true);
+                }
+              }}
+              style={{marginRight: 20}}>
+              <Text>{edit ? 'Batal' : 'Ubah'}</Text>
+            </TouchableOpacity>
+          ),
+          headerStyle: {
+            backgroundColor: '#F0FFFE',
+          },
+        }}>
+        {props => (
+          <Profile
+            {...props}
+            flagEdit={edit}
+            changeFlag={e => setEdit(e)}
+            modalVisible={modalVisible}
+            setModalVisible={e => setModalVisible(e)}
+          />
+        )}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 };

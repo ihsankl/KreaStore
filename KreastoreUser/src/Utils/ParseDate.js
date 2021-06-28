@@ -6,7 +6,6 @@ export function ParsedDate(strDate) {
 
   let yyyy = date.getFullYear();
   date = dd + ' ' + listMonth(mm) + ' ' + yyyy;
-  console.log('date', {strDate, date, dd, mm, yyyy});
   return date.toString();
 }
 
