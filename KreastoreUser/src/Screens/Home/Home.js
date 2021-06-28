@@ -45,6 +45,10 @@ const Home = props => {
           title="Go to Profile"
           onPress={() => props.navigation.navigate('Profile')}
         />
+        <Button
+          title="Detail"
+          onPress={() => props.navigation.navigate('Detail')}
+        />
       </TouchableOpacity>
     </View>
   );

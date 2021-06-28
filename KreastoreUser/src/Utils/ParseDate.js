@@ -1,11 +1,16 @@
-export function ParsedDate(strDate) {
+export function ParsedDate(strDate, hide) {
   let strSplitDate = String(strDate).split(' ');
   let date = new Date(strSplitDate[0]);
   let dd = date.getDate();
   let mm = date.getMonth() + 1;
 
   let yyyy = date.getFullYear();
-  date = dd + ' ' + listMonth(mm) + ' ' + yyyy;
+  if (hide == 'years') {
+    date = dd + ' ' + listMonth(mm);
+  } else {
+    date = dd + ' ' + listMonth(mm) + ' ' + yyyy;
+  }
+  console.log('date', {strDate, date, dd, mm, yyyy});
   return date.toString();
 }
 

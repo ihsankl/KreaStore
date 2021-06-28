@@ -12,6 +12,7 @@ const Stack = createStackNavigator();
 import Home from './src/Screens/Home/Home';
 import History from './src/Screens/History/Index';
 import Profile from './src/Screens/Profile/Index';
+import Detail from './src/Screens/Detail/Index';
 
 const MainStackNavigator = () => {
   const [edit, setEdit] = useState(false);
@@ -65,6 +66,11 @@ const MainStackNavigator = () => {
           />
         )}
       </Stack.Screen>
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="Detail"
+        component={Detail}
+      />
     </Stack.Navigator>
   );
 };
