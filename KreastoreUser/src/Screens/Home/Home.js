@@ -32,7 +32,7 @@ const Home = props => {
   return (
     <View>
       {data.map((v, i) => {
-        return <Text>{v?.title}</Text>;
+        return <Text key={i}>{v?.title}</Text>;
       })}
       <TouchableOpacity>
         <Button

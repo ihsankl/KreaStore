@@ -65,7 +65,7 @@ const dummy = [
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
-const Index = props => {
+const Index = ({...props}) => {
   const [data, setData] = useState(dummy);
   const [tab, setTab] = useState(1);
 
