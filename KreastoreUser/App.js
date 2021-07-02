@@ -11,14 +11,13 @@ import firestore from '@react-native-firebase/firestore';
 const {store, persistor} = storage();
 const Stack = createStackNavigator();
 const db = firestore();
-const {store, persistor} = storage();
 db.settings({host: 'localhost:8080', ssl: false});
 typography();
 
 // SCREENS HERE
 import Splash from './src/Screens/Splash/Index';
 import Navigator from './src/Navigator/Index';
-import Home from './src/Screens/Home/Home';
+import Home from './src/Screens/Home/Index';
 import History from './src/Screens/History/Index';
 import Profile from './src/Screens/Profile/Index';
 import Detail from './src/Screens/Detail/Index';
