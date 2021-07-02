@@ -1,15 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, Image, Button, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Image, Button, TouchableOpacity,BackHandler, Alert } from 'react-native';
 import { color } from '../../Theme/Color';
 import logo2 from '../../assets/images/logo2.png'
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { getUserData } from '../../Redux/Action/getUserData';
 import { connect } from 'react-redux'
 import KreaButton from '../../Components/KreaButton';
-import Icon from 'react-native-vector-icons/dist/Feather';
 import logo_google from '../../assets/images/logo_google.png'
 
-const Index = ({ ...props }) => {
+const Index = ({ navigation, ...props }) => {
+
+    useEffect(() => {
+        const backAction = () => {
+          Alert.alert("Tunggu!", "Apakah kamu yakin ingin keluar?", [
+            {
+              text: "Tidak Jadi",
+              onPress: () => null,
+              style: "cancel"
+            },
+            { text: "Ya", onPress: () => BackHandler.exitApp() }
+          ]);
+          return true;
+        };
+    
+        const backHandler = BackHandler.addEventListener(
+          "hardwareBackPress",
+          backAction
+        );
+    
+        return () => backHandler.remove();
+      }, []);
 
     const onLogin = async () => {
         try {
@@ -32,12 +52,12 @@ const Index = ({ ...props }) => {
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <Image source={logo2} style={styles.logo} resizeMode="cover" />
-            <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 36, color: '#474747' }}>KreaStore</Text>
-            <Text style={{ textAlign: 'center' }}>Selamat datang di KreaStore, yuk cari donatur untuk mendanai karyamu.</Text>
+            <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 36, color: color.text }}>KreaStore</Text>
+            <Text style={{ textAlign: 'center' }}>Selamat datang di KreaStore. Tempatnya Kreator untuk ber-Kreasi</Text>
 
-            <KreaButton onPress={onAnonLogin} btnStyle={{marginTop:35}} text="Masuk Tanpa Login" btnColor={color.secondary}/>
-            <KreaButton onPress={onLogin} textStyle={{marginLeft:4}} text="Masuk Dengan Google" btnStyle={{marginTop:15}} btnColor={color.secondary}>
-                <Image source={logo_google} style={{height:20, width:20}} resizeMode="cover" />
+            <KreaButton onPress={onAnonLogin} btnStyle={{ marginTop: 35 }} text="Saya hanya ingin melihat - lihat" btnColor={color.secondary} />
+            <KreaButton onPress={onLogin} textStyle={{ marginLeft: 4 }} text="Masuk Dengan Google" btnStyle={{ marginTop: 15 }} btnColor={color.secondary}>
+                <Image source={logo_google} style={{ height: 20, width: 20 }} resizeMode="cover" />
             </KreaButton>
 
         </ScrollView>
