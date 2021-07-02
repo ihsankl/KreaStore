@@ -13,6 +13,7 @@ import Home from './src/Screens/Home/Home';
 import History from './src/Screens/History/Index';
 import Profile from './src/Screens/Profile/Index';
 import Detail from './src/Screens/Detail/Index';
+import Search from './src/Screens/Search/Index';
 
 const MainStackNavigator = () => {
   const [edit, setEdit] = useState(false);
@@ -70,6 +71,16 @@ const MainStackNavigator = () => {
         options={{headerShown: false}}
         name="Detail"
         component={Detail}
+      />
+      <Stack.Screen
+        name="Search"
+        component={Search}
+        options={{
+          title: 'Pencarian',
+          headerStyle: {
+            backgroundColor: '#F0FFFE',
+          },
+        }}
       />
     </Stack.Navigator>
   );
