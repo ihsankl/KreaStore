@@ -142,6 +142,3 @@ const mapStateToProps = state => {
     }
 }
 export default connect(mapStateToProps)(Index);
-
-
-const styles = StyleSheet.create({})
