@@ -6,13 +6,17 @@ import storage from './src/Redux/store';
 import { Text, TouchableOpacity, View } from 'react-native';
 const { store, persistor } = storage();
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { typography } from './src/Utils/Typography'
+
+typography()
+
 
 // SCREENS HERE
 import Splash from './src/Screens/Splash/Index';
 import Navigator from './src/Navigator/Index';
 
 const App = () => {
-  const [isSplash, setIsSplash] = useState(true)
+  const [isSplash, setIsSplash] = useState(false)
 
   useEffect(() => {
     GoogleSignin.configure({

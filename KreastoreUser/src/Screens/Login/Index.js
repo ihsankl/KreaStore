@@ -19,12 +19,21 @@ const Index = ({...props}) => {
         }
     }
     
+    const onAnonLogin = async() => {
+        try {
+            await props.dispatch(getUserData({...props.userData.data, isAnonymous:true}))
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+    
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <Image source={logo2} style={styles.logo} resizeMode="cover" />
             <Text>KreaStore</Text>
             <Text>Selamat datang di KreaStore, yuk cari donatur untuk mendanai karyamu.</Text>
 
+            <Button onPress={onAnonLogin} title="Masuk Tanpa Login" />
             <Button onPress={onLogin} title="Login" />
         </ScrollView>
     );

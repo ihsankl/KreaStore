@@ -8,7 +8,7 @@ const Index = ({...props}) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    onInit();
+    // onInit();
     return () => {};
   }, []);
 
