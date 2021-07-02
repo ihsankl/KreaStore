@@ -24,7 +24,7 @@ const Index = ({ ...props }) => {
 
 const DrawerNavigator = () => {
     return (
-        <Drawer.Navigator drawerPosition={'right'} >
+        <Drawer.Navigator drawerPosition={'left'} >
             <Drawer.Screen options={{
             }} name="Home" component={MainStack} />
 
@@ -63,6 +63,7 @@ const MainStack = () => {
 
             <Stack.Screen options={{ headerShown: false }} name="History" component={HistoryStack} />
             <Stack.Screen options={{ headerShown: false }} name="Profile" component={ProfileStack} />
+            <Stack.Screen options={{ headerShown: false }} name="Login" component={LoginStack} />
         </Stack.Navigator>
     )
 }

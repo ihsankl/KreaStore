@@ -11,27 +11,27 @@ const postRef = firestore().collection('post');
 const Index = ({ ...props }) => {
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    // onInit();
-    const backAction = () => {
-      Alert.alert("Tunggu!", "Apakah kamu yakin ingin keluar?", [
-        {
-          text: "Tidak Jadi",
-          onPress: () => null,
-          style: "cancel"
-        },
-        { text: "Ya", onPress: () => BackHandler.exitApp() }
-      ]);
-      return true;
-    };
+  // useEffect(() => {
+  //   // onInit();
+  //   const backAction = () => {
+  //     Alert.alert("Tunggu!", "Apakah kamu yakin ingin keluar?", [
+  //       {
+  //         text: "Tidak Jadi",
+  //         onPress: () => null,
+  //         style: "cancel"
+  //       },
+  //       { text: "Ya", onPress: () => BackHandler.exitApp() }
+  //     ]);
+  //     return true;
+  //   };
 
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
+  //   const backHandler = BackHandler.addEventListener(
+  //     "hardwareBackPress",
+  //     backAction
+  //   );
 
-    return () => { backHandler.remove() };
-  }, []);
+  //   return () => { backHandler.remove() };
+  // }, []);
 
   const onInit = async () => {
     try {
@@ -60,7 +60,12 @@ const Index = ({ ...props }) => {
   return (
     <ScrollView contentContainerStyle={{flexGrow:1,backgroundColor:color.accent3}} >
       <Header noArrow noRight={false} />
-      
+      <TouchableOpacity>
+        <Button
+          title="Login"
+          onPress={() => props.navigation.navigate('Login')}
+        />
+      </TouchableOpacity>
     </ScrollView>
   );
 };

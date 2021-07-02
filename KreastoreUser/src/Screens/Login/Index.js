@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, Image, Button, TouchableOpacity,BackHandler, Alert } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Image, Button, TouchableOpacity, BackHandler, Alert } from 'react-native';
 import { color } from '../../Theme/Color';
 import logo2 from '../../assets/images/logo2.png'
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
@@ -9,27 +9,6 @@ import KreaButton from '../../Components/KreaButton';
 import logo_google from '../../assets/images/logo_google.png'
 
 const Index = ({ navigation, ...props }) => {
-
-    useEffect(() => {
-        const backAction = () => {
-          Alert.alert("Tunggu!", "Apakah kamu yakin ingin keluar?", [
-            {
-              text: "Tidak Jadi",
-              onPress: () => null,
-              style: "cancel"
-            },
-            { text: "Ya", onPress: () => BackHandler.exitApp() }
-          ]);
-          return true;
-        };
-    
-        const backHandler = BackHandler.addEventListener(
-          "hardwareBackPress",
-          backAction
-        );
-    
-        return () => backHandler.remove();
-      }, []);
 
     const onLogin = async () => {
         try {
@@ -44,6 +23,9 @@ const Index = ({ navigation, ...props }) => {
     const onAnonLogin = async () => {
         try {
             await props.dispatch(getUserData({ ...props.userData.data, isAnonymous: true }))
+            if (navigation.canGoBack()) {
+                navigation.pop()
+            }
         } catch (error) {
             console.log(error.message)
         }
