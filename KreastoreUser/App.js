@@ -4,10 +4,13 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import storage from './src/Redux/store';
 import { Text, TouchableOpacity, View } from 'react-native';
-const { store, persistor } = storage();
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { typography } from './src/Utils/Typography'
+import firestore from '@react-native-firebase/firestore';
 
+const db = firestore();
+const { store, persistor } = storage();
+db.settings({ host: 'localhost:8080', ssl: false });
 typography()
 
 
