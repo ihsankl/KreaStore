@@ -16,7 +16,6 @@ export default function Index(props) {
 
   const changeHandler = e => {
     const temp = {...data, ...e};
-    console.log({temp, e});
     setData(temp);
   };
 

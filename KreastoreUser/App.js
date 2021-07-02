@@ -1,14 +1,23 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import storage from './src/Redux/store';
-import {Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {typography} from './src/Utils/Typography';
+import firestore from '@react-native-firebase/firestore';
 const {store, persistor} = storage();
 const Stack = createStackNavigator();
+const db = firestore();
+const {store, persistor} = storage();
+db.settings({host: 'localhost:8080', ssl: false});
+typography();
 
 // SCREENS HERE
+import Splash from './src/Screens/Splash/Index';
+import Navigator from './src/Navigator/Index';
 import Home from './src/Screens/Home/Home';
 import History from './src/Screens/History/Index';
 import Profile from './src/Screens/Profile/Index';
@@ -87,11 +96,25 @@ const MainStackNavigator = () => {
 };
 
 const App = () => {
+  const [isSplash, setIsSplash] = useState(false);
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '1007046595469-4pse8scohg8a8p7imo535avmmri560dr.apps.googleusercontent.com',
+    });
+    return () => {};
+  }, []);
+
+  setTimeout(() => {
+    setIsSplash(true);
+  }, 3000);
+
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <NavigationContainer>
-          <MainStackNavigator />
+          {isSplash ? <Navigator /> : <Splash />}
         </NavigationContainer>
       </PersistGate>
     </Provider>
