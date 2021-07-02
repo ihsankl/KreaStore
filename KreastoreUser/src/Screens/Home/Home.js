@@ -49,6 +49,10 @@ const Home = props => {
           title="Detail"
           onPress={() => props.navigation.navigate('Detail')}
         />
+        <Button
+          title="Search"
+          onPress={() => props.navigation.navigate('Search')}
+        />
       </TouchableOpacity>
     </View>
   );

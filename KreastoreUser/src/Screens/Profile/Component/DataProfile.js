@@ -10,7 +10,6 @@ import {
   StyleSheet,
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
-import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import {ParsedDate} from '../../../Utils/ParseDate';
 
 const styles = StyleSheet.create({
