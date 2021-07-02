@@ -1,15 +1,36 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, Button, TouchableOpacity} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Button, TouchableOpacity, Alert, BackHandler, ScrollView } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import { connect } from 'react-redux';
+import { getUserData } from '../../Redux/Action/getUserData';
+import { color } from '../../Theme/Color';
+import Header from '../../Components/Header';
 
 const postRef = firestore().collection('post');
 
-const Index = ({...props}) => {
+const Index = ({ ...props }) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
     // onInit();
-    return () => {};
+    const backAction = () => {
+      Alert.alert("Tunggu!", "Apakah kamu yakin ingin keluar?", [
+        {
+          text: "Tidak Jadi",
+          onPress: () => null,
+          style: "cancel"
+        },
+        { text: "Ya", onPress: () => BackHandler.exitApp() }
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => { backHandler.remove() };
   }, []);
 
   const onInit = async () => {
@@ -18,7 +39,7 @@ const Index = ({...props}) => {
       const x = await postRef.get();
       x.forEach(docs => {
         let currentId = docs.id;
-        let appObj = {...docs.data(), ['id']: currentId};
+        let appObj = { ...docs.data(), ['id']: currentId };
         data.push(appObj);
         setData(data);
       });
@@ -27,35 +48,30 @@ const Index = ({...props}) => {
     }
   };
 
+  const onTryLogin = async () => {
+    try {
+
+      await props.dispatch(getUserData({ ...props.userData.data, isAnonymous: false }))
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+
   return (
-    <View>
-      {data.map((v, i) => {
-        return <Text key={i}>{v?.title}</Text>;
-      })}
-      <TouchableOpacity>
-        <Button
-          title="Go to History"
-          onPress={() => props.navigation.navigate('History')}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Button
-          title="Go to Profile"
-          onPress={() => props.navigation.navigate('Profile')}
-        />
-        <Button
-          title="Detail"
-          onPress={() => props.navigation.navigate('Detail')}
-        />
-        <Button
-          title="Search"
-          onPress={() => props.navigation.navigate('Search')}
-        />
-      </TouchableOpacity>
-    </View>
+    <ScrollView contentContainerStyle={{flexGrow:1,backgroundColor:color.accent3}} >
+      <Header noArrow noRight={false} />
+      
+    </ScrollView>
   );
 };
 
-export default Index;
+const mapStateToProps = state => {
+  return {
+    userData: state.userData,
+    alert: state.alert,
+  }
+}
+
+export default connect(mapStateToProps)(Index);
 
 const styles = StyleSheet.create({});

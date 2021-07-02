@@ -2,10 +2,12 @@ import React, {useState} from 'react';
 import {View, Text, FlatList} from 'react-native';
 import {ParsedDate} from '../../../Utils/ParseDate';
 import Feather from 'react-native-vector-icons/Feather';
+import Header from '../../../Components/Header';
 
 export default function ListHistory(props) {
   return (
     <View>
+      <Header />
       <FlatList
         data={props.data}
         renderItem={({item}) => (

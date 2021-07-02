@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import Header from '../../Components/Header';
 import DataProfile from './Component/DataProfile';
 
 const dummy = {
@@ -29,6 +30,7 @@ export default function Index(props) {
 
   return (
     <>
+    <Header/>
       <DataProfile
         flagEdit={flagEdit}
         changeFlag={changeFlag}
