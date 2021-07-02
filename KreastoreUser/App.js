@@ -16,31 +16,102 @@ typography();
 // SCREENS HERE
 import Splash from './src/Screens/Splash/Index';
 import Navigator from './src/Navigator/Index';
+import History from './src/Screens/History/Index';
+import Profile from './src/Screens/Profile/Index';
+import Detail from './src/Screens/Detail/Index';
+import Search from './src/Screens/Search/Index';
 
-const App = () => {
-  const [isSplash, setIsSplash] = useState(false);
-
-  useEffect(() => {
-    GoogleSignin.configure({
-      webClientId:
-        '1007046595469-4pse8scohg8a8p7imo535avmmri560dr.apps.googleusercontent.com',
-    });
-    return () => {};
-  }, []);
-
-  setTimeout(() => {
-    setIsSplash(true);
-  }, 3000);
+const MainStackNavigator = () => {
+  const [edit, setEdit] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <NavigationContainer>
-          {isSplash ? <Navigator /> : <Splash />}
-        </NavigationContainer>
-      </PersistGate>
-    </Provider>
+    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="Home"
+        component={Home}
+      />
+      <Stack.Screen
+        name="History"
+        component={History}
+        options={{
+          title: 'Riwayat',
+          headerStyle: {
+            backgroundColor: '#F0FFFE',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Profile"
+        options={{
+          title: 'Profil Pengguna',
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => {
+                if (edit === false) {
+                  setEdit(!edit);
+                } else {
+                  setModalVisible(true);
+                }
+              }}
+              style={{marginRight: 20}}>
+              <Text>{edit ? 'Batal' : 'Ubah'}</Text>
+            </TouchableOpacity>
+          ),
+          headerStyle: {
+            backgroundColor: '#F0FFFE',
+          },
+        }}>
+        {props => (
+          <Profile
+            {...props}
+            flagEdit={edit}
+            changeFlag={e => setEdit(e)}
+            modalVisible={modalVisible}
+            setModalVisible={e => setModalVisible(e)}
+          />
+        )}
+      </Stack.Screen>
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="Detail"
+        component={Detail}
+      />
+      <Stack.Screen
+        name="Search"
+        component={Search}
+        options={{
+          title: 'Pencarian',
+          headerStyle: {
+            backgroundColor: '#F0FFFE',
+          },
+        }}
+      />
+    </Stack.Navigator>
   );
 };
+
+useEffect(() => {
+  GoogleSignin.configure({
+    webClientId:
+      '1007046595469-4pse8scohg8a8p7imo535avmmri560dr.apps.googleusercontent.com',
+  });
+  return () => {};
+}, []);
+
+setTimeout(() => {
+  setIsSplash(true);
+}, 3000);
+
+return (
+  <Provider store={store}>
+    <PersistGate persistor={persistor}>
+      <NavigationContainer>
+        {isSplash ? <Navigator /> : <Splash />}
+      </NavigationContainer>
+    </PersistGate>
+  </Provider>
+);
 
 export default App;
