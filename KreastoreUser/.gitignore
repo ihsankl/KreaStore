@@ -63,3 +63,5 @@ buck-out/
 
 #misc
 google-services.json
+.firebaserc
+firebase.json
