@@ -9,7 +9,6 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {typography} from './src/Utils/Typography';
 import firestore from '@react-native-firebase/firestore';
 const {store, persistor} = storage();
-const Stack = createStackNavigator();
 const db = firestore();
 db.settings({host: 'localhost:8080', ssl: false});
 typography();
@@ -17,7 +16,6 @@ typography();
 // SCREENS HERE
 import Splash from './src/Screens/Splash/Index';
 import Navigator from './src/Navigator/Index';
-import Home from './src/Screens/Home/Index';
 import History from './src/Screens/History/Index';
 import Profile from './src/Screens/Profile/Index';
 import Detail from './src/Screens/Detail/Index';
@@ -94,30 +92,26 @@ const MainStackNavigator = () => {
   );
 };
 
-const App = () => {
-  const [isSplash, setIsSplash] = useState(false);
+useEffect(() => {
+  GoogleSignin.configure({
+    webClientId:
+      '1007046595469-4pse8scohg8a8p7imo535avmmri560dr.apps.googleusercontent.com',
+  });
+  return () => {};
+}, []);
 
-  useEffect(() => {
-    GoogleSignin.configure({
-      webClientId:
-        '1007046595469-4pse8scohg8a8p7imo535avmmri560dr.apps.googleusercontent.com',
-    });
-    return () => {};
-  }, []);
+setTimeout(() => {
+  setIsSplash(true);
+}, 3000);
 
-  setTimeout(() => {
-    setIsSplash(true);
-  }, 3000);
-
-  return (
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <NavigationContainer>
-          {isSplash ? <Navigator /> : <Splash />}
-        </NavigationContainer>
-      </PersistGate>
-    </Provider>
-  );
-};
+return (
+  <Provider store={store}>
+    <PersistGate persistor={persistor}>
+      <NavigationContainer>
+        {isSplash ? <Navigator /> : <Splash />}
+      </NavigationContainer>
+    </PersistGate>
+  </Provider>
+);
 
 export default App;
