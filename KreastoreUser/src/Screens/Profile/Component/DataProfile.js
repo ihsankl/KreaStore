@@ -86,7 +86,7 @@ export default function DataProfile(props) {
     <ScrollView style={{backgroundColor: '#F0FFFE', flex: 1}}>
       <View style={{height: 250}}>
         <TouchableOpacity
-          onPress={() => console.log('klik woy')}
+          onPress={() => null}
           disabled={flagEdit ? false : true}>
           <Image
             style={{

@@ -4,10 +4,9 @@ import firestore from '@react-native-firebase/firestore';
 
 const postRef = firestore().collection('post');
 
-const Home = props => {
+const Index = ({...props}) => {
   const [data, setData] = useState([]);
 
-  console.log('props', {props});
   useEffect(() => {
     onInit();
     return () => {};
@@ -23,7 +22,6 @@ const Home = props => {
         data.push(appObj);
         setData(data);
       });
-      console.log(data);
     } catch (error) {
       console.log(error.message);
     }
@@ -54,6 +52,6 @@ const Home = props => {
   );
 };
 
-export default Home;
+export default Index;
 
 const styles = StyleSheet.create({});

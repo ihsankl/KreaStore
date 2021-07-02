@@ -3,17 +3,19 @@ import { View, Text, ScrollView, StyleSheet, Image, Button } from 'react-native'
 import { color } from '../../Theme/Color';
 import logo2 from '../../assets/images/logo2.png'
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import { getUserData } from '../../Redux/Action/getUserData';
+import { connect } from 'react-redux'
 
 
-const Index = () => {
+const Index = ({...props}) => {
 
     const onLogin = async() => {
         try {
             await GoogleSignin.hasPlayServices();
             const user = await GoogleSignin.signIn();
-            console.log(user)
+            await props.dispatch(getUserData({user, isAnonymous:false}))
         } catch (error) {
-            console.log(error)
+            console.log(error.message)
         }
     }
     
@@ -28,7 +30,14 @@ const Index = () => {
     );
 }
 
-export default Index
+const mapStateToProps = state => {
+    return {
+      userData: state.userData,
+      alert: state.alert,
+    }
+  }
+  
+  export default connect(mapStateToProps)(Index);
 
 const styles = StyleSheet.create({
     container: {
