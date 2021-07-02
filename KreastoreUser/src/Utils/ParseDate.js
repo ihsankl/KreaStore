@@ -10,7 +10,6 @@ export function ParsedDate(strDate, hide) {
   } else {
     date = dd + ' ' + listMonth(mm) + ' ' + yyyy;
   }
-  console.log('date', {strDate, date, dd, mm, yyyy});
   return date.toString();
 }
 

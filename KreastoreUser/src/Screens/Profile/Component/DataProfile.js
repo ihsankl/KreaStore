@@ -10,6 +10,10 @@ import {
   StyleSheet,
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
+<<<<<<< HEAD
+=======
+import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+>>>>>>> fe163003ccc35e7409b7b5f4eee86a930a8dba37
 import {ParsedDate} from '../../../Utils/ParseDate';
 
 const styles = StyleSheet.create({
@@ -85,7 +89,7 @@ export default function DataProfile(props) {
     <ScrollView style={{backgroundColor: '#F0FFFE', flex: 1}}>
       <View style={{height: 250}}>
         <TouchableOpacity
-          onPress={() => console.log('klik woy')}
+          onPress={() => null}
           disabled={flagEdit ? false : true}>
           <Image
             style={{
