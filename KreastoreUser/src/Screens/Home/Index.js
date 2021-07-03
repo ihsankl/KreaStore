@@ -11,6 +11,7 @@ import { Formatter } from '../../Utils/Formatter'
 import { ProgressBar } from '@react-native-community/progress-bar-android';
 import KreaButton from '../../Components/KreaButton';
 import { v4 as uuidv4 } from 'uuid';
+import SearchInput from '../../Components/SearchInput';
 
 const postRef = firestore().collection('post');
 
@@ -52,7 +53,7 @@ const dummyCategories = [
   },
 ]
 
-const Index = ({ ...props }) => {
+const Index = ({ navigation, ...props }) => {
   const [data, setData] = useState([]);
 
   // useEffect(() => {
@@ -100,7 +101,7 @@ const Index = ({ ...props }) => {
         <View style={[styles.itemAbsolute, styles.padding16]}>
           <FlatList
             data={dummyItems}
-            renderItem={RenderFavorites}
+            renderItem={item => <RenderFavorites item={item} {...props} />}
             keyExtractor={item => item.id}
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -116,17 +117,7 @@ const Index = ({ ...props }) => {
             horizontal
             showsHorizontalScrollIndicator={false}
           />
-          <TouchableOpacity style={{ flex: 1, position: 'relative' }}>
-            <TextInput
-              style={styles.input}
-              editable={false}
-              onChangeText={null}
-              value={null}
-              placeholder="Cari . . ."
-              keyboardType="numeric"
-            />
-            <Feather name="search" size={20} style={{ position: 'absolute', top: '25%', left: 14 }} color={color.text} />
-          </TouchableOpacity>
+          <SearchInput onPress={()=> navigation.navigate('Search')} editable={false} placeholder="Cari . . ." />
         </View>
 
         <View style={[styles.itemAbsolute, styles.padding16]}>
@@ -161,7 +152,7 @@ const RenderCategories = ({ item }) => {
   return <KreaButton btnStyle={{ marginRight: 8 }} text={item.category} />
 }
 
-const RenderFavorites = ({ item }) => {
+const RenderFavorites = ({ item, ...props }) => {
   return (
     <TouchableOpacity style={styles.imgContainer} onPress={() => props.navigation.navigate('Detail')}>
       <Image style={styles.img} source={img1} resizeMode="cover" />
@@ -233,12 +224,4 @@ const styles = StyleSheet.create({
   padding16: {
     paddingHorizontal: 16,
   },
-  input: {
-    height: 40,
-    borderWidth: 1,
-    marginHorizontal: 8,
-    borderRadius: 8,
-    paddingVertical: 8,
-    paddingLeft: 28
-  }
 });

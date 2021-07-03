@@ -54,7 +54,7 @@ export default function Index(props) {
         save={e => onSave(e)}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        right={right()}
+        right={right}
       />
     </View>
   );

@@ -10,6 +10,7 @@ const dummy = [
     time: '14.00',
     type: 'Donasi',
     description: 'Donasi Kantong Ajaib',
+    id:'abc'
   },
   {
     day: 'Senin',
@@ -18,6 +19,7 @@ const dummy = [
     time: '12.00',
     type: 'Topup',
     description: 'Top Up KreaPoin',
+    id:'abcd'
   },
   {
     day: 'Rabu',
@@ -26,6 +28,7 @@ const dummy = [
     time: '14.00',
     type: 'Donasi',
     description: 'Donasi Pemotong Bawang',
+    id:'abce'
   },
 ];
 const Index = () => {

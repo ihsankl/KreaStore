@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
+// SCREENS HERE
 import Login from '../Screens/Login/Index';
 import Home from '../Screens/Home/Index';
 import Detail from '../Screens/Detail/Index';

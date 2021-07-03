@@ -15,6 +15,7 @@ const Index = ({ navigation, ...props }) => {
             await GoogleSignin.hasPlayServices();
             const user = await GoogleSignin.signIn();
             await props.dispatch(getUserData({ user, isAnonymous: false }))
+            console.log(user)
         } catch (error) {
             console.log(error.message)
         }
