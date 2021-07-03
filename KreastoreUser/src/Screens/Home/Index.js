@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, Alert, BackHandler, ScrollView, Image, FlatList, TextInput, Dimensions } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { connect } from 'react-redux';
 import Feather from 'react-native-vector-icons/dist/Feather';
 import { color } from '../../Theme/Color';
-import Header from '../../Components/Header';
 import img1 from '../../assets/images/kantong-ajaib.png'
 import text_logo from '../../assets/images/text_logo.png'
 import { Formatter } from '../../Utils/Formatter'
 import { ProgressBar } from '@react-native-community/progress-bar-android';
 import KreaButton from '../../Components/KreaButton';
-import { v4 as uuidv4 } from 'uuid';
 import SearchInput from '../../Components/SearchInput';
 
 const postRef = firestore().collection('post');
@@ -123,9 +121,11 @@ const Index = ({ navigation, ...props }) => {
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <Text style={[styles.popularText, styles.padding16]}>Pilihan untuk mu</Text>
-          <SearchInput onPress={() => navigation.navigate('Search')} editable={false} placeholder="Cari . . ." />
+          <TouchableOpacity style={{ flex: 1, margin: 8 }} onPress={() => navigation.navigate('Search')}>
+            <SearchInput editable={false} placeholder="Cari . . ." />
+          </TouchableOpacity>
         </View>
-        <View style={[styles.itemAbsolute, styles.padding16]}>
+        <View style={[styles.itemRelative, styles.padding16]}>
           <FlatList
             data={dummyItems}
             renderItem={RenderFavorites}
@@ -147,7 +147,7 @@ const Index = ({ navigation, ...props }) => {
           />
         </View>
 
-        <View style={[styles.itemAbsolute, styles.padding16]}>
+        <View style={[styles.itemRelative, styles.padding16, { width: '100%', minWidth: 300, maxWidth: 350 }]}>
           <RenderContents data={dummyItems} />
         </View>
 
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: color.text
   },
-  itemAbsolute: {
+  itemRelative: {
     position: 'relative'
   },
   imgContainer: {

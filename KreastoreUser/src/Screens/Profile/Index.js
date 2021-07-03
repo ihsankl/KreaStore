@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import DataProfile from './Component/DataProfile';
-import {Text, TouchableOpacity, View} from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { color } from '../../Theme/Color';
 
 const dummy = {
   name: 'Alghifari Fikri',
@@ -32,7 +33,7 @@ export default function Index(props) {
   };
 
   const changeHandler = e => {
-    const temp = {...data, ...e};
+    const temp = { ...data, ...e };
     setData(temp);
   };
 
@@ -45,7 +46,7 @@ export default function Index(props) {
   };
 
   return (
-    <View style={{backgroundColor: '#F0FFFE', flex: 1}}>
+    <View style={{ backgroundColor: color.accent3, flex: 1 }}>
       <DataProfile
         flagEdit={edit}
         changeFlag={e => setEdit(e)}

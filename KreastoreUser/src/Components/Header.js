@@ -48,7 +48,7 @@ const DefaultRightMenu = () => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
-      onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+      onPress={() => null}>
       <Feather name="menu" size={24} color={color.primary} />
     </TouchableOpacity>
   );

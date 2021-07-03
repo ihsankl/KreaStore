@@ -4,23 +4,22 @@ import { color } from '../Theme/Color'
 import Feather from 'react-native-vector-icons/dist/Feather';
 
 
-const SearchInput = ({ onPress, value, placeholder, onChangeText, editable, ...props }) => {
+const SearchInput = ({ onSubmitEditing, onPress, value, placeholder, onChangeText, editable, ...props }) => {
     return (
-        <TouchableOpacity onPress={onPress} style={{ flex: 1, position: 'relative' }}>
             <View
+                {...props}
                 style={{
                     flexDirection: 'row',
                     justifyContent: 'center',
                     alignItems: 'center',
                     backgroundColor: '#fff',
-                    margin: 10,
                     borderWidth: 1,
-                    borderRadius: 10,
+                    borderRadius: 8,
                 }}>
                 <Feather
                     name="search"
                     size={20}
-                    color="gray"
+                    color={color.grey}
                     style={{
                         padding: 5,
                         marginLeft: 5,
@@ -34,9 +33,9 @@ const SearchInput = ({ onPress, value, placeholder, onChangeText, editable, ...p
                         paddingBottom: 5,
                         paddingLeft: 0,
                         marginLeft: 5,
-                        fontFamily:'Poppins-Regular'
+                        fontFamily: 'Poppins-Regular'
                     }}
-                    // onSubmitEditing={e => onChange(e.nativeEvent.text, 'search')}
+                    onSubmitEditing={e => onChangeText(e.nativeEvent.text, 'search')}
                     clearButtonMode="always"
                     onChangeText={e => onChangeText(e)}
                     value={value}
@@ -44,7 +43,6 @@ const SearchInput = ({ onPress, value, placeholder, onChangeText, editable, ...p
                     editable={editable}
                 />
             </View>
-        </TouchableOpacity>
 
     )
 }

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,81 +6,50 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
-  DatePickerAndroid,
+  StyleSheet,
+  Dimensions,
 } from 'react-native';
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 import KreaButton from '../../../Components/KreaButton';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {category} from '../../../Utils/Data';
 import DatePicker from 'react-native-datepicker';
-import {Formatter} from '../../../Utils/Formatter';
+import { color } from '../../../Theme/Color';
 
 export default function FormData({
   data,
-  handleChoosePhoto = () => {},
-  onChange = () => {},
+  handleChoosePhoto = () => { },
+  onChange = () => { },
 }) {
-  console.log('data', {data});
   return (
-    <ScrollView style={{marginTop: 10}}>
-      <View style={{marginBottom: 30}}>
+    <ScrollView>
+      <View style={{ marginBottom: 30, marginTop: 10 }}>
         <Text
-          style={{
-            alignSelf: 'stretch',
-            marginLeft: 30,
-            marginRight: 30,
-            marginBottom: 5,
-            color: 'gray',
-            fontSize: 12,
-          }}>
+          style={styles.title}>
           Nama Produk
         </Text>
         <TextInput
-          style={{
-            alignSelf: 'stretch',
-            padding: 2,
-            marginLeft: 30,
-            marginRight: 30,
-            borderColor: 'gray',
-            borderWidth: 1,
-            backgroundColor: 'white',
-            borderRadius: 5,
-          }}
+          style={styles.textInput}
           onChangeText={e => {
-            onChange({namaProduk: e});
+            onChange({ namaProduk: e });
           }}
           value={data.namaProduk}
-          // editable={false}
+        // editable={false}
         />
       </View>
-      <View style={{marginBottom: 30}}>
+      <View style={{ marginBottom: 30 }}>
         <Text
-          style={{
-            alignSelf: 'stretch',
-            marginLeft: 30,
-            marginRight: 30,
-            marginBottom: 5,
-            color: 'gray',
-            fontSize: 12,
-          }}>
+          style={styles.title}>
           Pilih Kategori
         </Text>
         <View
-          style={{
-            alignSelf: 'stretch',
-            marginLeft: 30,
-            marginRight: 30,
-            borderColor: 'gray',
-            borderWidth: 1,
-            backgroundColor: 'white',
-            borderRadius: 5,
-          }}>
+          style={styles.textInput}>
           <Picker
+          style={{fontFamily:'Poppins-Regular'}}
             selectedValue={data.kategori}
             onValueChange={(itemValue, itemIndex) => {
-              onChange({kategori: itemValue});
+              onChange({ kategori: itemValue });
             }}>
-            <Picker.Item label="-- Pilih Kategori --" value="" />
+            <Picker.Item style={{fontFamily:'Poppins-Regular'}} label="-- Pilih Kategori --" value="" />
             <Picker.Item label="Comics" value="Comics" />
             <Picker.Item label="Craft" value="Craft" />
             <Picker.Item label="Dance" value="Dance" />
@@ -98,52 +67,29 @@ export default function FormData({
           </Picker>
         </View>
       </View>
-      <View style={{marginBottom: 30}}>
+      <View style={{ marginBottom: 30 }}>
         <Text
-          style={{
-            alignSelf: 'stretch',
-            marginLeft: 30,
-            marginRight: 30,
-            marginBottom: 5,
-            color: 'gray',
-            fontSize: 12,
-          }}>
+          style={styles.title}>
           Deskripsi
         </Text>
         <TextInput
-          style={{
-            alignSelf: 'stretch',
-            padding: 2,
-            marginLeft: 30,
-            marginRight: 30,
-            borderColor: 'gray',
-            borderWidth: 1,
-            backgroundColor: 'white',
-            borderRadius: 5,
-          }}
+          style={styles.textInput}
           multiline={true}
           numberOfLines={4}
           value={data.deskripsi}
           onChangeText={e => {
-            onChange({deskripsi: e});
+            onChange({ deskripsi: e });
           }}
         />
       </View>
-      <View style={{marginBottom: 30}}>
+      <View style={{ marginBottom: 30 }}>
         <Text
-          style={{
-            alignSelf: 'stretch',
-            marginLeft: 30,
-            marginRight: 30,
-            marginBottom: 5,
-            color: 'gray',
-            fontSize: 12,
-          }}>
+          style={styles.title}>
           Foto Produk
         </Text>
         {data.photoUrl ? (
           <Image
-            source={{uri: data.photoUrl}}
+            source={{ uri: data.photoUrl }}
             style={{
               width: 300,
               height: 300,
@@ -158,17 +104,7 @@ export default function FormData({
         ) : (
           <TouchableOpacity onPress={handleChoosePhoto}>
             <View
-              style={{
-                alignSelf: 'stretch',
-                padding: 2,
-                height: 70,
-                marginLeft: 30,
-                marginRight: 30,
-                borderColor: 'gray',
-                borderWidth: 1,
-                backgroundColor: '#C4C4C4',
-                borderRadius: 5,
-              }}>
+              style={[styles.textInput, { backgroundColor: color.grey, height: 150 }]}>
               <View
                 style={{
                   flex: 1,
@@ -182,8 +118,8 @@ export default function FormData({
                   backgroundColor: '#DFDFDF',
                   borderRadius: 5,
                 }}>
-                <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-                  <View style={{marginRight: 5}}>
+                <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                  <View style={{ marginRight: 5 }}>
                     <Entypo
                       name="camera"
                       style={{
@@ -207,59 +143,26 @@ export default function FormData({
           </TouchableOpacity>
         )}
       </View>
-      <View style={{marginBottom: 30}}>
+      <View style={{ marginBottom: 30 }}>
         <Text
-          style={{
-            alignSelf: 'stretch',
-            marginLeft: 30,
-            marginRight: 30,
-            marginBottom: 5,
-            color: 'gray',
-            fontSize: 12,
-          }}>
+          style={styles.title}>
           Target Dana Terkumpul
         </Text>
         <TextInput
-          style={{
-            alignSelf: 'stretch',
-            padding: 2,
-            marginLeft: 30,
-            marginRight: 30,
-            borderColor: 'gray',
-            borderWidth: 1,
-            backgroundColor: 'white',
-            borderRadius: 5,
-          }}
+          style={styles.textInput}
           value={data.total ? data.total : ''}
           onChangeText={e => {
-            onChange({total: Number(e.replace(/[^0-9]/g, ''))});
+            onChange({ total: Number(e.replace(/[^0-9]/g, '')) });
           }}
         />
       </View>
-      <View style={{marginBottom: 30}}>
+      <View style={{ marginBottom: 30 }}>
         <Text
-          style={{
-            alignSelf: 'stretch',
-            marginLeft: 30,
-            marginRight: 30,
-            marginBottom: 5,
-            color: 'gray',
-            fontSize: 12,
-          }}>
+          style={styles.title}>
           Tanggal Akhir Pengumpulan Dana
         </Text>
         <DatePicker
-          style={{
-            alignSelf: 'stretch',
-            padding: 2,
-            marginLeft: 30,
-            marginRight: 30,
-            borderColor: 'gray',
-            borderWidth: 1,
-            backgroundColor: 'white',
-            borderRadius: 5,
-            width: 300,
-          }}
+          style={[styles.textInput, { width: (Dimensions.get('window').width) - 32 }]}
           date={data.tanggalAkhir}
           mode="date"
           placeholder="select date"
@@ -279,53 +182,56 @@ export default function FormData({
             // ... You can check the source to find the other keys.
           }}
           onDateChange={date => {
-            onChange({tanggalAkhir: date});
+            onChange({ tanggalAkhir: date });
           }}
         />
       </View>
-      <View style={{marginBottom: 30}}>
+      <View style={{ marginBottom: 30 }}>
         <Text
-          style={{
-            alignSelf: 'stretch',
-            marginLeft: 30,
-            marginRight: 30,
-            marginBottom: 5,
-            color: 'gray',
-            fontSize: 12,
-          }}>
-          Keuntungan Donatur
+          style={styles.title}>
+          Jelaskan Keuntungan Bagi Donatur
         </Text>
         <TextInput
-          style={{
-            alignSelf: 'stretch',
-            padding: 2,
-            marginLeft: 30,
-            marginRight: 30,
-            borderColor: 'gray',
-            borderWidth: 1,
-            backgroundColor: 'white',
-            borderRadius: 5,
-          }}
+          style={styles.textInput}
           multiline={true}
           numberOfLines={4}
           value={data.feedBack}
           onChangeText={e => {
-            onChange({feedBack: e});
+            onChange({ feedBack: e });
           }}
         />
       </View>
-      <View style={{marginBottom: 30}}>
+      <View style={{ marginBottom: 30 }}>
         <KreaButton
-          btnStyle={{
-            marginBottom: 30,
-            backgroundColor: '#38B6FF',
-            marginLeft: 30,
-            marginRight: 30,
-            borderRadius: 10,
-          }}
-          text={'Submit'}
+          btnStyle={styles.btnStyle}
+          text={'Kirim'}
         />
       </View>
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  title: {
+    alignSelf: 'stretch',
+    marginHorizontal: 16,
+    marginBottom: 5,
+    color: color.text,
+    fontSize: 12,
+  },
+  textInput: {
+    fontFamily: 'Poppins-Regular',
+    paddingHorizontal: 8,
+    alignSelf: 'stretch',
+    padding: 2,
+    marginHorizontal: 16,
+    borderColor: color.text,
+    borderWidth: 1,
+    backgroundColor: color.white,
+    borderRadius: 8,
+  },
+  btnStyle: {
+    marginBottom: 50,
+    marginHorizontal: 16,
+  }
+})

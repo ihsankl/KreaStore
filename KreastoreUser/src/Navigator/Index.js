@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {connect} from 'react-redux';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { connect } from 'react-redux';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 // SCREENS HERE
 import Login from '../Screens/Login/Index';
@@ -14,70 +15,60 @@ import Search from '../Screens/Search/Index';
 import PostItem from '../Screens/PostItem/Index';
 import TopUp from '../Screens/TopUp/Index';
 import Payment from '../Screens/Payment/Index';
+import { TabBar } from '../Components/TabBar';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 
-const Index = ({...props}) => {
+const Index = ({ ...props }) => {
   const isLogin = props.userData.data || props.userData.isAnonymous;
   if (isLogin) {
-    return <DrawerNavigator />;
+    return <MainStack />;
   }
 
   return <LoginStack />;
 };
 
-const DrawerNavigator = () => {
+const BottomTab = () => {
   return (
-    <Drawer.Navigator drawerPosition={'left'}>
-      <Drawer.Screen options={{}} name="Home" component={MainStack} />
-
-      <Drawer.Screen options={{}} name="History" component={HistoryStack} />
-
-      <Drawer.Screen options={{}} name="Search" component={SearchStack} />
-
-      <Drawer.Screen options={{}} name="Post Item" component={PostItemStack} />
-
-      <Drawer.Screen options={{}} name="Top Up" component={TopUpStack} />
-
-      <Drawer.Screen options={{}} name="Payment" component={PaymentStack} />
-
-      {/* <Drawer.Screen options={{
-
-            }} name="Post" component={null} />
-
-            <Drawer.Screen options={{
-                
-            }} name="Notification" component={null} /> */}
-
-      <Drawer.Screen options={{}} name="Profile" component={ProfileStack} />
-    </Drawer.Navigator>
-  );
-};
+    <Tab.Navigator tabBar={TabBar}>
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Top Up" component={TopUpStack} />
+      <Tab.Screen name="Post Item" component={PostItemStack} />
+      <Tab.Screen name="Profile" component={ProfileStack} />
+    </Tab.Navigator>
+  )
+}
 
 const MainStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+    <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="Home"
-        component={Home}
+        component={BottomTab}
       />
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="Detail"
         component={Detail}
       />
 
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="History"
         component={HistoryStack}
       />
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="Profile"
         component={ProfileStack}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="Search"
+        component={SearchStack}
       />
     </Stack.Navigator>
   );
@@ -85,14 +76,14 @@ const MainStack = () => {
 
 const LoginStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+    <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="Login"
         component={Login}
       />
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="Home"
         component={MainStack}
       />
@@ -101,9 +92,9 @@ const LoginStack = () => {
 };
 
 const HistoryStack = () => (
-  <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+  <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
     <Stack.Screen
-      options={{headerShown: false}}
+      options={{ headerShown: false }}
       name="History"
       component={History}
     />
@@ -111,9 +102,9 @@ const HistoryStack = () => (
 );
 
 const SearchStack = () => (
-  <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+  <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
     <Stack.Screen
-      options={{headerShown: false}}
+      options={{ headerShown: false }}
       name="Search"
       component={Search}
     />
@@ -122,9 +113,9 @@ const SearchStack = () => (
 
 const ProfileStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+    <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="Profile"
         component={Profile}
       />
@@ -134,9 +125,9 @@ const ProfileStack = () => {
 
 const PostItemStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+    <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="PostItem"
         component={PostItem}
       />
@@ -146,9 +137,9 @@ const PostItemStack = () => {
 
 const TopUpStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+    <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="TopUp"
         component={TopUp}
       />
@@ -158,9 +149,9 @@ const TopUpStack = () => {
 
 const PaymentStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+    <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="Payment"
         component={Payment}
       />

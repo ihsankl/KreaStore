@@ -1,5 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
+import { color } from '../../Theme/Color';
 import ListHistory from './Component/ListHistory';
 
 const dummy = [
@@ -33,7 +34,7 @@ const dummy = [
 ];
 const Index = () => {
   return (
-    <View style={{backgroundColor: '#F0FFFE', flex: 1}}>
+    <View style={{backgroundColor: color.accent3, flex: 1}}>
       <ListHistory data={dummy} />
     </View>
   );

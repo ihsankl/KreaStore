@@ -3,6 +3,7 @@ import {View} from 'react-native';
 import Header from '../../Components/Header';
 import FormData from './Component/FormData';
 import {launchImageLibrary} from 'react-native-image-picker';
+import { color } from '../../Theme/Color';
 
 const Right = () => {
   return <View></View>;
@@ -44,7 +45,7 @@ export default function Index() {
   };
 
   return (
-    <View style={{backgroundColor: '#F0FFFE', flex: 1}}>
+    <View style={{backgroundColor: color.accent3}}>
       <Header
         title={'Mulai Penggalangan Dana'}
         right={Right()}
