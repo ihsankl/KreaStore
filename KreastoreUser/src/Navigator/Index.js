@@ -28,7 +28,7 @@ const Index = ({...props}) => {
 
 const DrawerNavigator = () => {
   return (
-    <Drawer.Navigator drawerPosition={'right'}>
+    <Drawer.Navigator drawerPosition={'left'}>
       <Drawer.Screen options={{}} name="Home" component={MainStack} />
 
       <Drawer.Screen options={{}} name="History" component={HistoryStack} />
@@ -174,5 +174,3 @@ const mapStateToProps = state => {
   };
 };
 export default connect(mapStateToProps)(Index);
-
-const styles = StyleSheet.create({});

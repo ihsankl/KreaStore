@@ -12,6 +12,8 @@ target 'KreastoreUser' do
     :hermes_enabled => false
   )
 
+  pod 'react-native-progress-bar-android', :path => '../node_modules/@react-native-community/progress-bar-android'
+
   target 'KreastoreUserTests' do
     inherit! :complete
     # Pods for testing

@@ -12,6 +12,7 @@ const Header = ({
   right = DefaultRightMenu(),
   noRight,
   callBack = () => {},
+  children,
   ...props
 }) => {
   const navigation = useNavigation();
@@ -36,7 +37,8 @@ const Header = ({
           </TouchableOpacity>
         )}
       </View>
-      <Text>{title}</Text>
+      {!!title && <Text>{title}</Text>}
+      {children}
       <View>{right}</View>
     </View>
   );
