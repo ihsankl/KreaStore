@@ -16,15 +16,13 @@ typography();
 // SCREENS HERE
 import Splash from './src/Screens/Splash/Index';
 import Navigator from './src/Navigator/Index';
+import Home from './src/Screens/Home/Index';
 import History from './src/Screens/History/Index';
 import Profile from './src/Screens/Profile/Index';
 import Detail from './src/Screens/Detail/Index';
 import Search from './src/Screens/Search/Index';
 
 const MainStackNavigator = () => {
-  const [edit, setEdit] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-
   return (
     <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
       <Stack.Screen
@@ -44,26 +42,28 @@ const MainStackNavigator = () => {
       />
       <Stack.Screen
         name="Profile"
-        options={{
-          title: 'Profil Pengguna',
-          headerRight: () => (
-            <TouchableOpacity
-              onPress={() => {
-                if (edit === false) {
-                  setEdit(!edit);
-                } else {
-                  setModalVisible(true);
-                }
-              }}
-              style={{marginRight: 20}}>
-              <Text>{edit ? 'Batal' : 'Ubah'}</Text>
-            </TouchableOpacity>
-          ),
-          headerStyle: {
-            backgroundColor: '#F0FFFE',
-          },
-        }}>
-        {props => (
+        component={Profile}
+        // options={{
+        //   title: 'Profil Pengguna',
+        // headerRight: () => (
+        //   <TouchableOpacity
+        //     onPress={() => {
+        //       if (edit === false) {
+        //         setEdit(!edit);
+        //       } else {
+        //         setModalVisible(true);
+        //       }
+        //     }}
+        //     style={{marginRight: 20}}>
+        //     <Text>{edit ? 'Batal' : 'Ubah'}</Text>
+        //   </TouchableOpacity>
+        // ),
+        //   headerStyle: {
+        //     backgroundColor: '#F0FFFE',
+        //   },
+        // }}
+      >
+        {/* {props => (
           <Profile
             {...props}
             flagEdit={edit}
@@ -71,7 +71,7 @@ const MainStackNavigator = () => {
             modalVisible={modalVisible}
             setModalVisible={e => setModalVisible(e)}
           />
-        )}
+        )} */}
       </Stack.Screen>
       <Stack.Screen
         options={{headerShown: false}}
@@ -92,26 +92,30 @@ const MainStackNavigator = () => {
   );
 };
 
-useEffect(() => {
-  GoogleSignin.configure({
-    webClientId:
-      '1007046595469-4pse8scohg8a8p7imo535avmmri560dr.apps.googleusercontent.com',
-  });
-  return () => {};
-}, []);
+const App = () => {
+  const [isSplash, setIsSplash] = useState(false);
 
-setTimeout(() => {
-  setIsSplash(true);
-}, 3000);
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '1007046595469-4pse8scohg8a8p7imo535avmmri560dr.apps.googleusercontent.com',
+    });
+    return () => {};
+  }, []);
 
-return (
-  <Provider store={store}>
-    <PersistGate persistor={persistor}>
-      <NavigationContainer>
-        {isSplash ? <Navigator /> : <Splash />}
-      </NavigationContainer>
-    </PersistGate>
-  </Provider>
-);
+  setTimeout(() => {
+    setIsSplash(true);
+  }, 3000);
+
+  return (
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <NavigationContainer>
+          {isSplash ? <Navigator /> : <Splash />}
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
+  );
+};
 
 export default App;

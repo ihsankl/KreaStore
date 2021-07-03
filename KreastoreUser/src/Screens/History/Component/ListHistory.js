@@ -4,10 +4,14 @@ import {ParsedDate} from '../../../Utils/ParseDate';
 import Feather from 'react-native-vector-icons/Feather';
 import Header from '../../../Components/Header';
 
+const Right = () => {
+  return <View></View>;
+};
+
 export default function ListHistory(props) {
   return (
-    <View>
-      <Header />
+    <View style={{marginBottom: 60}}>
+      <Header right={Right()} title={'Riwayat'} />
       <FlatList
         data={props.data}
         renderItem={({item}) => (

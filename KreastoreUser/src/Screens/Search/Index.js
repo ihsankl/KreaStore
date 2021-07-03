@@ -1,14 +1,7 @@
 import React, {useState} from 'react';
-import {
-  View,
-  TextInput,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  Image,
-} from 'react-native';
+import {View} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Header from '../../Components/Header';
 import ListSearch from './Component/ListSearch';
 
 const dummy = [
@@ -67,13 +60,19 @@ export default function Index() {
       console.log({e, dataList});
     }
   };
+
+  const Right = () => {
+    return <View></View>;
+  };
+
   return (
-    <>
+    <View style={{backgroundColor: '#F0FFFE', flex: 1}}>
+      <Header title={'Pencarian'} right={Right()} />
       <ListSearch
         data={dataList}
         onChange={(e, i) => changeHandler(e, i)}
         value={val}
       />
-    </>
+    </View>
   );
 }
