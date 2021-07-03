@@ -68,6 +68,19 @@ const Index = ({ ...props }) => {
     }
   };
 
+  
+
+const RenderFavorites = ({ item }) => {
+  return (
+    <TouchableOpacity style={styles.imgContainer} onPress={() => props.navigation.navigate('Detail')}>
+      <Image style={styles.img} source={img1} resizeMode="cover" />
+      <Text style={styles.imgText}>{item.title}</Text>
+      <Feather name="star" size={24} style={styles.starIcon} color={color.white} />
+      <View style={styles.layer} />
+    </TouchableOpacity>
+  )
+}
+
   return (
     <View style={styles.container}>
       <Header noArrow children={<Image source={text_logo} style={{ height: 24, width: 200 }} resizeMode="contain" />} noRight={false} />
@@ -91,17 +104,6 @@ const Index = ({ ...props }) => {
     </View>
   );
 };
-
-const RenderFavorites = ({ item }) => {
-  return (
-    <TouchableOpacity style={styles.imgContainer}>
-      <Image style={styles.img} source={img1} resizeMode="cover" />
-      <Text style={styles.imgText}>{item.title}</Text>
-      <Feather name="star" size={24} style={styles.starIcon} color={color.white} />
-      <View style={styles.layer} />
-    </TouchableOpacity>
-  )
-}
 
 const RenderContents = ({ data }) => {
   return data.map((v, i) => {
