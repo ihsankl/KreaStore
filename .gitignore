@@ -64,3 +64,4 @@ node_modules/
 
 # dotenv environment variables file
 .env
+KreastoreUser/android/app/google-services.json

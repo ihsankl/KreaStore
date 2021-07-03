@@ -1,10 +1,22 @@
 export const Formatter = (unit) => {
-    const formatter = new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        // These options are needed to round to whole numbers if that's what you want.
-        //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-        //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
-    });
-    return formatter.format(unit)
+    const defaultOptions = {
+        significantDigits: 2,
+        thousandsSeparator: '.',
+        decimalSeparator: ',',
+        symbol: 'Rp'
+      }
+      
+      const currencyFormatter = (value, options) => {
+        if (typeof value !== 'number') value = 0.0
+        options = { ...defaultOptions, ...options }
+        value = value.toFixed(options.significantDigits)
+      
+        const [currency, decimal] = value.split('.')
+        return `${options.symbol} ${currency.replace(
+          /\B(?=(\d{3})+(?!\d))/g,
+          options.thousandsSeparator
+        )}${options.decimalSeparator}${decimal}`
+      }
+      
+      return currencyFormatter(unit)
 }

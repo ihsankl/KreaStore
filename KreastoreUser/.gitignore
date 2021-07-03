@@ -62,6 +62,5 @@ buck-out/
 /ios/Pods/
 
 #misc
-google-services.json
 .firebaserc
 firebase.json

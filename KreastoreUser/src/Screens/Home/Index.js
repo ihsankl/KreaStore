@@ -1,12 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, Alert, BackHandler, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, Alert, BackHandler, ScrollView, Image, FlatList } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { connect } from 'react-redux';
-import { getUserData } from '../../Redux/Action/getUserData';
+import Feather from 'react-native-vector-icons/dist/Feather';
 import { color } from '../../Theme/Color';
 import Header from '../../Components/Header';
+import img1 from '../../assets/images/kantong-ajaib.png'
+import text_logo from '../../assets/images/text_logo.png'
+import { Formatter } from '../../Utils/Formatter'
+import { ProgressBar } from '@react-native-community/progress-bar-android';
 
 const postRef = firestore().collection('post');
+
+const DATA = [
+  {
+    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+    title: 'First Item',
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+    title: 'Second Item',
+  },
+  {
+    id: '58694a0f-3da1-471f-bd96-145571e29d72',
+    title: 'Third Item',
+  },
+];
+
 
 const Index = ({ ...props }) => {
   const [data, setData] = useState([]);
@@ -48,27 +68,59 @@ const Index = ({ ...props }) => {
     }
   };
 
-  const onTryLogin = async () => {
-    try {
-
-      await props.dispatch(getUserData({ ...props.userData.data, isAnonymous: false }))
-    } catch (error) {
-      console.log(error.message)
-    }
-  }
-
   return (
-    <ScrollView contentContainerStyle={{flexGrow:1,backgroundColor:color.accent3}} >
-      <Header noArrow noRight={false} />
-      <TouchableOpacity>
-        <Button
-          title="Login"
-          onPress={() => props.navigation.navigate('Login')}
-        />
-      </TouchableOpacity>
-    </ScrollView>
+    <View style={styles.container}>
+      <Header noArrow children={<Image source={text_logo} style={{ height: 24, width: 200 }} resizeMode="contain" />} noRight={false} />
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        <Text style={styles.popularText}>Pilihan untuk mu</Text>
+        <View style={styles.itemAbsolute}>
+          <FlatList
+            data={DATA}
+            renderItem={RenderFavorites}
+            keyExtractor={item => item.id}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
+
+        <View style={styles.itemAbsolute}>
+          <RenderContents data={DATA} />
+        </View>
+
+      </ScrollView>
+    </View>
   );
 };
+
+const RenderFavorites = ({ item }) => {
+  return (
+    <TouchableOpacity style={styles.imgContainer}>
+      <Image style={styles.img} source={img1} resizeMode="cover" />
+      <Text style={styles.imgText}>{item.title}</Text>
+      <Feather name="star" size={24} style={styles.starIcon} color={color.white} />
+      <View style={styles.layer} />
+    </TouchableOpacity>
+  )
+}
+
+const RenderContents = ({ data }) => {
+  return data.map((v, i) => {
+    return (
+      <TouchableOpacity style={{ width: '100%' }} key={i}>
+        <Image style={{ borderRadius: 8, marginTop: 16, height: 200, width: '100%', minWidth: 300, maxWidth: 350, }} source={img1} resizeMode="cover" />
+        <View style={{ position: 'absolute', bottom: 0, backgroundColor: `${color.white}50`, left: 0, right: 0, padding: 8 }}>
+          <Text style={{ color: color.text, fontSize: 18 }}>Kantong Ajaib</Text>
+          <Text style={{ color: color.text, fontSize: 12 }}>kantong yang bisa menyimpan segala benda</Text>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Text style={{ color: color.text, fontSize: 16 }}>78%</Text>
+            <Text style={{ color: color.text, fontSize: 16 }}>{Formatter(120000)}</Text>
+          </View>
+          <ProgressBar styleAttr="Horizontal" color={color.primary} progress={.78} indeterminate={false} />
+        </View>
+      </TouchableOpacity>
+    )
+  })
+}
 
 const mapStateToProps = state => {
   return {
@@ -79,4 +131,54 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps)(Index);
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: color.accent3,
+    flex: 1
+  },
+  contentContainer: {
+    flexGrow: 1,
+    paddingHorizontal: 16,
+    paddingBottom: 50
+  },
+  popularText: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: 20,
+    color: color.text
+  },
+  itemAbsolute: {
+    position: 'relative'
+  },
+  imgContainer: {
+    marginTop: 16,
+    marginRight: 16,
+  },
+  img: {
+    width: 300,
+    height: 180,
+    borderRadius: 8,
+  },
+  imgText: {
+    position: 'absolute',
+    bottom: 0,
+    margin: 8,
+    color: color.white,
+    fontSize: 18,
+    zIndex: 1
+  },
+  starIcon: {
+    position: 'absolute',
+    right: 0,
+    margin: 8,
+    zIndex: 1
+  },
+  layer: {
+    position: 'absolute',
+    bottom: 0,
+    top: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: `${color.text}30`,
+    borderRadius: 8
+  }
+});

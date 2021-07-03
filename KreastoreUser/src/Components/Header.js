@@ -5,7 +5,7 @@ import { color } from '../Theme/Color';
 import { useNavigation } from '@react-navigation/native';
 import { DrawerActions } from '@react-navigation/native';
 
-const Header = ({ title, elevation, noArrow, right = DefaultRightMenu(), noRight, ...props }) => {
+const Header = ({ children, title, elevation, noArrow, right = DefaultRightMenu(), noRight, ...props }) => {
     const navigation = useNavigation();
     return (
         <View style={{ padding: 16, width: '100%', minHeight: 24, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -16,7 +16,8 @@ const Header = ({ title, elevation, noArrow, right = DefaultRightMenu(), noRight
                     </TouchableOpacity>
                 }
             </View>
-            <Text>{title}</Text>
+            {!!title && <Text>{title}</Text>}
+            {children}
             <View>{right}</View>
         </View>
     )
