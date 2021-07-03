@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, Alert, BackHandler, ScrollView, Image, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, Alert, BackHandler, ScrollView, Image, FlatList, TextInput } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { connect } from 'react-redux';
 import Feather from 'react-native-vector-icons/dist/Feather';
@@ -9,10 +9,12 @@ import img1 from '../../assets/images/kantong-ajaib.png'
 import text_logo from '../../assets/images/text_logo.png'
 import { Formatter } from '../../Utils/Formatter'
 import { ProgressBar } from '@react-native-community/progress-bar-android';
+import KreaButton from '../../Components/KreaButton';
+import { v4 as uuidv4 } from 'uuid';
 
 const postRef = firestore().collection('post');
 
-const DATA = [
+const dummyItems = [
   {
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
     title: 'First Item',
@@ -27,6 +29,28 @@ const DATA = [
   },
 ];
 
+const dummyCategories = [
+  {
+    id: 'uuidv41',
+    category: 'Film & Video'
+  },
+  {
+    id: 'uuidv42',
+    category: 'Teknologi'
+  },
+  {
+    id: 'uuidv43',
+    category: 'Buku'
+  },
+  {
+    id: 'uuidv44',
+    category: 'Drama'
+  },
+  {
+    id: 'uuidv45',
+    category: 'Peralatan'
+  },
+]
 
 const Index = ({ ...props }) => {
   const [data, setData] = useState([]);
@@ -68,27 +92,14 @@ const Index = ({ ...props }) => {
     }
   };
 
-  
-
-const RenderFavorites = ({ item }) => {
-  return (
-    <TouchableOpacity style={styles.imgContainer} onPress={() => props.navigation.navigate('Detail')}>
-      <Image style={styles.img} source={img1} resizeMode="cover" />
-      <Text style={styles.imgText}>{item.title}</Text>
-      <Feather name="star" size={24} style={styles.starIcon} color={color.white} />
-      <View style={styles.layer} />
-    </TouchableOpacity>
-  )
-}
-
   return (
     <View style={styles.container}>
       <Header noArrow children={<Image source={text_logo} style={{ height: 24, width: 200 }} resizeMode="contain" />} noRight={false} />
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        <Text style={styles.popularText}>Pilihan untuk mu</Text>
-        <View style={styles.itemAbsolute}>
+        <Text style={[styles.popularText, styles.padding16]}>Pilihan untuk mu</Text>
+        <View style={[styles.itemAbsolute, styles.padding16]}>
           <FlatList
-            data={DATA}
+            data={dummyItems}
             renderItem={RenderFavorites}
             keyExtractor={item => item.id}
             horizontal
@@ -96,8 +107,30 @@ const RenderFavorites = ({ item }) => {
           />
         </View>
 
-        <View style={styles.itemAbsolute}>
-          <RenderContents data={DATA} />
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 16 }}>
+          <FlatList
+            style={{ flex: 1 }}
+            data={dummyCategories}
+            renderItem={RenderCategories}
+            keyExtractor={item => item.id}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          />
+          <TouchableOpacity style={{ flex: 1, position: 'relative' }}>
+            <TextInput
+              style={styles.input}
+              editable={false}
+              onChangeText={null}
+              value={null}
+              placeholder="Cari . . ."
+              keyboardType="numeric"
+            />
+            <Feather name="search" size={20} style={{ position: 'absolute', top: '25%', left: 14 }} color={color.text} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={[styles.itemAbsolute, styles.padding16]}>
+          <RenderContents data={dummyItems} />
         </View>
 
       </ScrollView>
@@ -124,6 +157,21 @@ const RenderContents = ({ data }) => {
   })
 }
 
+const RenderCategories = ({ item }) => {
+  return <KreaButton btnStyle={{ marginRight: 8 }} text={item.category} />
+}
+
+const RenderFavorites = ({ item }) => {
+  return (
+    <TouchableOpacity style={styles.imgContainer} onPress={() => props.navigation.navigate('Detail')}>
+      <Image style={styles.img} source={img1} resizeMode="cover" />
+      <Text style={styles.imgText}>{item.title}</Text>
+      <Feather name="star" size={24} style={styles.starIcon} color={color.white} />
+      <View style={styles.layer} />
+    </TouchableOpacity>
+  )
+}
+
 const mapStateToProps = state => {
   return {
     userData: state.userData,
@@ -140,7 +188,6 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flexGrow: 1,
-    paddingHorizontal: 16,
     paddingBottom: 50
   },
   popularText: {
@@ -182,5 +229,16 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: `${color.text}30`,
     borderRadius: 8
+  },
+  padding16: {
+    paddingHorizontal: 16,
+  },
+  input: {
+    height: 40,
+    borderWidth: 1,
+    marginHorizontal: 8,
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingLeft: 28
   }
 });
