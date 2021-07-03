@@ -47,7 +47,7 @@ export default function Index() {
     <View style={{backgroundColor: '#F0FFFE', flex: 1}}>
       <Header
         title={'Mulai Penggalangan Dana'}
-        right={Right}
+        right={Right()}
         callBack={useCallback(() => {
           setBody({});
         }, [])}

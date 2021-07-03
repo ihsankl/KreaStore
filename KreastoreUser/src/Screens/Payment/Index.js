@@ -9,7 +9,7 @@ const Right = () => {
 export default function Index() {
   return (
     <View style={{backgroundColor: '#F0FFFE', flex: 1}}>
-      <Method label={'Pilih Metode Pembayaran'} right={Right} />
+      <Method label={'Pilih Metode Pembayaran'} right={Right()} />
     </View>
   );
 }

@@ -67,7 +67,7 @@ export default function Index() {
 
   return (
     <View style={{backgroundColor: '#F0FFFE', flex: 1}}>
-      <Header title={'Pencarian'} right={Right} />
+      <Header title={'Pencarian'} right={Right()} />
       <ListSearch
         data={dataList}
         onChange={(e, i) => changeHandler(e, i)}

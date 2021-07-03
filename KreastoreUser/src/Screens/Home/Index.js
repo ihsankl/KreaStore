@@ -93,6 +93,17 @@ const Index = ({ navigation, ...props }) => {
     }
   };
 
+  const RenderFavorites = ({ item }) => {
+    return (
+      <TouchableOpacity style={styles.imgContainer} onPress={() => navigation.navigate('Detail')}>
+        <Image style={styles.img} source={img1} resizeMode="cover" />
+        <Text style={styles.imgText}>{item.title}</Text>
+        <Feather name="star" size={24} style={styles.starIcon} color={color.white} />
+        <View style={styles.layer} />
+      </TouchableOpacity>
+    )
+  }
+
   return (
     <View style={styles.container}>
       <Header noArrow children={<Image source={text_logo} style={{ height: 24, width: 200 }} resizeMode="contain" />} noRight={false} />
@@ -101,7 +112,7 @@ const Index = ({ navigation, ...props }) => {
         <View style={[styles.itemAbsolute, styles.padding16]}>
           <FlatList
             data={dummyItems}
-            renderItem={item => <RenderFavorites item={item} {...props} />}
+            renderItem={RenderFavorites}
             keyExtractor={item => item.id}
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -150,17 +161,6 @@ const RenderContents = ({ data }) => {
 
 const RenderCategories = ({ item }) => {
   return <KreaButton btnStyle={{ marginRight: 8 }} text={item.category} />
-}
-
-const RenderFavorites = ({ item, ...props }) => {
-  return (
-    <TouchableOpacity style={styles.imgContainer} onPress={() => props.navigation.navigate('Detail')}>
-      <Image style={styles.img} source={img1} resizeMode="cover" />
-      <Text style={styles.imgText}>{item.title}</Text>
-      <Feather name="star" size={24} style={styles.starIcon} color={color.white} />
-      <View style={styles.layer} />
-    </TouchableOpacity>
-  )
 }
 
 const mapStateToProps = state => {

@@ -11,7 +11,7 @@ const Right = () => {
 export default function ListHistory(props) {
   return (
     <View style={{marginBottom: 60}}>
-      <Header right={Right} title={'Riwayat'} />
+      <Header right={Right()} title={'Riwayat'} />
       <FlatList
         data={props.data}
         renderItem={({item}) => (

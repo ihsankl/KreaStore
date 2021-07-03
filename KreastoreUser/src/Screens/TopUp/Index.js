@@ -9,7 +9,7 @@ const Right = () => {
 export default function Index() {
   return (
     <View style={{backgroundColor: '#F0FFFE', flex: 1}}>
-      <Method label={'Isi Saldo'} right={Right} />
+      <Method label={'Isi Saldo'} right={Right()} />
     </View>
   );
 }
