@@ -5,8 +5,9 @@ import {
   FlatList,
   Image,
   StyleSheet,
-  Dimensions,
   Animated,
+  Modal,
+  Pressable,
 } from 'react-native';
 import {ProgressBar} from '@react-native-community/progress-bar-android';
 import {
@@ -14,11 +15,13 @@ import {
   TouchableOpacity,
 } from 'react-native-gesture-handler';
 import Carousel, {ParallaxImage} from 'react-native-snap-carousel';
+import CheckBox from '@react-native-community/checkbox';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionic from 'react-native-vector-icons/Ionicons';
 
 import {ParsedDate} from '../../Utils/ParseDate';
 import {color} from '../../Theme/Color';
+import KreaButton from '../../Components/KreaButton';
 
 const dummy = [
   {
@@ -93,13 +96,27 @@ const dummy = [
   },
 ];
 
-const deviceWidth = Dimensions.get('window').width;
-const deviceHeight = Dimensions.get('window').height;
-
 const Index = ({...props}) => {
   const [data, setData] = useState(dummy);
   const [tab, setTab] = useState(1);
+  const [modal, setModal] = useState(false);
+  const [type, setType] = useState(null);
+  const [isReport, setReport] = useState(null);
   const [animated, setAnimated] = useState(new Animated.Value(0));
+  const [isSelected, setSelection] = useState(false);
+  const [reporting, setReporting] = useState([
+    {
+      id: 1,
+      tittle: 'Item mengandung konten tidak senonoh',
+      checked: false,
+    },
+    {
+      id: 2,
+      tittle: 'Item tidak sesuai deskripsi',
+      checked: false,
+    },
+  ]);
+
   const carouselRef = useRef(null);
 
   const touchProps = {
@@ -142,185 +159,293 @@ const Index = ({...props}) => {
     );
   };
 
-  // const slider = {
-  //   height: animated,
-  // };
+  const openModal = type => {
+    setModal(true);
+    setType(type);
+  };
+
+  const isCheck = id => {
+    const newValue = reporting.map((checkbox, i) => {
+      if (checkbox.id !== id)
+        return {
+          ...checkbox,
+          checked: false,
+        };
+      if (checkbox.id === id) {
+        setReport(checkbox.tittle);
+        const item = {
+          ...checkbox,
+          checked: !checkbox.checked,
+        };
+        return item;
+      }
+      return checkbox;
+    });
+    setReporting(newValue);
+  };
+
+  const sendReport = () => {
+    console.log(isReport);
+  };
+
+  const renderCheckbox = ({item}) => {
+    return (
+      <View style={styles.checkboxContainer}>
+        <CheckBox
+          value={item.checked}
+          tintColors={{true: color.primary}}
+          onValueChange={() => isCheck(item.id)}
+        />
+        <Text
+          style={{
+            fontWeight: 'bold',
+            fontSize: 15,
+          }}>
+          {item.tittle}
+        </Text>
+      </View>
+    );
+  };
 
   return (
-    <View style={{backgroundColor: color.white, display: 'flex'}}>
-      <FlatList
-        data={data}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => (
-          <View>
-            <Ionic
-              name="chevron-back-outline"
-              style={[
-                styles.back,
-                {color: tab == 2 ? color.white : color.grey},
-              ]}
-              onPress={() => props.navigation.navigate('Home')}
-            />
-            <Animated.Image
-              style={[styles.image, {height: animated}]}
-              source={item.image}
-            />
-            {/* </Animated.View> */}
-            <View
-              style={[
-                styles.card,
-                tab != 2 && {
-                  paddingTop: 30,
-                },
-              ]}>
-              <Text style={styles.label}>{item.label}</Text>
-              {tab != 1 && (
-                <>
-                  <View style={styles.funding}>
-                    <Text style={{fontSize: 18}}>{`${Math.trunc(
-                      (item.funding_total / item.funding_goal) * 100,
-                    )}%`}</Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                      }}>{`Rp. ${item.funding_total} dari Rp. ${item.funding_goal}`}</Text>
-                  </View>
-                  <ProgressBar
-                    styleAttr="Horizontal"
-                    indeterminate={false}
-                    progress={
-                      ((item.funding_total / item.funding_goal) * 100) / 100
-                    }
-                    color={color.primary}
-                  />
-                  <View style={styles.funding}>
-                    <Text style={styles.text}>
-                      {ParsedDate(item.funding_start_date, 'years')}
-                    </Text>
-                    <Text style={styles.text}>
-                      {Math.trunc(
-                        Math.floor(
-                          (new Date(item.funding_end_date).getTime() -
-                            new Date().getTime()) /
-                            (1000 * 60 * 60 * 24),
-                        ),
-                      ) <= 0
-                        ? 'Donasi sudah ditutup'
-                        : Math.trunc(
-                            Math.floor(
-                              (new Date(item.funding_end_date).getTime() -
-                                new Date().getTime()) /
-                                (1000 * 60 * 60 * 24),
-                            ),
-                          ) + 'hari tersisa'}
-                    </Text>
-                    <Text style={styles.text}>
-                      {data[0].funder.length} Pendukung
-                    </Text>
-                  </View>
-                </>
-              )}
-              <View style={styles.tab}>
-                <TouchableHighlight
-                  style={tab == '1' ? styles.buttonActive : styles.button}
-                  onPress={() => onTab(1)}
-                  {...touchProps}>
-                  <Text
-                    style={
-                      tab == '1' ? styles.buttonTextActive : styles.buttonText
-                    }>
-                    Tentang Produk
-                  </Text>
-                </TouchableHighlight>
-                <TouchableHighlight
-                  style={tab == '2' ? styles.buttonActive : styles.button}
-                  onPress={() => onTab(2)}
-                  {...touchProps}>
-                  <Text
-                    style={
-                      tab == '2' ? styles.buttonTextActive : styles.buttonText
-                    }>
-                    Pendukung
-                  </Text>
-                </TouchableHighlight>
-                <TouchableHighlight
-                  style={tab == '3' ? styles.buttonActive : styles.button}
-                  onPress={() => onTab(3)}
-                  {...touchProps}>
-                  <Text
-                    style={
-                      tab == '3' ? styles.buttonTextActive : styles.buttonText
-                    }>
-                    Berita
-                  </Text>
-                </TouchableHighlight>
-              </View>
-              <View style={styles.hr} />
+    <>
+      <View style={{backgroundColor: color.white, display: 'flex'}}>
+        <FlatList
+          data={data}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => (
+            <View>
+              <Ionic
+                name="chevron-back-outline"
+                style={[
+                  styles.back,
+                  {color: tab == 2 ? color.white : color.grey},
+                ]}
+                onPress={() => props.navigation.navigate('Home')}
+              />
+              <Animated.Image
+                style={[styles.image, {height: animated}]}
+                source={item.image}
+              />
 
-              <View style={{flex: 1, marginBottom: 10}}>
-                {tab == '1' ? (
+              <View
+                style={[
+                  styles.card,
+                  tab != 2 && {
+                    paddingTop: 30,
+                  },
+                ]}>
+                <Text style={styles.label}>{item.label}</Text>
+                {tab != 1 && (
                   <>
+                    <View style={styles.funding}>
+                      <Text style={{fontSize: 18}}>{`${Math.trunc(
+                        (item.funding_total / item.funding_goal) * 100,
+                      )}%`}</Text>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                        }}>{`Rp. ${item.funding_total} dari Rp. ${item.funding_goal}`}</Text>
+                    </View>
+                    <ProgressBar
+                      styleAttr="Horizontal"
+                      indeterminate={false}
+                      progress={
+                        ((item.funding_total / item.funding_goal) * 100) / 100
+                      }
+                      color={color.primary}
+                    />
+                    <View style={styles.funding}>
+                      <Text style={styles.text}>
+                        {ParsedDate(item.funding_start_date, 'years')}
+                      </Text>
+                      <Text style={styles.text}>
+                        {Math.trunc(
+                          Math.floor(
+                            (new Date(item.funding_end_date).getTime() -
+                              new Date().getTime()) /
+                              (1000 * 60 * 60 * 24),
+                          ),
+                        ) <= 0
+                          ? 'Donasi sudah ditutup'
+                          : Math.trunc(
+                              Math.floor(
+                                (new Date(item.funding_end_date).getTime() -
+                                  new Date().getTime()) /
+                                  (1000 * 60 * 60 * 24),
+                              ),
+                            ) + 'hari tersisa'}
+                      </Text>
+                      <Text style={styles.text}>
+                        {data[0].funder.length} Pendukung
+                      </Text>
+                    </View>
+                  </>
+                )}
+
+                {/* TAB */}
+
+                <View style={styles.tab}>
+                  <TouchableHighlight
+                    style={tab == '1' ? styles.buttonActive : styles.button}
+                    onPress={() => onTab(1)}
+                    {...touchProps}>
+                    <Text
+                      style={
+                        tab == '1' ? styles.buttonTextActive : styles.buttonText
+                      }>
+                      Tentang Produk
+                    </Text>
+                  </TouchableHighlight>
+                  <TouchableHighlight
+                    style={tab == '2' ? styles.buttonActive : styles.button}
+                    onPress={() => onTab(2)}
+                    {...touchProps}>
+                    <Text
+                      style={
+                        tab == '2' ? styles.buttonTextActive : styles.buttonText
+                      }>
+                      Pendukung
+                    </Text>
+                  </TouchableHighlight>
+                  <TouchableHighlight
+                    style={tab == '3' ? styles.buttonActive : styles.button}
+                    onPress={() => onTab(3)}
+                    {...touchProps}>
+                    <Text
+                      style={
+                        tab == '3' ? styles.buttonTextActive : styles.buttonText
+                      }>
+                      Berita
+                    </Text>
+                  </TouchableHighlight>
+                </View>
+                <View style={styles.hr} />
+
+                {/* END TAB */}
+
+                {/* TAB CONTENT */}
+
+                <View style={{flex: 1, marginBottom: 10}}>
+                  {tab == '1' ? (
+                    <>
+                      <FlatList
+                        data={data}
+                        keyExtractor={item => item.id}
+                        renderItem={({item}) => (
+                          <View>
+                            <Text>{item.description}</Text>
+                          </View>
+                        )}
+                      />
+
+                      <Carousel
+                        ref={carouselRef}
+                        sliderWidth={300}
+                        sliderHeight={300}
+                        itemWidth={300 - 60}
+                        data={dummy[0].images}
+                        renderItem={renderItem}
+                        hasParallaxImages={true}
+                      />
+                    </>
+                  ) : tab == '2' ? (
                     <FlatList
-                      data={data}
-                      keyExtractor={item => item.id}
+                      contentContainerStyle={styles.supportContainer}
+                      data={data[0].funder}
+                      keyExtractor={user => user.user_id}
+                      onEndReachedThreshold={0.5}
                       renderItem={({item}) => (
-                        <View>
-                          <Text>{item.description}</Text>
-                        </View>
+                        <>
+                          <View style={styles.support}>
+                            <Image style={styles.imgUser} source={item.image} />
+                            <View style={styles.supportData}>
+                              <Text style={styles.userSupport}>
+                                {item.username}
+                              </Text>
+                              <Text style={styles.totalSupport}>
+                                {`Mendonasikan ${item.total} kreapoin`}
+                              </Text>
+                            </View>
+                          </View>
+                        </>
                       )}
                     />
-
-                    <Carousel
-                      ref={carouselRef}
-                      sliderWidth={300}
-                      sliderHeight={300}
-                      itemWidth={300 - 60}
-                      data={dummy[0].images}
-                      renderItem={renderItem}
-                      hasParallaxImages={true}
-                    />
-                  </>
-                ) : tab == '2' ? (
-                  <FlatList
-                    contentContainerStyle={styles.supportContainer}
-                    data={data[0].funder}
-                    keyExtractor={user => user.user_id}
-                    onEndReachedThreshold={0.5}
-                    renderItem={({item}) => (
-                      <>
-                        <View style={styles.support}>
-                          <Image style={styles.imgUser} source={item.image} />
-                          <View style={styles.supportData}>
-                            <Text style={styles.userSupport}>
-                              {item.username}
-                            </Text>
-                            <Text style={styles.totalSupport}>
-                              {`Mendonasikan ${item.total} kreapoin`}
-                            </Text>
-                          </View>
-                        </View>
-                      </>
-                    )}
-                  />
-                ) : (
-                  <Text>3</Text>
-                )}
+                  ) : (
+                    <Text>3</Text>
+                  )}
+                </View>
               </View>
             </View>
-          </View>
-        )}
-      />
+          )}
+        />
 
-      <View style={styles.buttonFloating}>
-        <TouchableOpacity style={styles.btnReport}>
-          <Feather name="alert-triangle" style={styles.alertIcon} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.btnDonate}>
-          <Text style={styles.tittleBtnDonate}>Donasi</Text>
-          {/* <Feather name="arrow-right" style={styles.rowIcon} /> */}
-        </TouchableOpacity>
+        {/* END TAB CONTENT */}
+
+        {/* BUTTON FLOAT */}
+
+        <View style={styles.buttonFloating}>
+          <TouchableOpacity
+            style={styles.btnReport}
+            onPress={() => openModal('report')}>
+            <Feather name="alert-triangle" style={styles.alertIcon} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.btnDonate}
+            onPress={() => openModal('donasi')}>
+            <Text style={styles.tittleBtnDonate}>Donasi</Text>
+            {/* <Feather name="arrow-right" style={styles.rowIcon} /> */}
+          </TouchableOpacity>
+        </View>
+
+        {/* END BUTTON FLOAT */}
       </View>
-    </View>
+
+      {/* MODAL REPORT */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modal}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModal(!modal);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            {type == 'report' ? (
+              <>
+                <Text style={{fontSize: 30, fontWeight: 'bold'}}>
+                  Laporkan Item
+                </Text>
+                <Text style={{fontSize: 18}}>Kenapa melaporkan item ini ?</Text>
+                <FlatList
+                  data={reporting}
+                  renderItem={renderCheckbox}
+                  keyExtractor={item => item.id}
+                />
+              </>
+            ) : (
+              <>
+                <Text>donasi</Text>
+              </>
+            )}
+            <View style={{flexDirection: 'row'}}>
+              <KreaButton
+                btnStyle={{marginRight: 8}}
+                text={'Batal'}
+                onPress={() => setModal(!modal)}
+              />
+              <KreaButton
+                btnStyle={{backgroundColor: color.red}}
+                text={'Kirim'}
+                onPress={sendReport}
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
+      {/* END MODAL REPORT */}
+    </>
   );
 };
 
@@ -341,12 +466,12 @@ const styles = StyleSheet.create({
   card: {
     display: 'flex',
     width: '100%',
-    minHeight: deviceHeight,
-    top: '-3%',
+    minHeight: 850,
     backgroundColor: color.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingHorizontal: 10,
+    top: -20,
   },
   label: {
     textAlign: 'center',
@@ -364,7 +489,7 @@ const styles = StyleSheet.create({
     backgroundColor: color.white,
     borderRadius: 10,
     padding: 5,
-    height: deviceHeight / 20,
+    height: 40,
     borderColor: color.primary,
     borderWidth: 1,
     marginRight: 10,
@@ -375,19 +500,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     padding: 5,
-    height: deviceHeight / 20,
+    height: 40,
     marginRight: 10,
   },
   buttonText: {
     color: '#B9B8B8',
+    fontSize: 18,
   },
   buttonTextActive: {
     color: color.white,
+    fontSize: 18,
   },
   tab: {
     flexDirection: 'row',
     marginTop: 10,
     marginBottom: 20,
+    justifyContent: 'space-between',
   },
   hr: {
     borderWidth: 1,
@@ -403,7 +531,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     padding: 10,
-    elevation: 20,
+    elevation: 100,
+    justifyContent: 'space-between',
   },
   supportContainer: {
     flexGrow: 1,
@@ -417,21 +546,22 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   userSupport: {
-    fontSize: 16,
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   totalSupport: {
-    fontSize: 8,
+    fontSize: 16,
     color: '#5E5E5E',
   },
   imgUser: {
-    width: deviceWidth / 6,
-    height: deviceHeight / 10,
+    width: 100,
+    height: 100,
     borderRadius: 5,
   },
   btnReport: {
-    width: deviceWidth / 11,
-    height: deviceHeight / 22,
-    backgroundColor: 'red',
+    width: 50,
+    height: 35,
+    backgroundColor: color.red,
     borderRadius: 5,
     // marginHorizontal: 10,
     justifyContent: 'center',
@@ -447,8 +577,8 @@ const styles = StyleSheet.create({
     color: color.white,
   },
   btnDonate: {
-    width: deviceWidth / 1.3,
-    height: deviceHeight / 22,
+    width: 300,
+    height: 35,
     backgroundColor: color.primary,
     borderRadius: 5,
     marginHorizontal: 20,
@@ -474,5 +604,31 @@ const styles = StyleSheet.create({
   imageCarousel: {
     ...StyleSheet.absoluteFillObject,
     resizeMode: 'cover',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: color.white,
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: color.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    width: 400,
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    margin: 10,
+    alignItems: 'center',
   },
 });
