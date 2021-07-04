@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {View} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Header from '../../Components/Header';
+import { color } from '../../Theme/Color';
 import ListSearch from './Component/ListSearch';
 
 const dummy = [
@@ -66,7 +67,7 @@ export default function Index() {
   };
 
   return (
-    <View style={{backgroundColor: '#F0FFFE', flex: 1}}>
+    <View style={{backgroundColor: color.accent3, flex: 1}}>
       <Header title={'Pencarian'} right={Right()} />
       <ListSearch
         data={dataList}

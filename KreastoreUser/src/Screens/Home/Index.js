@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, Alert, BackHandler, ScrollView, Image, FlatList, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Button, TouchableOpacity, Alert, BackHandler, ScrollView, Image, FlatList, TextInput, Dimensions } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { connect } from 'react-redux';
 import Feather from 'react-native-vector-icons/dist/Feather';
 import { color } from '../../Theme/Color';
-import Header from '../../Components/Header';
 import img1 from '../../assets/images/kantong-ajaib.png'
 import text_logo from '../../assets/images/text_logo.png'
 import { Formatter } from '../../Utils/Formatter'
 import { ProgressBar } from '@react-native-community/progress-bar-android';
 import KreaButton from '../../Components/KreaButton';
-import { v4 as uuidv4 } from 'uuid';
 import SearchInput from '../../Components/SearchInput';
 
 const postRef = firestore().collection('post');
@@ -93,7 +91,7 @@ const Index = ({ navigation, ...props }) => {
     }
   };
 
-  const RenderFavorites = ({ item }) => {
+  const RenderFavorites = ({ item, index }) => {
     return (
       <TouchableOpacity style={styles.imgContainer} onPress={() => navigation.navigate('Detail')}>
         <Image style={styles.img} source={img1} resizeMode="cover" />
@@ -104,22 +102,41 @@ const Index = ({ navigation, ...props }) => {
     )
   }
 
+  const EmptyFavorites = () => {
+    return (
+      <View style={{ height: 180, width: Dimensions.get('window').width, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Ups! Belum ada Item disini</Text>
+      </View>
+    )
+  }
+
   return (
     <View style={styles.container}>
-      <Header noArrow children={<Image source={text_logo} style={{ height: 24, width: 200 }} resizeMode="contain" />} noRight={false} />
+      <View style={{ padding: 16, flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Image source={text_logo} style={{ height: 24, width: 150 }} resizeMode="contain" />
+        <TouchableOpacity onPress={() => navigation.navigate('History')}>
+          <Feather name="rotate-ccw" size={24} color={color.primary} />
+        </TouchableOpacity>
+      </View>
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        <Text style={[styles.popularText, styles.padding16]}>Pilihan untuk mu</Text>
-        <View style={[styles.itemAbsolute, styles.padding16]}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Text style={[styles.popularText, styles.padding16]}>Pilihan untuk mu</Text>
+          <TouchableOpacity style={{ flex: 1, margin: 8 }} onPress={() => navigation.navigate('Search')}>
+            <SearchInput editable={false} placeholder="Cari . . ." />
+          </TouchableOpacity>
+        </View>
+        <View style={[styles.itemRelative, styles.padding16]}>
           <FlatList
             data={dummyItems}
             renderItem={RenderFavorites}
+            ListEmptyComponent={EmptyFavorites}
             keyExtractor={item => item.id}
             horizontal
             showsHorizontalScrollIndicator={false}
           />
         </View>
 
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 16 }}>
+        <View style={[styles.padding16, { flexDirection: 'row', alignItems: 'center', marginTop: 16 }]}>
           <FlatList
             style={{ flex: 1 }}
             data={dummyCategories}
@@ -128,10 +145,9 @@ const Index = ({ navigation, ...props }) => {
             horizontal
             showsHorizontalScrollIndicator={false}
           />
-          <SearchInput onPress={()=> navigation.navigate('Search')} editable={false} placeholder="Cari . . ." />
         </View>
 
-        <View style={[styles.itemAbsolute, styles.padding16]}>
+        <View style={[styles.itemRelative, styles.padding16, { width: '100%', minWidth: 300, maxWidth: 350 }]}>
           <RenderContents data={dummyItems} />
         </View>
 
@@ -141,15 +157,21 @@ const Index = ({ navigation, ...props }) => {
 };
 
 const RenderContents = ({ data }) => {
+  if (data.length == 0) {
+    return (
+      <View style={{ height: 225, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Ups! Belum ada Item disini</Text>
+      </View>
+    )
+  }
   return data.map((v, i) => {
     return (
       <TouchableOpacity style={{ width: '100%' }} key={i}>
-        <Image style={{ borderRadius: 8, marginTop: 16, height: 200, width: '100%', minWidth: 300, maxWidth: 350, }} source={img1} resizeMode="cover" />
+        <Image style={{ borderRadius: 8, marginTop: 16, height: 225, width: '100%', minWidth: 300, maxWidth: 350, }} source={img1} resizeMode="cover" />
         <View style={{ position: 'absolute', bottom: 0, backgroundColor: `${color.white}50`, left: 0, right: 0, padding: 8 }}>
           <Text style={{ color: color.text, fontSize: 18 }}>Kantong Ajaib</Text>
           <Text style={{ color: color.text, fontSize: 12 }}>kantong yang bisa menyimpan segala benda</Text>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={{ color: color.text, fontSize: 16 }}>78%</Text>
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-end', }}>
             <Text style={{ color: color.text, fontSize: 16 }}>{Formatter(120000)}</Text>
           </View>
           <ProgressBar styleAttr="Horizontal" color={color.primary} progress={.78} indeterminate={false} />
@@ -186,7 +208,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: color.text
   },
-  itemAbsolute: {
+  itemRelative: {
     position: 'relative'
   },
   imgContainer: {

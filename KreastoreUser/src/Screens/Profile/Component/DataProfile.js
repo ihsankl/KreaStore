@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   TextInput,
@@ -9,17 +9,19 @@ import {
   Modal,
   StyleSheet,
 } from 'react-native';
+import Feather from 'react-native-vector-icons/dist/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Header from '../../../Components/Header';
-import {ParsedDate} from '../../../Utils/ParseDate';
+import KreaButton from '../../../Components/KreaButton';
+import { color } from '../../../Theme/Color';
+import { ParsedDate } from '../../../Utils/ParseDate';
 
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(52, 52, 52, 0.8)',
-    opacity: 100,
+    backgroundColor: color.grey,
   },
   modalView: {
     margin: 20,
@@ -69,6 +71,21 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
   },
+  title: {
+    alignSelf: 'stretch',
+    marginHorizontal: 16,
+    color: color.text,
+    fontSize: 10,
+  },
+  textInput: {
+    alignSelf: 'stretch',
+    padding: 2,
+    marginHorizontal: 16,
+    borderBottomColor: color.text,
+    borderBottomColor: color.grey,
+    borderBottomWidth: 1,
+    fontFamily: 'Poppins-Regular'
+  }
 });
 
 export default function DataProfile(props) {
@@ -83,13 +100,11 @@ export default function DataProfile(props) {
     right,
   } = props;
 
-  console.log('right', {right});
-
   return (
     <>
-      <Header title={'Profil Pengguna'} right={right} />
-      <ScrollView style={{backgroundColor: '#F0FFFE', flex: 1}}>
-        <View style={{height: 250}}>
+      <Header title={'Profil Pengguna'} right={right()} />
+      <ScrollView style={{ flexGrow: 1 }}>
+        <View style={{ height: 250 }}>
           <TouchableOpacity
             onPress={() => null}
             disabled={flagEdit ? false : true}>
@@ -107,10 +122,10 @@ export default function DataProfile(props) {
               }}
             />
             {flagEdit ? (
-              <Entypo
+              <Feather
                 name="camera"
                 style={{
-                  color: 'black',
+                  color: color.text,
                   alignSelf: 'center',
                   marginLeft: 90,
                   marginTop: -40,
@@ -122,112 +137,56 @@ export default function DataProfile(props) {
         </View>
         <View>
           <Text
-            style={{
-              alignSelf: 'stretch',
-              marginLeft: 30,
-              marginRight: 30,
-              color: 'gray',
-              fontSize: 10,
-            }}>
+            style={styles.title}>
             Nama Lengkap
           </Text>
           <TextInput
-            style={{
-              alignSelf: 'stretch',
-              padding: 2,
-              marginLeft: 30,
-              borderBottomColor: '#000',
-              marginRight: 30,
-              borderBottomColor: 'gray',
-              borderBottomWidth: 1,
-            }}
+            style={styles.textInput}
             value={data.name}
             editable={false}
           />
         </View>
-        <View style={{marginTop: 20}}>
+        <View style={{ marginTop: 20 }}>
           <Text
-            style={{
-              alignSelf: 'stretch',
-              marginLeft: 30,
-              marginRight: 30,
-              color: 'gray',
-              fontSize: 10,
-            }}>
+            style={styles.title}>
             Email
           </Text>
           <TextInput
-            style={{
-              alignSelf: 'stretch',
-              padding: 2,
-              marginLeft: 30,
-              borderBottomColor: '#000',
-              marginRight: 30,
-              borderBottomColor: 'gray',
-              borderBottomWidth: 1,
-            }}
+            style={styles.textInput}
             value={data.email}
             editable={flagEdit}
             onChangeText={e => {
-              onChange({email: e});
+              onChange({ email: e });
             }}
           />
         </View>
-        <View style={{marginTop: 20}}>
+        <View style={{ marginTop: 20 }}>
           <Text
-            style={{
-              alignSelf: 'stretch',
-              marginLeft: 30,
-              marginRight: 30,
-              color: 'gray',
-              fontSize: 10,
-            }}>
+            style={styles.title}>
             Tanggal Lahir
           </Text>
           <TextInput
-            style={{
-              alignSelf: 'stretch',
-              padding: 2,
-              marginLeft: 30,
-              borderBottomColor: '#000',
-              marginRight: 30,
-              borderBottomColor: 'gray',
-              borderBottomWidth: 1,
-            }}
+            style={styles.textInput}
             value={ParsedDate(data.birthday)}
             editable={flagEdit}
             onChangeText={e => {
-              onChange({birthday: e});
+              onChange({ birthday: e });
             }}
           />
         </View>
-        <View style={{marginTop: 20}}>
+        <View style={{ marginTop: 20 }}>
           <Text
-            style={{
-              alignSelf: 'stretch',
-              marginLeft: 30,
-              marginRight: 30,
-              color: 'gray',
-              fontSize: 10,
-            }}>
+            style={styles.title}>
             Bio Singkat
           </Text>
           <TextInput
-            style={{
-              alignSelf: 'stretch',
-              padding: 2,
-              marginLeft: 30,
-              borderBottomColor: '#000',
-              marginRight: 30,
-              borderBottomColor: 'gray',
-              borderBottomWidth: 1,
-            }}
+            style={styles.textInput}
             multiline={true}
             numberOfLines={4}
             value={data.bio}
             editable={flagEdit}
             onChangeText={e => {
-              onChange({bio: e});
+              onChange({ bio: e });
             }}
           />
         </View>
@@ -251,7 +210,7 @@ export default function DataProfile(props) {
           </Text>
         </View>
 
-        {flagEdit ? (
+        {flagEdit && (
           <View
             style={{
               marginTop: 50,
@@ -261,23 +220,9 @@ export default function DataProfile(props) {
               marginRight: 30,
               borderRadius: 10,
             }}>
-            <TouchableOpacity
-              onPress={() => {
-                changeFlag(false);
-                save('save');
-              }}>
-              <Text
-                style={{
-                  alignSelf: 'stretch',
-                  padding: 10,
-                  color: 'white',
-                  alignSelf: 'center',
-                }}>
-                Simpan
-              </Text>
-            </TouchableOpacity>
+            <KreaButton text="Simpan" onPress={() => { changeFlag(false); save('save'); }} />
           </View>
-        ) : null}
+        )}
         <Modal
           animationType="slide"
           transparent={true}

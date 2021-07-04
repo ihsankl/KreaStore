@@ -4,19 +4,45 @@ import { color } from '../Theme/Color'
 import Feather from 'react-native-vector-icons/dist/Feather';
 
 
-const SearchInput = ({ onPress, value, placeholder, onChangeText, editable, ...props }) => {
+const SearchInput = ({ onSubmitEditing, onPress, value, placeholder, onChangeText, editable, ...props }) => {
     return (
-        <TouchableOpacity onPress={onPress} style={{ flex: 1, position: 'relative' }}>
-            <TextInput
-                style={styles.input}
-                editable={editable}
-                onChangeText={onChangeText}
-                value={value}
-                placeholder="Cari . . ."
+            <View
                 {...props}
-            />
-            <Feather name="search" size={20} style={{ position: 'absolute', top: '25%', left: 14 }} color={color.text} />
-        </TouchableOpacity>
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: '#fff',
+                    borderWidth: 1,
+                    borderRadius: 8,
+                }}>
+                <Feather
+                    name="search"
+                    size={20}
+                    color={color.grey}
+                    style={{
+                        padding: 5,
+                        marginLeft: 5,
+                    }}
+                />
+                <TextInput
+                    style={{
+                        flex: 1,
+                        paddingTop: 5,
+                        paddingRight: 5,
+                        paddingBottom: 5,
+                        paddingLeft: 0,
+                        marginLeft: 5,
+                        fontFamily: 'Poppins-Regular'
+                    }}
+                    onSubmitEditing={e => onChangeText(e.nativeEvent.text, 'search')}
+                    clearButtonMode="always"
+                    onChangeText={e => onChangeText(e)}
+                    value={value}
+                    placeholder="Cari ..."
+                    editable={editable}
+                />
+            </View>
 
     )
 }
@@ -31,6 +57,5 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         paddingLeft: 28,
         fontFamily: 'Poppins-Regular',
-        backgroundColor: 'salmon'
     }
 })

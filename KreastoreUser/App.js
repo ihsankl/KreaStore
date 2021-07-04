@@ -17,7 +17,7 @@ import Splash from './src/Screens/Splash/Index';
 import Navigator from './src/Navigator/Index';
 
 const App = () => {
-  const [isSplash, setIsSplash] = useState(false);
+  const [isSplash, setIsSplash] = useState(true);
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -28,14 +28,14 @@ const App = () => {
   }, []);
 
   setTimeout(() => {
-    setIsSplash(true);
+    setIsSplash(false);
   }, 3000);
 
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <NavigationContainer>
-          {isSplash ? <Navigator /> : <Splash />}
+          {isSplash ? <Splash /> : <Navigator />}
         </NavigationContainer>
       </PersistGate>
     </Provider>
