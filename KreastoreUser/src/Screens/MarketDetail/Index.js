@@ -27,71 +27,9 @@ const dummy = [
     id: '1',
     image: require('../../assets/images/kantong-ajaib.png'),
     label: 'Kantong Ajaib',
-    funding_goal: '720.000',
-    funding_total: '240.000',
-    funding_start_date: '2021-06-20',
-    funding_end_date: '2021-07-01',
-    images: [
-      {
-        title: 'Beautiful and dramatic Antelope Canyon',
-        subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-        illustration: 'https://i.imgur.com/UYiroysl.jpg',
-      },
-      {
-        title: 'Earlier this morning, NYC',
-        subtitle: 'Lorem ipsum dolor sit amet',
-        illustration: 'https://i.imgur.com/UPrs1EWl.jpg',
-      },
-      {
-        title: 'White Pocket Sunset',
-        subtitle: 'Lorem ipsum dolor sit amet et nuncat ',
-        illustration: 'https://i.imgur.com/MABUbpDl.jpg',
-      },
-      {
-        title: 'Acrocorinth, Greece',
-        subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-        illustration: 'https://i.imgur.com/KZsmUi2l.jpg',
-      },
-      {
-        title: 'The lone tree, majestic landscape of New Zealand',
-        subtitle: 'Lorem ipsum dolor sit amet',
-        illustration: 'https://i.imgur.com/2nCt3Sbl.jpg',
-      },
-    ],
+    price: 100000,
     description:
       'Enim amet ipsum aliqua ex reprehenderit fugiat labore ut sunt irure occaecat. Voluptate voluptate magna excepteur non quis nulla eiusmod ex consequat amet labore. Aute occaecat exercitation labore et. Ex laborum sit culpa aliquip minim pariatur aliqua irure do fugiat. Occaecat dolor mollit commodo nulla duis. Veniam ex enim eiusmod nulla ex excepteur esse irure adipisicing labore.',
-    funder: [
-      {
-        user_id: '1',
-        username: 'Ihsan Kurniawan',
-        total: '30',
-        image: require('../../assets/images/kantong-ajaib.png'),
-      },
-      {
-        user_id: '2',
-        username: 'Alghi',
-        total: '10',
-        image: require('../../assets/images/kantong-ajaib.png'),
-      },
-      {
-        user_id: '3',
-        username: 'Vildan Romli Afriansyah Putra',
-        total: '1.000.000',
-        image: require('../../assets/images/kantong-ajaib.png'),
-      },
-      {
-        user_id: '4',
-        username: 'Ocra',
-        total: '20',
-        image: require('../../assets/images/kantong-ajaib.png'),
-      },
-      {
-        user_id: '5',
-        username: 'Rafli',
-        total: '50',
-        image: require('../../assets/images/kantong-ajaib.png'),
-      },
-    ],
   },
 ];
 
@@ -216,163 +154,54 @@ const Index = ({...props}) => {
             <View>
               <Ionic
                 name="chevron-back-outline"
-                style={[
-                  styles.back,
-                  {color: tab == 2 ? color.white : color.grey},
-                ]}
+                style={styles.back}
                 onPress={() => props.navigation.navigate('Home')}
               />
-              <Animated.Image
-                style={[styles.image, {height: animated}]}
-                source={item.image}
+              <Ionic
+                name="heart-outline"
+                style={styles.fav}
+                onPress={() => props.navigation.navigate('Home')}
               />
+              <Image style={styles.image} source={item.image} />
 
-              <View
-                style={[
-                  styles.card,
-                  tab != 2 && {
-                    paddingTop: 30,
-                  },
-                ]}>
-                <Text style={styles.label}>{item.label}</Text>
-                {tab != 1 && (
-                  <>
-                    <View style={styles.funding}>
-                      <Text style={{fontSize: 18}}>{`${Math.trunc(
-                        (item.funding_total / item.funding_goal) * 100,
-                      )}%`}</Text>
-                      <Text
-                        style={{
-                          fontSize: 12,
-                        }}>{`Rp. ${item.funding_total} dari Rp. ${item.funding_goal}`}</Text>
-                    </View>
-                    <ProgressBar
-                      styleAttr="Horizontal"
-                      indeterminate={false}
-                      progress={
-                        ((item.funding_total / item.funding_goal) * 100) / 100
-                      }
-                      color={color.primary}
-                    />
-                    <View style={styles.funding}>
-                      <Text style={styles.text}>
-                        {ParsedDate(item.funding_start_date, 'years')}
-                      </Text>
-                      <Text style={styles.text}>
-                        {Math.trunc(
-                          Math.floor(
-                            (new Date(item.funding_end_date).getTime() -
-                              new Date().getTime()) /
-                              (1000 * 60 * 60 * 24),
-                          ),
-                        ) <= 0
-                          ? 'Donasi sudah ditutup'
-                          : Math.trunc(
-                              Math.floor(
-                                (new Date(item.funding_end_date).getTime() -
-                                  new Date().getTime()) /
-                                  (1000 * 60 * 60 * 24),
-                              ),
-                            ) + 'hari tersisa'}
-                      </Text>
-                      <Text style={styles.text}>
-                        {data[0].funder.length} Pendukung
-                      </Text>
-                    </View>
-                  </>
-                )}
-
-                {/* TAB */}
-
-                <View style={styles.tab}>
-                  <TouchableHighlight
-                    style={tab == '1' ? styles.buttonActive : styles.button}
-                    onPress={() => onTab(1)}
-                    {...touchProps}>
-                    <Text
-                      style={
-                        tab == '1' ? styles.buttonTextActive : styles.buttonText
-                      }>
-                      Tentang Produk
-                    </Text>
-                  </TouchableHighlight>
-                  <TouchableHighlight
-                    style={tab == '2' ? styles.buttonActive : styles.button}
-                    onPress={() => onTab(2)}
-                    {...touchProps}>
-                    <Text
-                      style={
-                        tab == '2' ? styles.buttonTextActive : styles.buttonText
-                      }>
-                      Pendukung
-                    </Text>
-                  </TouchableHighlight>
-                  <TouchableHighlight
-                    style={tab == '3' ? styles.buttonActive : styles.button}
-                    onPress={() => props.navigation.navigate('Market')}
-                    {...touchProps}>
-                    <Text
-                      style={
-                        tab == '3' ? styles.buttonTextActive : styles.buttonText
-                      }>
-                      Laporan
-                    </Text>
-                  </TouchableHighlight>
+              <View style={styles.card}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginTop: 20,
+                  }}>
+                  <Text style={styles.label}>{item.label}</Text>
+                  <Text style={styles.price}>{item.price}</Text>
                 </View>
-                <View style={styles.hr} />
+                <Text style={{textAlign: 'justify'}}>{item.description}</Text>
 
-                {/* END TAB */}
+                <View style={styles.hr} />
 
                 {/* TAB CONTENT */}
 
                 <View style={{flex: 1, marginBottom: 10}}>
-                  {tab == '1' ? (
-                    <>
-                      <FlatList
-                        data={data}
-                        keyExtractor={item => item.id}
-                        renderItem={({item}) => (
-                          <View>
-                            <Text>{item.description}</Text>
+                  <FlatList
+                    contentContainerStyle={styles.supportContainer}
+                    data={data[0].funder}
+                    keyExtractor={user => user.user_id}
+                    onEndReachedThreshold={0.5}
+                    renderItem={({item}) => (
+                      <>
+                        <View style={styles.support}>
+                          <Image style={styles.imgUser} source={item.image} />
+                          <View style={styles.supportData}>
+                            <Text style={styles.userSupport}>
+                              {item.username}
+                            </Text>
+                            <Text style={styles.totalSupport}>
+                              {`Mendonasikan ${item.total} kreapoin`}
+                            </Text>
                           </View>
-                        )}
-                      />
-
-                      <Carousel
-                        ref={carouselRef}
-                        sliderWidth={300}
-                        sliderHeight={300}
-                        itemWidth={300 - 60}
-                        data={dummy[0].images}
-                        renderItem={renderItem}
-                        hasParallaxImages={true}
-                      />
-                    </>
-                  ) : tab == '2' ? (
-                    <FlatList
-                      contentContainerStyle={styles.supportContainer}
-                      data={data[0].funder}
-                      keyExtractor={user => user.user_id}
-                      onEndReachedThreshold={0.5}
-                      renderItem={({item}) => (
-                        <>
-                          <View style={styles.support}>
-                            <Image style={styles.imgUser} source={item.image} />
-                            <View style={styles.supportData}>
-                              <Text style={styles.userSupport}>
-                                {item.username}
-                              </Text>
-                              <Text style={styles.totalSupport}>
-                                {`Mendonasikan ${item.total} kreapoin`}
-                              </Text>
-                            </View>
-                          </View>
-                        </>
-                      )}
-                    />
-                  ) : (
-                    <Text>3</Text>
-                  )}
+                        </View>
+                      </>
+                    )}
+                  />
                 </View>
               </View>
             </View>
@@ -392,7 +221,7 @@ const Index = ({...props}) => {
           <TouchableOpacity
             style={styles.btnDonate}
             onPress={() => openModal('donasi')}>
-            <Text style={styles.tittleBtnDonate}>Donasi</Text>
+            <Text style={styles.tittleBtnDonate}>Beli</Text>
             {/* <Feather name="arrow-right" style={styles.rowIcon} /> */}
           </TouchableOpacity>
         </View>
@@ -457,10 +286,20 @@ const styles = StyleSheet.create({
     top: 0,
     zIndex: 99999,
     margin: 10,
+    color: color.white,
+  },
+  fav: {
+    fontSize: 25,
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    zIndex: 99999,
+    margin: 10,
+    color: color.white,
   },
   image: {
     width: '100%',
-    // height: 300,
+    height: 300,
   },
   card: {
     display: 'flex',
@@ -473,7 +312,11 @@ const styles = StyleSheet.create({
     top: -20,
   },
   label: {
-    textAlign: 'center',
+    textAlign: 'left',
+    fontSize: 20,
+  },
+  price: {
+    textAlign: 'right',
     fontSize: 20,
   },
   funding: {
