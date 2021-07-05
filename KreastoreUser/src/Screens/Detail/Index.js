@@ -307,17 +307,6 @@ const Index = ({...props}) => {
                       Pendukung
                     </Text>
                   </TouchableHighlight>
-                  <TouchableHighlight
-                    style={tab == '3' ? styles.buttonActive : styles.button}
-                    onPress={() => props.navigation.navigate('Market')}
-                    {...touchProps}>
-                    <Text
-                      style={
-                        tab == '3' ? styles.buttonTextActive : styles.buttonText
-                      }>
-                      Laporan
-                    </Text>
-                  </TouchableHighlight>
                 </View>
                 <View style={styles.hr} />
 
@@ -514,7 +503,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 10,
     marginBottom: 20,
-    justifyContent: 'space-between',
   },
   hr: {
     borderWidth: 1,
@@ -522,7 +510,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   buttonFloating: {
-    // display: 'flex',
+    display: 'flex',
     flexDirection: 'row',
     width: '100%',
     height: 50,
@@ -530,8 +518,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     padding: 10,
-    elevation: 100,
-    justifyContent: 'space-between',
+    elevation: 5,
+    // justifyContent: 'space-between',
   },
   supportContainer: {
     flexGrow: 1,
@@ -576,7 +564,8 @@ const styles = StyleSheet.create({
     color: color.white,
   },
   btnDonate: {
-    width: 300,
+    flex: 1,
+    width: '100%',
     height: 35,
     backgroundColor: color.primary,
     borderRadius: 5,

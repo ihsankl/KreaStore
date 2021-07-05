@@ -77,7 +77,6 @@ const Index = props => {
         <View style={styles.hr} />
         <View style={styles.containerComment}>
           <Text style={{fontWeight: 'bold', fontSize: 25}}>Comment :</Text>
-          <Input />
           {data.comment.map(item => (
             <View style={styles.card} key={item.id}>
               <Image style={styles.imgUser} source={{uri: item.image}} />
@@ -87,13 +86,6 @@ const Index = props => {
               </Text>
             </View>
           ))}
-          {/* <FlatList
-            scrollEnabled={true}
-            data={data.comment}
-            keyExtractor={item => item.id_user}
-            renderItem={renderComment}
-            showsVerticalScrollIndicator={false}
-          /> */}
         </View>
       </View>
     </ScrollView>
