@@ -17,6 +17,7 @@ import PostItem from '../Screens/PostItem/Index';
 import TopUp from '../Screens/TopUp/Index';
 import Payment from '../Screens/Payment/Index';
 import News from '../Screens/News/Index';
+import NewsDetail from '../Screens/News/NewsDetail/Index';
 import Market from '../Screens/Market/Index';
 import MarketDetail from '../Screens/MarketDetail/Index';
 import { TabBar } from '../Components/TabBar';
@@ -132,7 +133,13 @@ const MainStack = ({ ...props }) => {
       />
 
       <Stack.Screen
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
+        name="News Detail"
+        component={NewsDetailStack}
+      />
+
+      <Stack.Screen
+        options={{headerShown: false}}
         name="Market"
         component={MarketStack}
       />
@@ -233,6 +240,18 @@ const NewsStack = () => {
         options={{ headerShown: false }}
         name="News"
         component={News}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const NewsDetailStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="News"
+        component={NewsDetail}
       />
     </Stack.Navigator>
   );
