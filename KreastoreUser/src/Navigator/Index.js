@@ -16,6 +16,7 @@ import PostItem from '../Screens/PostItem/Index';
 import TopUp from '../Screens/TopUp/Index';
 import Payment from '../Screens/Payment/Index';
 import News from '../Screens/News/Index';
+import NewsDetail from '../Screens/News/NewsDetail/Index';
 import Market from '../Screens/Market/Index';
 import MarketDetail from '../Screens/MarketDetail/Index';
 import {TabBar} from '../Components/TabBar';
@@ -37,8 +38,10 @@ const BottomTab = () => {
   return (
     <Tab.Navigator tabBar={TabBar}>
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Top Up" component={TopUpStack} />
-      <Tab.Screen name="Post Item" component={PostItemStack} />
+      {/* <Tab.Screen name="Top Up" component={TopUpStack} />
+      <Tab.Screen name="Post Item" component={PostItemStack} /> */}
+      <Tab.Screen name="Store" component={MarketDetailStack} />
+      <Tab.Screen name="News" component={NewsStack} />
       <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );
@@ -78,6 +81,12 @@ const MainStack = () => {
         options={{headerShown: false}}
         name="News"
         component={NewsStack}
+      />
+
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="News Detail"
+        component={NewsDetailStack}
       />
 
       <Stack.Screen
@@ -187,6 +196,18 @@ const NewsStack = () => {
         options={{headerShown: false}}
         name="News"
         component={News}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const NewsDetailStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="News"
+        component={NewsDetail}
       />
     </Stack.Navigator>
   );

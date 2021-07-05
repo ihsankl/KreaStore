@@ -1,87 +1,148 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, FlatList} from 'react-native';
-import Ionic from 'react-native-vector-icons/Ionicons';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
+import ReadMore from 'react-native-read-more-text';
 
+import Header from '../../Components/Header';
 import {color} from '../../Theme/Color';
-import KreaButton from '../../Components/KreaButton';
 
-const data = {
-  id: 1,
-  tittle:
-    'Cupidatat culpa excepteur irure non exercitation ipsum consectetur qui ad laborum deserunt.',
-  creator: 'Vildan',
-  isBanned: false,
-  image: 'https://i.imgur.com/2nCt3Sbl.jpg',
-  content:
-    'Nulla Lorem dolor ipsum occaecat amet laboris. Magna consequat consequat laborum aute excepteur cupidatat voluptate et. Duis laborum enim consectetur fugiat occaecat elit excepteur sint culpa laborum ullamco ad. Cillum sint veniam non ex nulla id.',
-  comment: [
-    {
-      id_user: 1,
-      image: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
-      user_name: 'Ihsan',
-      comment: 'hello',
-      isDeleted: false,
-    },
-    {
-      id_user: 2,
-      image: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
-      user_name: 'Alghi',
-      comment: 'nihao',
-      isDeleted: false,
-    },
-    {
-      id_user: 3,
-      image: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
-      user_name: 'Vildan',
-      comment: 'Hallo',
-      isDeleted: false,
-    },
-  ],
-};
-
-const users = [
+const data = [
   {
-    name: 'brynn',
-    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+    id: 1,
+    image: 'https://i.imgur.com/UYiroysl.jpg',
+    tittle: 'Berita Terkini',
+    konten:
+      'In mollit nulla voluptate laboris reprehenderit. Commodo reprehenderit sint proident proident duis duis laboris ad aliquip ad dolor. Laborum cupidatat adipisicing in magna est non excepteur elit sunt dolore nisi. Occaecat elit consectetur ea laboris elit magna officia magna ipsum do nisi enim qui. Ea laborum pariatur velit incididunt veniam nisi tempor enim ad commodo.',
+    creator: 'Vildan',
+    date: '2021-06-20',
+    comment: [
+      {
+        id_user: 1,
+        image: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+        user_name: 'Ihsan',
+        comment: 'hello',
+        isDeleted: false,
+      },
+      {
+        id_user: 2,
+        image: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+        user_name: 'Alghi',
+        comment: 'nihao',
+        isDeleted: false,
+      },
+      {
+        id_user: 3,
+        image: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+        user_name: 'Vildan',
+        comment: 'Hallo',
+        isDeleted: false,
+      },
+    ],
+  },
+  {
+    id: 2,
+    image: 'https://i.imgur.com/2nCt3Sbl.jpg',
+    tittle: 'Berita Terkini',
+    konten:
+      'In mollit nulla voluptate laboris reprehenderit. Commodo reprehenderit sint proident proident duis duis laboris ad aliquip ad dolor. Laborum cupidatat adipisicing in magna est non excepteur elit sunt dolore nisi. Occaecat elit consectetur ea laboris elit magna officia magna ipsum do nisi enim qui. Ea laborum pariatur velit incididunt veniam nisi tempor enim ad commodo.',
+    creator: 'Vildan',
+    date: '2021-06-20',
+    comment: [
+      {
+        id_user: 1,
+        image: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+        user_name: 'Ihsan',
+        comment: 'hello',
+        isDeleted: false,
+      },
+      {
+        id_user: 2,
+        image: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+        user_name: 'Alghi',
+        comment: 'nihao',
+        isDeleted: false,
+      },
+      {
+        id_user: 3,
+        image: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+        user_name: 'Vildan',
+        comment: 'Hallo',
+        isDeleted: false,
+      },
+    ],
+  },
+  {
+    id: 3,
+    image: 'https://i.imgur.com/2nCt3Sbl.jpg',
+    tittle: 'Berita Terkini',
+    konten:
+      'In mollit nulla voluptate laboris reprehenderit. Commodo reprehenderit sint proident proident duis duis laboris ad aliquip ad dolor. Laborum cupidatat adipisicing in magna est non excepteur elit sunt dolore nisi. Occaecat elit consectetur ea laboris elit magna officia magna ipsum do nisi enim qui. Ea laborum pariatur velit incididunt veniam nisi tempor enim ad commodo.',
+    creator: 'Vildan',
+    date: '2021-06-20',
+    comment: [
+      {
+        id_user: 1,
+        image: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+        user_name: 'Ihsan',
+        comment: 'hello',
+        isDeleted: false,
+      },
+      {
+        id_user: 2,
+        image: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+        user_name: 'Alghi',
+        comment: 'nihao',
+        isDeleted: false,
+      },
+      {
+        id_user: 3,
+        image: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+        user_name: 'Vildan',
+        comment: 'Hallo',
+        isDeleted: false,
+      },
+    ],
   },
 ];
 
 const Index = props => {
-  const renderComment = ({item}) => {
+  const renderList = ({item}) => {
     return (
-      <View style={styles.card}>
-        <Image style={styles.imgUser} source={{uri: item.image}} />
-        <Text style={{fontSize: 16}}>{item.user_name}</Text>
-        <Text style={{fontSize: 16, paddingLeft: 20}}>{item.comment}</Text>
-      </View>
+      <TouchableOpacity
+        style={{width: '100%'}}
+        key={item.id}
+        onPress={() => props.navigation.navigate('News Detail')}>
+        <View style={styles.card}>
+          <Text style={{textAlign: 'center', marginBottom: 10}}>
+            {item.tittle}
+          </Text>
+          <ReadMore
+            numberOfLines={2}
+            // renderTruncatedFooter={_renderTruncatedFooter}
+            // renderRevealedFooter={_renderRevealedFooter}
+            // onReady={_handleTextReady}
+          >
+            <Text>{item.konten}</Text>
+          </ReadMore>
+        </View>
+      </TouchableOpacity>
     );
   };
+
   return (
     <View style={styles.container}>
-      <Ionic
-        name="chevron-back-outline"
-        style={styles.back}
-        onPress={() => props.navigation.navigate('Home')}
-      />
-      <Image style={styles.image} source={{uri: data.image}} />
-      <View style={styles.containerContent}>
-        <Text style={styles.tittle}>{data.tittle}</Text>
-        <Text style={styles.creator}>Publish by {data.creator}</Text>
-        <Text style={styles.content}>{data.content}</Text>
-        <KreaButton
-          btnStyle={{btnColor: color.red}}
-          text={'Report'}
-          // onPress={() => setModal(!modal)}
-        />
-      </View>
-      <View style={styles.hr} />
-      <View style={styles.containerComment}>
-        <Text style={{fontWeight: 'bold', fontSize: 25}}>Comment :</Text>
+      <Header title={'Berita'} noArrow noRight />
+      <View style={styles.containerList}>
         <FlatList
-          data={data.comment}
-          keyExtractor={item => item.id_user}
-          renderItem={renderComment}
-          showsVerticalScrollIndicator={false}
+          data={data}
+          keyExtractor={item => item.id}
+          renderItem={renderList}
         />
       </View>
     </View>
@@ -91,60 +152,24 @@ const Index = props => {
 export default Index;
 
 const styles = StyleSheet.create({
-  back: {
-    fontSize: 25,
-    position: 'absolute',
-    top: 0,
-    zIndex: 99999,
-    margin: 10,
-    color: color.white,
-  },
-  image: {
-    width: '100%',
-    height: 200,
-  },
   container: {
     display: 'flex',
-  },
-  containerContent: {
-    padding: 16,
-  },
-  tittle: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  creator: {
-    textAlign: 'right',
-    margin: 10,
-  },
-  content: {
-    textAlign: 'justify',
-    fontSize: 16,
-  },
-  hr: {
-    borderWidth: 1,
-    borderColor: color.grey,
-    marginBottom: 10,
-  },
-  containerComment: {
-    padding: 16,
-    minHeight: 300,
     flex: 1,
   },
+  containerList: {
+    padding: 16,
+    backgroundColor: color.accent3,
+    flex: 1,
+    borderRadius: 5,
+    elevation: 5,
+  },
   card: {
-    width: '90%',
+    width: '100%',
+    height: 100,
+    backgroundColor: color.white,
+    borderRadius: 5,
+    elevation: 5,
     padding: 10,
-    shadowColor: '#000000',
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    shadowOffset: {
-      height: 1,
-      width: 1,
-    },
     margin: 5,
-    borderRadius: 10,
-    borderWidth: 1,
   },
 });
