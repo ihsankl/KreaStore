@@ -40,7 +40,7 @@ const BottomTab = () => {
       <Tab.Screen name="Home" component={Home} />
       {/* <Tab.Screen name="Top Up" component={TopUpStack} />
       <Tab.Screen name="Post Item" component={PostItemStack} /> */}
-      <Tab.Screen name="Store" component={MarketDetailStack} />
+      <Tab.Screen name="Store" component={MarketStack} />
       <Tab.Screen name="News" component={NewsStack} />
       <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
