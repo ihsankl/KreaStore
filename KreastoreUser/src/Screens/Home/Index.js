@@ -147,7 +147,7 @@ const Index = ({ navigation, ...props }) => {
           />
         </View>
 
-        <View style={[styles.itemRelative, styles.padding16, { width: '100%', minWidth: 300, maxWidth: 350 }]}>
+        <View style={[styles.itemRelative, styles.padding16, { width: '100%', minWidth: 300, maxWidth: 400 }]}>
           <RenderContents data={dummyItems} />
         </View>
 
@@ -167,7 +167,7 @@ const RenderContents = ({ data }) => {
   return data.map((v, i) => {
     return (
       <TouchableOpacity style={{ width: '100%' }} key={i}>
-        <Image style={{ borderRadius: 8, marginTop: 16, height: 225, width: '100%', minWidth: 300, maxWidth: 350, }} source={img1} resizeMode="cover" />
+        <Image style={{ borderRadius: 8, marginTop: 16, height: 225, width: '100%', minWidth: 300, maxWidth: 400, }} source={img1} resizeMode="cover" />
         <View style={{ position: 'absolute', bottom: 0, backgroundColor: `${color.white}50`, left: 0, right: 0, padding: 8 }}>
           <Text style={{ color: color.text, fontSize: 18 }}>Kantong Ajaib</Text>
           <Text style={{ color: color.text, fontSize: 12 }}>kantong yang bisa menyimpan segala benda</Text>
