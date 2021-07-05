@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, Alert, BackHandler, ScrollView, Image, FlatList, TextInput, Dimensions } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { connect } from 'react-redux';
 import Feather from 'react-native-vector-icons/dist/Feather';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+
 import { color } from '../../Theme/Color';
 import img1 from '../../assets/images/kantong-ajaib.png'
 import text_logo from '../../assets/images/text_logo.png'
@@ -147,7 +149,7 @@ const Index = ({ navigation, ...props }) => {
           />
         </View>
 
-        <View style={[styles.itemRelative, styles.padding16, { width: '100%', minWidth: 300, maxWidth: 350 }]}>
+        <View style={[styles.itemRelative, styles.padding16, { width: '100%', minWidth: 300, maxWidth: 400 }]}>
           <RenderContents data={dummyItems} />
         </View>
 
@@ -167,7 +169,7 @@ const RenderContents = ({ data }) => {
   return data.map((v, i) => {
     return (
       <TouchableOpacity style={{ width: '100%' }} key={i}>
-        <Image style={{ borderRadius: 8, marginTop: 16, height: 225, width: '100%', minWidth: 300, maxWidth: 350, }} source={img1} resizeMode="cover" />
+        <Image style={{ borderRadius: 8, marginTop: 16, height: 225, width: '100%', minWidth: 300, maxWidth: 400, }} source={img1} resizeMode="cover" />
         <View style={{ position: 'absolute', bottom: 0, backgroundColor: `${color.white}50`, left: 0, right: 0, padding: 8 }}>
           <Text style={{ color: color.text, fontSize: 18 }}>Kantong Ajaib</Text>
           <Text style={{ color: color.text, fontSize: 12 }}>kantong yang bisa menyimpan segala benda</Text>
@@ -187,7 +189,7 @@ const RenderCategories = ({ item }) => {
 
 const mapStateToProps = state => {
   return {
-    userData: state.userData,
+    putUserData: state.putUserData,
     alert: state.alert,
   }
 }

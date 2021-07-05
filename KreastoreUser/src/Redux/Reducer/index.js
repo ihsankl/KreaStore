@@ -1,10 +1,11 @@
 import { combineReducers } from 'redux'
 import { alert } from './alert'
-import { userData } from './userData'
+import { getUserData, putUserData } from './userData'
 
 const appReducers = combineReducers({
     alert,
-    userData,
+    getUserData,
+    putUserData
 })
 
 export default appReducers
