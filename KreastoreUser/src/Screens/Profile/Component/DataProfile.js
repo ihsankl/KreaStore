@@ -190,6 +190,7 @@ export default function DataProfile(props) {
             }}
           />
         </View>
+        <KreaButton text="Logout" btnStyle={{marginHorizontal:16, marginVertical:16}} btnColor={color.red} />
         <View
           style={{
             marginTop: 50,
@@ -216,9 +217,8 @@ export default function DataProfile(props) {
               marginTop: 50,
               marginBottom: 30,
               backgroundColor: '#38B6FF',
-              marginLeft: 30,
-              marginRight: 30,
               borderRadius: 10,
+              marginHorizontal:16,
             }}>
             <KreaButton text="Simpan" onPress={() => { changeFlag(false); save('save'); }} />
           </View>

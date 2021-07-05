@@ -3,6 +3,7 @@ import {View, Text, FlatList} from 'react-native';
 import {ParsedDate} from '../../../Utils/ParseDate';
 import Feather from 'react-native-vector-icons/Feather';
 import Header from '../../../Components/Header';
+import { color } from '../../../Theme/Color';
 
 const Right = () => {
   return <View></View>;
@@ -18,21 +19,21 @@ export default function ListHistory(props) {
           <View>
             <View
               style={{
-                backgroundColor: '#ABDA3F',
-                padding: 15,
+                backgroundColor: color.secondary,
+                padding: 16,
                 flexDirection: 'row',
               }}>
-              <Text style={{color: 'white', fontSize: 16}}>
+              <Text style={{color: color.white, fontSize: 16}}>
                 {item.day}, {ParsedDate(item.date)}
               </Text>
-              <Text style={{color: 'white', fontSize: 16, marginLeft: 'auto'}}>
+              <Text style={{color: color.white, fontSize: 16, marginLeft: 'auto'}}>
                 {item.type === 'Donasi' ? '-' : '+'} Rp.{' '}
                 {String(item.total).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
               </Text>
             </View>
             <View
               style={{
-                backgroundColor: 'white',
+                backgroundColor: color.white,
                 padding: 12,
                 flexDirection: 'row',
               }}>
