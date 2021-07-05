@@ -56,6 +56,7 @@ export default function Index(props) {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         right={right}
+        {...props}
       />
     </View>
   );

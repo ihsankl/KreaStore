@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, Alert, BackHandler, ScrollView, Image, FlatList, TextInput, Dimensions } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { connect } from 'react-redux';
 import Feather from 'react-native-vector-icons/dist/Feather';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+
 import { color } from '../../Theme/Color';
 import img1 from '../../assets/images/kantong-ajaib.png'
 import text_logo from '../../assets/images/text_logo.png'
@@ -187,7 +189,7 @@ const RenderCategories = ({ item }) => {
 
 const mapStateToProps = state => {
   return {
-    userData: state.userData,
+    putUserData: state.putUserData,
     alert: state.alert,
   }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -13,21 +13,63 @@ import { Picker } from '@react-native-picker/picker';
 import KreaButton from '../../../Components/KreaButton';
 import Entypo from 'react-native-vector-icons/Entypo';
 import DatePicker from 'react-native-datepicker';
+// import DatePicker from '@react-native-community/datetimepicker'
 import { color } from '../../../Theme/Color';
+import { connect } from 'react-redux';
+import { putUserData } from '../../../Redux/Action/userData';
 
-export default function FormData({
+function FormData({
   data,
   handleChoosePhoto = () => { },
   onChange = () => { },
+  navigation,
+  dispatch,
+  ...props
 }) {
+
+  const { isSignedIn } = props.putUserData
+  const userData = props.putUserData?.data
+
+  // deskripsi: "a"
+  // feedBack: "asdadasdasd"
+  // kategori: "Design"
+  // namaProduk: "a"
+  // photoUrl: "file:///data/user/0/com.kreastoreuser/cache/rn_image_picker_lib_temp_4b0144b3-7695-4a7a-af19-d8426fdb23ea.jpg"
+  // tanggalAkhir: "2021-07-05"
+  // total: 123123123123123120
+
+  const isDisabled = () => {
+    if (
+      !data.deskripsi ||
+      !data.feedBack ||
+      !data.kategori ||
+      !data.namaProduk ||
+      !data.photoUrl ||
+      !data.tanggalAkhir ||
+      !data.total) {
+      return true
+    }
+    return false
+  }
+
+  const onSubmit = async () => {
+    if (!userData) {
+      await dispatch(putUserData({ data: null, isAnonymous: false }))
+    } else {
+      console.log('Berhasil')
+    }
+  }
+
   return (
     <ScrollView>
+      {!isSignedIn && <Text style={{ marginVertical: 16, textAlign: 'center', color: color.red }}>Anda harus login terlebih dahulu untuk memulai penggalangan dana.</Text>}
       <View style={{ marginBottom: 30, marginTop: 10 }}>
         <Text
           style={styles.title}>
           Nama Produk
         </Text>
         <TextInput
+          editable={isSignedIn == undefined ? false : true}
           style={styles.textInput}
           onChangeText={e => {
             onChange({ namaProduk: e });
@@ -44,12 +86,13 @@ export default function FormData({
         <View
           style={styles.textInput}>
           <Picker
-          style={{fontFamily:'Poppins-Regular'}}
+            enabled={isSignedIn == undefined ? false : true}
+            style={{ fontFamily: 'Poppins-Regular' }}
             selectedValue={data.kategori}
             onValueChange={(itemValue, itemIndex) => {
               onChange({ kategori: itemValue });
             }}>
-            <Picker.Item style={{fontFamily:'Poppins-Regular'}} label="-- Pilih Kategori --" value="" />
+            <Picker.Item label="-- Pilih Kategori --" value="" />
             <Picker.Item label="Comics" value="Comics" />
             <Picker.Item label="Craft" value="Craft" />
             <Picker.Item label="Dance" value="Dance" />
@@ -73,6 +116,7 @@ export default function FormData({
           Deskripsi
         </Text>
         <TextInput
+          editable={isSignedIn == undefined ? false : true}
           style={styles.textInput}
           multiline={true}
           numberOfLines={4}
@@ -102,7 +146,7 @@ export default function FormData({
             }}
           />
         ) : (
-          <TouchableOpacity onPress={handleChoosePhoto}>
+          <TouchableOpacity disabled={isSignedIn == undefined ? true : false} onPress={handleChoosePhoto}>
             <View
               style={[styles.textInput, { backgroundColor: color.grey, height: 150 }]}>
               <View
@@ -149,10 +193,12 @@ export default function FormData({
           Target Dana Terkumpul
         </Text>
         <TextInput
+          editable={isSignedIn == undefined ? false : true}
+          keyboardType="numeric"
           style={styles.textInput}
           value={data.total ? data.total : ''}
           onChangeText={e => {
-            onChange({ total: Number(e.replace(/[^0-9]/g, '')) });
+            onChange({ total: (e.replace(/[^0-9]/g, '')) });
           }}
         />
       </View>
@@ -162,6 +208,7 @@ export default function FormData({
           Tanggal Akhir Pengumpulan Dana
         </Text>
         <DatePicker
+          disabled={isSignedIn == undefined ? true : false}
           style={[styles.textInput, { width: (Dimensions.get('window').width) - 32 }]}
           date={data.tanggalAkhir}
           mode="date"
@@ -192,6 +239,7 @@ export default function FormData({
           Jelaskan Keuntungan Bagi Donatur
         </Text>
         <TextInput
+          editable={isSignedIn == undefined ? false : true}
           style={styles.textInput}
           multiline={true}
           numberOfLines={4}
@@ -203,6 +251,8 @@ export default function FormData({
       </View>
       <View style={{ marginBottom: 30 }}>
         <KreaButton
+          onPress={onSubmit}
+          disabled={isDisabled()}
           btnStyle={styles.btnStyle}
           text={'Kirim'}
         />
@@ -210,6 +260,14 @@ export default function FormData({
     </ScrollView>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    putUserData: state.putUserData,
+    alert: state.alert,
+  };
+};
+export default connect(mapStateToProps)(FormData);
 
 const styles = StyleSheet.create({
   title: {

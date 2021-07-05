@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, ScrollView, Image } from 'react-native'
 import auth from '@react-native-firebase/auth';
+import { connect } from 'react-redux';
 
 import logo from '../../assets/images/logo.png'
 import { color } from '../../Theme/Color'
-import { getUserData } from '../../Redux/Action/getUserData';
+import { putUserData } from '../../Redux/Action/userData';
 
 const Index = ({ ...props }) => {
     // Set an initializing state whilst Firebase connects
@@ -30,7 +31,7 @@ const Index = ({ ...props }) => {
     }, [user])
 
     const initUser = async () => {
-        await props.dispatch(getUserData(user))
+        await props.dispatch(putUserData({data:user, isAnonymous:false, ...props.putUserData}))
     }
 
     return (
@@ -40,7 +41,13 @@ const Index = ({ ...props }) => {
     )
 }
 
-export default Index
+const mapStateToProps = state => {
+  return {
+    putUserData: state.putUserData,
+    alert: state.alert,
+  };
+};
+export default connect(mapStateToProps)(Index);
 
 const styles = StyleSheet.create({
     container: {

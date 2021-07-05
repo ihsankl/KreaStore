@@ -277,7 +277,7 @@ const RenderCategories = ({item}) => {
 
 const mapStateToProps = state => {
   return {
-    userData: state.userData,
+    putUserData: state.putUserData,
     alert: state.alert,
   };
 };

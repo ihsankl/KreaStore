@@ -8,8 +8,8 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {typography} from './src/Utils/Typography';
 import firestore from '@react-native-firebase/firestore';
 const {store, persistor} = storage();
-const db = firestore();
-db.settings({host: 'localhost:8080', ssl: false});
+// const db = firestore();
+// db.settings({host: 'localhost:8080', ssl: false});
 typography();
 
 // SCREENS HERE

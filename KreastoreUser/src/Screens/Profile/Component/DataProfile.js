@@ -11,10 +11,14 @@ import {
 } from 'react-native';
 import Feather from 'react-native-vector-icons/dist/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import Header from '../../../Components/Header';
 import KreaButton from '../../../Components/KreaButton';
 import { color } from '../../../Theme/Color';
 import { ParsedDate } from '../../../Utils/ParseDate';
+import { putUserData } from '../../../Redux/Action/userData';
+
+import { connect } from 'react-redux'
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -57,7 +61,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
   },
   textStyle: {
-    color: 'white',
+    color: color.white,
     fontWeight: 'bold',
     textAlign: 'center',
   },
@@ -88,17 +92,29 @@ const styles = StyleSheet.create({
   }
 });
 
-export default function DataProfile(props) {
-  const {
-    flagEdit,
-    changeFlag,
-    data,
-    onChange,
-    save,
-    modalVisible,
-    setModalVisible,
-    right,
-  } = props;
+function DataProfile({
+  data,
+  onChange,
+  save,
+  modalVisible,
+  setModalVisible,
+  right,
+  navigation,
+  dispatch,
+  changeFlag,
+  flagEdit,
+  ...props
+}) {
+
+  const onSignOut = async () => {
+    try {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      await dispatch(putUserData({ data: null, isAnonymous: false, isSignedIn: false }))
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
 
   return (
     <>
@@ -190,11 +206,11 @@ export default function DataProfile(props) {
             }}
           />
         </View>
-        <KreaButton text="Logout" btnStyle={{marginHorizontal:16, marginVertical:16}} btnColor={color.red} />
+        <KreaButton text="Keluar" onPress={onSignOut} btnStyle={{ marginHorizontal: 16, marginVertical: 16 }} btnColor={color.red} />
         <View
           style={{
             marginTop: 50,
-            backgroundColor: 'gray',
+            backgroundColor: color.grey,
             marginLeft: 30,
             marginRight: 30,
             borderRadius: 10,
@@ -203,7 +219,7 @@ export default function DataProfile(props) {
             style={{
               alignSelf: 'stretch',
               padding: 10,
-              color: 'white',
+              color: color.white,
               fontSize: 12,
             }}>
             Informasi berikut hanya dapat dilihat oleh kamu dan tidak akan kami
@@ -216,9 +232,9 @@ export default function DataProfile(props) {
             style={{
               marginTop: 50,
               marginBottom: 30,
-              backgroundColor: '#38B6FF',
+              backgroundColor: color.primary,
               borderRadius: 10,
-              marginHorizontal:16,
+              marginHorizontal: 16,
             }}>
             <KreaButton text="Simpan" onPress={() => { changeFlag(false); save('save'); }} />
           </View>
@@ -270,3 +286,12 @@ export default function DataProfile(props) {
     </>
   );
 }
+
+const mapStateToProps = state => {
+    return {
+        putUserData: state.putUserData,
+        alert: state.alert,
+    }
+}
+
+export default connect(mapStateToProps)(DataProfile);

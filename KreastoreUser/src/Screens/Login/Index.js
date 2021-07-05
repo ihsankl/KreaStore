@@ -3,19 +3,22 @@ import { View, Text, ScrollView, StyleSheet, Image, Button, TouchableOpacity, Ba
 import { color } from '../../Theme/Color';
 import logo2 from '../../assets/images/logo2.png'
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
-import { getUserData } from '../../Redux/Action/getUserData';
+import auth from '@react-native-firebase/auth';
+
+import { putUserData, getUserData, insertUserData } from '../../Redux/Action/userData';
 import { connect } from 'react-redux'
 import KreaButton from '../../Components/KreaButton';
 import logo_google from '../../assets/images/logo_google.png'
 
-const Index = ({ navigation, ...props }) => {
+const Index = ({ dispatch, navigation, ...props }) => {
 
     const onLogin = async () => {
         try {
             await GoogleSignin.hasPlayServices();
             const user = await GoogleSignin.signIn();
-            await props.dispatch(getUserData({ user, isAnonymous: false }))
-            console.log(user)
+            const { idToken } = user
+            const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+            auth().signInWithCredential(googleCredential);
         } catch (error) {
             console.log(error.message)
         }
@@ -23,9 +26,10 @@ const Index = ({ navigation, ...props }) => {
 
     const onAnonLogin = async () => {
         try {
-            await props.dispatch(getUserData({ ...props.userData.data, isAnonymous: true }))
             if (navigation.canGoBack()) {
                 navigation.pop()
+            } else {
+                await dispatch(putUserData({ ...props.putUserData.data, isAnonymous: true }))
             }
         } catch (error) {
             console.log(error.message)
@@ -49,7 +53,7 @@ const Index = ({ navigation, ...props }) => {
 
 const mapStateToProps = state => {
     return {
-        userData: state.userData,
+        putUserData: state.putUserData,
         alert: state.alert,
     }
 }

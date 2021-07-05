@@ -27,15 +27,6 @@ export default function ListSearch(props) {
         <KreaButton btnStyle={{ marginRight: 8 }} text='Buku' />
       </View>
       <ScrollView>
-        {/* <FlatList
-          contentContainerStyle={{ flexGrow: 1 }}
-          data={data}
-          // keyExtractor={user => user.user_id}
-          onEndReachedThreshold={0.5}
-          renderItem={({ item }) => (
-            
-          )}
-        /> */}
         <RenderItems data={data} />
       </ScrollView>
     </View>
@@ -63,7 +54,7 @@ const RenderItems = ({ data }) => {
             <Text style={{ fontSize: 20, color: color.secondary }}>
               {item.title}
             </Text>
-            <Text style={{ fontSize: 10, color: '#5E5E5E' }}>
+            <Text style={{ fontSize: 10, color: color.text }}>
               {item.desciption}
             </Text>
           </View>
