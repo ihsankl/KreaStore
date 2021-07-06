@@ -122,6 +122,12 @@ const MainStack = ({...props}) => {
 
       <Stack.Screen
         options={{headerShown: false}}
+        name="Top Up"
+        component={TopUpStack}
+      />
+
+      <Stack.Screen
+        options={{headerShown: false}}
         name="History"
         component={HistoryStack}
       />
