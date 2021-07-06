@@ -18,7 +18,7 @@ const Index = props => {
         <KreaButton
           btnStyle={styles.button}
           text={'Verifikasi Account'}
-          onPress={() => props.navigation.navigate('Verfy Account')}
+          onPress={() => props.navigation.navigate('Verfy')}
         />
         <KreaButton
           btnStyle={styles.button}
