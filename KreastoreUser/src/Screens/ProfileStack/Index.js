@@ -6,8 +6,9 @@ import { color } from '../../Theme/Color';
 import KreaButton from '../../Components/KreaButton';
 import { connect } from 'react-redux';
 
-const Index = (navigation, ...props) => {
-  const dataUser = props.getUserData.data;
+const Index = ({navigation, ...props}) => {
+  const dataUser = props.getUserData?.data;
+  
   return (
     <ScrollView contentContainerStyle={{ display: 'flex', flexGrow: 1, backgroundColor: color.accent3 }}>
       <Header title={'Profile'} noArrow right={<></>} />
