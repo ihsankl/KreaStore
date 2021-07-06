@@ -19,7 +19,7 @@ import Payment from '../Screens/Payment/Index';
 import News from '../Screens/News/Index';
 import NewsDetail from '../Screens/News/NewsDetail/Index';
 import Market from '../Screens/Market/Index';
-import MarketDetail from '../Screens/MarketDetail/Index';
+import MarketDetail from '../Screens/Market/MarketDetail/Index';
 import { TabBar } from '../Components/TabBar';
 import { getUserData, insertUserData, putUserData } from '../Redux/Action/userData';
 
