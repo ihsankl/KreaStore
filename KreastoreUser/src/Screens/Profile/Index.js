@@ -57,11 +57,13 @@ function Index({ navigation, dispatch, ...props }) {
         await dispatch(setAlert({ ...props.alert, isLoading: true }))
         await dispatch(updateUser(props.getUserData.data?.id, data))
         await dispatch(getUserData(props.getUserData.data?.id))
+        await dispatch(setAlert({ ...props.alert, isLoading: false }))
+        await dispatch(setAlert({ ...props.alert, isSuccess: true, msg: 'Berhasil Update Profile!', status: "Sukses" }))
       }
     } catch (error) {
       console.log(error.message)
-    } finally {
       await dispatch(setAlert({ ...props.alert, isLoading: false }))
+      await dispatch(setAlert({ ...props.alert, isError: true, message: error.message, status: "error" }))
     }
   };
 

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button, TouchableOpacity, Alert, BackHandler, S
 import firestore from '@react-native-firebase/firestore';
 import { connect } from 'react-redux';
 import Feather from 'react-native-vector-icons/dist/Feather';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import { color } from '../../Theme/Color';
 import img1 from '../../assets/images/kantong-ajaib.png'
@@ -12,6 +12,8 @@ import { Formatter } from '../../Utils/Formatter'
 import { ProgressBar } from '@react-native-community/progress-bar-android';
 import KreaButton from '../../Components/KreaButton';
 import SearchInput from '../../Components/SearchInput';
+import { getAllPost, getAllPostByFav } from '../../Redux/Action/post';
+import { setAlert } from '../../Redux/Action/alert';
 
 const postRef = firestore().collection('post');
 
@@ -53,43 +55,23 @@ const dummyCategories = [
   },
 ]
 
-const Index = ({ navigation, ...props }) => {
-  const [data, setData] = useState([]);
+const Index = ({ dispatch, navigation, ...props }) => {
 
-  // useEffect(() => {
-  //   // onInit();
-  //   const backAction = () => {
-  //     Alert.alert("Tunggu!", "Apakah kamu yakin ingin keluar?", [
-  //       {
-  //         text: "Tidak Jadi",
-  //         onPress: () => null,
-  //         style: "cancel"
-  //       },
-  //       { text: "Ya", onPress: () => BackHandler.exitApp() }
-  //     ]);
-  //     return true;
-  //   };
+  useEffect(() => {
+    onInit()
+    return () => {
 
-  //   const backHandler = BackHandler.addEventListener(
-  //     "hardwareBackPress",
-  //     backAction
-  //   );
-
-  //   return () => { backHandler.remove() };
-  // }, []);
+    }
+  }, [])
 
   const onInit = async () => {
     try {
-      const data = [];
-      const x = await postRef.get();
-      x.forEach(docs => {
-        let currentId = docs.id;
-        let appObj = { ...docs.data(), ['id']: currentId };
-        data.push(appObj);
-        setData(data);
-      });
+      await dispatch(getAllPostByFav())
+      await dispatch(getAllPost())
     } catch (error) {
       console.log(error.message);
+      await dispatch(setAlert({ ...props.alert, isLoading: false }))
+      await dispatch(setAlert({ ...props.alert, isError: true, msg: error.message, status: "error" }))
     }
   };
 
@@ -97,7 +79,7 @@ const Index = ({ navigation, ...props }) => {
     return (
       <TouchableOpacity style={styles.imgContainer} onPress={() => navigation.navigate('Detail')}>
         <Image style={styles.img} source={img1} resizeMode="cover" />
-        <Text style={styles.imgText}>{item.title}</Text>
+        <Text style={styles.imgText}>{item?.product_name}</Text>
         <Feather name="star" size={24} style={styles.starIcon} color={color.white} />
         <View style={styles.layer} />
       </TouchableOpacity>
@@ -129,7 +111,7 @@ const Index = ({ navigation, ...props }) => {
         </View>
         <View style={[styles.itemRelative, styles.padding16]}>
           <FlatList
-            data={dummyItems}
+            data={props.allPostByFav?.data}
             renderItem={RenderFavorites}
             ListEmptyComponent={EmptyFavorites}
             keyExtractor={item => item.id}
@@ -150,7 +132,7 @@ const Index = ({ navigation, ...props }) => {
         </View>
 
         <View style={[styles.itemRelative, styles.padding16, { width: '100%', minWidth: 300, maxWidth: 400 }]}>
-          <RenderContents data={dummyItems} />
+          <RenderContents data={props.allPost?.data} />
         </View>
 
       </ScrollView>
@@ -169,12 +151,12 @@ const RenderContents = ({ data }) => {
   return data.map((v, i) => {
     return (
       <TouchableOpacity style={{ width: '100%' }} key={i}>
-        <Image style={{ borderRadius: 8, marginTop: 16, height: 225, width: '100%', minWidth: 300, maxWidth: 400, }} source={img1} resizeMode="cover" />
+        <Image style={{ borderRadius: 8, marginTop: 16, height: 225, width: '100%', minWidth: 300, maxWidth: 400, }} source={{uri:v?.photoUrl}} resizeMode="cover" />
         <View style={{ position: 'absolute', bottom: 0, backgroundColor: `${color.white}50`, left: 0, right: 0, padding: 8 }}>
-          <Text style={{ color: color.text, fontSize: 18 }}>Kantong Ajaib</Text>
-          <Text style={{ color: color.text, fontSize: 12 }}>kantong yang bisa menyimpan segala benda</Text>
+          <Text style={{ color: color.text, fontSize: 18 }}>{v?.product_name}</Text>
+          <Text style={{ color: color.text, fontSize: 12 }}>{v?.description}</Text>
           <View style={{ flexDirection: 'row', justifyContent: 'flex-end', }}>
-            <Text style={{ color: color.text, fontSize: 16 }}>{Formatter(120000)}</Text>
+            <Text style={{ color: color.text, fontSize: 16 }}>{Formatter(Number(v?.funding_goal))}</Text>
           </View>
           <ProgressBar styleAttr="Horizontal" color={color.primary} progress={.78} indeterminate={false} />
         </View>
@@ -191,6 +173,8 @@ const mapStateToProps = state => {
   return {
     putUserData: state.putUserData,
     alert: state.alert,
+    allPostByFav: state.allPostByFav,
+    allPost: state.allPost,
   }
 }
 

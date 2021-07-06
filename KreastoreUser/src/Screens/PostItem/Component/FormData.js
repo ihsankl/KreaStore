@@ -13,7 +13,6 @@ import { Picker } from '@react-native-picker/picker';
 import KreaButton from '../../../Components/KreaButton';
 import Entypo from 'react-native-vector-icons/Entypo';
 import DatePicker from 'react-native-datepicker';
-// import DatePicker from '@react-native-community/datetimepicker'
 import { color } from '../../../Theme/Color';
 import { connect } from 'react-redux';
 import { putUserData } from '../../../Redux/Action/userData';

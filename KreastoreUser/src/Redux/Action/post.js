@@ -5,7 +5,14 @@ const postRef = firestore().collection('post');
 export const getAllPost = () => {
     return {
         type: 'GET_ALL_POST_DATA',
-        payload: postRef.get(),
+        payload: postRef.where("status_acc", "==", true).get(),
+    }
+}
+
+export const getAllPostByFav = () => {
+    return {
+        type: 'GET_ALL_POST_DATA_BY_FAV',
+        payload: postRef.orderBy("favorite", "desc").where("status_acc", "==", true).get(),
     }
 }
 

@@ -1,12 +1,19 @@
 const allPostInitialState = {
-    data: null,
+    data: [],
+    isSuccess: false,
+    isError: false,
+    isLoading: false,
+}
+
+const allPostByFavInitialState = {
+    data: [],
     isSuccess: false,
     isError: false,
     isLoading: false,
 }
 
 const getDetailPostInitialState = {
-    data: null,
+    data: [],
     isSuccess: false,
     isError: false,
     isLoading: false,
@@ -28,7 +35,7 @@ export const allPost = (state = allPostInitialState, action) => {
     switch (action.type) {
         case 'GET_ALL_POST_DATA_PENDING':
             return {
-                data: null,
+                data: [],
                 isLoading: true,
                 isError: false,
                 isSuccess: false,
@@ -36,7 +43,7 @@ export const allPost = (state = allPostInitialState, action) => {
 
         case 'GET_ALL_POST_DATA_REJECTED':
             return {
-                data: null,
+                data: [],
                 isLoading: false,
                 isError: true,
                 isSuccess: false,
@@ -48,7 +55,44 @@ export const allPost = (state = allPostInitialState, action) => {
                 let currentId = docs.id;
                 let appObj = { ...docs.data(), ['id']: currentId };
                 data.push(appObj);
-                setData(data);
+            });
+
+            return {
+                data: data,
+                isLoading: false,
+                isError: false,
+                isSuccess: true,
+            }
+
+        default:
+            return state;
+    }
+}
+
+export const allPostByFav = (state = allPostByFavInitialState, action) => {
+    switch (action.type) {
+        case 'GET_ALL_POST_DATA_BY_FAV_PENDING':
+            return {
+                data: [],
+                isLoading: true,
+                isError: false,
+                isSuccess: false,
+            }
+
+        case 'GET_ALL_POST_DATA_BY_FAV_REJECTED':
+            return {
+                data: [],
+                isLoading: false,
+                isError: true,
+                isSuccess: false,
+            }
+
+        case 'GET_ALL_POST_DATA_BY_FAV_FULFILLED':
+            const data = [];
+            action.payload.forEach(docs => {
+                let currentId = docs.id;
+                let appObj = { ...docs.data(), ['id']: currentId };
+                data.push(appObj);
             });
 
             return {
@@ -67,7 +111,7 @@ export const detailPost = (state = getDetailPostInitialState, action) => {
     switch (action.type) {
         case 'GET_DETAIL_POST_DATA_PENDING':
             return {
-                data: null,
+                data: [],
                 isLoading: true,
                 isError: false,
                 isSuccess: false,
@@ -75,7 +119,7 @@ export const detailPost = (state = getDetailPostInitialState, action) => {
 
         case 'GET_DETAIL_POST_DATA_REJECTED':
             return {
-                data: null,
+                data: [],
                 isLoading: false,
                 isError: true,
                 isSuccess: false,

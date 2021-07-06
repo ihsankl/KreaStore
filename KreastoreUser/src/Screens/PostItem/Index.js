@@ -6,6 +6,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { color } from '../../Theme/Color';
 import { useEffect } from 'react';
 import { connect } from 'react-redux'
+import storage from '@react-native-firebase/storage';
 
 const Right = () => {
   return <View></View>;
