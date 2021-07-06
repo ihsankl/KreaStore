@@ -30,8 +30,6 @@ function FormData({
   dispatch,
   ...props
 }) {
-  const {isSignedIn} = props.putUserData;
-  const userData = props.putUserData?.data;
 
   // deskripsi: "a"
   // feedBack: "asdadasdasd"
@@ -94,16 +92,9 @@ function FormData({
 
   return (
     <ScrollView>
-      {!isSignedIn && (
-        <Text
-          style={{marginVertical: 16, textAlign: 'center', color: color.red}}>
-          Anda harus login terlebih dahulu untuk memulai penggalangan dana.
-        </Text>
-      )}
       <View style={{marginBottom: 30, marginTop: 10}}>
         <Text style={styles.title}>Nama Produk</Text>
         <TextInput
-          editable={isSignedIn == undefined ? false : true}
           style={styles.textInput}
           onChangeText={e => {
             onChange({product_name: e});
@@ -116,7 +107,6 @@ function FormData({
         <Text style={styles.title}>Pilih Kategori</Text>
         <View style={styles.textInput}>
           <Picker
-            enabled={isSignedIn == undefined ? false : true}
             selectedValue={data.category}
             onValueChange={(itemValue, itemIndex) => {
               onChange({category: itemValue});
@@ -142,7 +132,6 @@ function FormData({
       <View style={{marginBottom: 30}}>
         <Text style={styles.title}>Deskripsi</Text>
         <TextInput
-          editable={isSignedIn == undefined ? false : true}
           style={styles.textInput}
           multiline={true}
           numberOfLines={4}
@@ -170,7 +159,6 @@ function FormData({
           />
         ) : (
           <TouchableOpacity
-            disabled={isSignedIn == undefined ? true : false}
             onPress={handleChoosePhoto}>
             <View
               style={[
@@ -218,7 +206,6 @@ function FormData({
       <View style={{marginBottom: 30}}>
         <Text style={styles.title}>Target Dana Terkumpul</Text>
         <TextInput
-          editable={isSignedIn == undefined ? false : true}
           keyboardType="numeric"
           style={styles.textInput}
           value={data.funding_goal ? data.funding_goal : ''}
@@ -230,7 +217,6 @@ function FormData({
       <View style={{marginBottom: 30}}>
         <Text style={styles.title}>Tanggal Akhir Pengumpulan Dana</Text>
         <DatePicker
-          disabled={isSignedIn == undefined ? true : false}
           style={[
             styles.textInput,
             {width: Dimensions.get('window').width - 32},
@@ -261,7 +247,6 @@ function FormData({
       <View style={{marginBottom: 30}}>
         <Text style={styles.title}>Jelaskan Keuntungan Bagi Donatur</Text>
         <TextInput
-          editable={isSignedIn == undefined ? false : true}
           style={styles.textInput}
           multiline={true}
           numberOfLines={4}

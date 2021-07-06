@@ -16,7 +16,7 @@ import { getAllPost, getAllPostByFav } from '../../Redux/Action/post';
 import { setAlert } from '../../Redux/Action/alert';
 import { insertUserData } from '../../Redux/Action/userData';
 
-const postRef = firestore().collection('post');
+const usersRef = firestore().collection('users');
 
 const dummyItems = [
   {
@@ -68,9 +68,7 @@ const Index = ({ dispatch, navigation, ...props }) => {
   const onInit = async () => {
     try {
       await dispatch(setAlert({ ...props.alert, isLoading: true }))
-      if (props.inputUserData?.user) {
-        await dispatch(insertUserData(props.inputUserData.user.id, props.inputUserData.user));
-      }
+      getUsers()
       await dispatch(getAllPostByFav())
       await dispatch(getAllPost())
       await dispatch(setAlert({ ...props.alert, isLoading: false }))
@@ -81,10 +79,25 @@ const Index = ({ dispatch, navigation, ...props }) => {
     }
   };
 
+  const getUsers = async () => {
+    try {
+      const x = await usersRef.doc(props.inputUserData?.user?.id).get()
+      if (!x.exists) {
+        if (props.inputUserData?.user) {
+          await dispatch(insertUserData(props.inputUserData.user.id, props.inputUserData.user));
+        }
+      }
+    } catch (error) {
+      console.log(error.message)
+      // await dispatch(setAlert({ ...props.alert, isLoading: false }))
+      // await dispatch(setAlert({ ...props.alert, isError: true, msg: error.message, status: "error" }))
+    }
+  }
+
   const RenderFavorites = ({ item, index }) => {
     return (
       <TouchableOpacity style={styles.imgContainer} onPress={() => navigation.navigate('Detail')}>
-        <Image style={styles.img} source={item?.photoUrl} resizeMode="cover" />
+        <Image style={styles.img} source={{ uri: item?.photoUrl }} resizeMode="cover" />
         <Text style={styles.imgText}>{item?.product_name}</Text>
         <Feather name="star" size={24} style={styles.starIcon} color={color.white} />
         <View style={styles.layer} />
