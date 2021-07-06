@@ -229,6 +229,95 @@ const Index = ({navigation, ...props}) => {
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View
           style={{
+            display: 'flex',
+            // padding: 16,
+            margin: 16,
+            backgroundColor: color.white,
+            borderRadius: 10,
+            elevation: 5,
+            minHeight: 100,
+          }}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+            <View style={{flexDirection: 'column'}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Image
+                  style={{width: 50, height: 50, alignItems: 'center'}}
+                  source={require('../../assets/images/ovo.png')}
+                />
+                <Text style={{color: color.text, fontWeight: 'bold'}}>
+                  {Formatter(120000)}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Image
+                  style={{
+                    width: 31,
+                    height: 31,
+                    alignItems: 'center',
+                    marginHorizontal: 10,
+                  }}
+                  source={require('../../assets/images/dana.png')}
+                />
+                <Text style={{color: color.text, fontWeight: 'bold'}}>
+                  {Formatter(5000)}
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Image
+                  style={{
+                    width: 31,
+                    height: 31,
+                    alignItems: 'center',
+                    marginHorizontal: 10,
+                    marginTop: 14,
+                  }}
+                  source={require('../../assets/images/shope.png')}
+                />
+                <Text style={{color: color.text, fontWeight: 'bold'}}>
+                  {Formatter(5000)}
+                </Text>
+              </View>
+              {/* <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Image
+                  style={{
+                    width: 31,
+                    height: 31,
+                    alignItems: 'center',
+                    marginHorizontal: 10,
+                  }}
+                  source={require('../../assets/images/dana.png')}
+                />
+                <Text style={{color: color.text, fontWeight: 'bold'}}>
+                  {Formatter(0)}
+                </Text>
+              </View> */}
+            </View>
+          </View>
+        </View>
+        <View
+          style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
