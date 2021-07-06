@@ -4,9 +4,9 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import Header from '../../Components/Header';
 import { color } from '../../Theme/Color';
 import KreaButton from '../../Components/KreaButton';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
-const Index = props => {
+const Index = (navigation, ...props) => {
   const dataUser = props.getUserData.data;
   return (
     <ScrollView contentContainerStyle={{ display: 'flex', flexGrow: 1, backgroundColor: color.accent3 }}>
