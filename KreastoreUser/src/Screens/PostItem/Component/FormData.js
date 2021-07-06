@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -9,30 +9,29 @@ import {
   StyleSheet,
   Dimensions,
 } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import {Picker} from '@react-native-picker/picker';
 import KreaButton from '../../../Components/KreaButton';
 import Entypo from 'react-native-vector-icons/Entypo';
 import DatePicker from 'react-native-datepicker';
-import { color } from '../../../Theme/Color';
-import { connect } from 'react-redux';
-import { putUserData } from '../../../Redux/Action/userData';
-import { insertPostData } from '../../../Redux/Action/post';
-import { setAlert } from '../../../Redux/Action/alert';
+import {color} from '../../../Theme/Color';
+import {connect} from 'react-redux';
+import {putUserData} from '../../../Redux/Action/userData';
+import {insertPostData} from '../../../Redux/Action/post';
+import {setAlert} from '../../../Redux/Action/alert';
 import storage from '@react-native-firebase/storage';
 
-const regex = /^.*[\\\/]/
+const regex = /^.*[\\\/]/;
 
 function FormData({
   data,
-  handleChoosePhoto = () => { },
-  onChange = () => { },
+  handleChoosePhoto = () => {},
+  onChange = () => {},
   navigation,
   dispatch,
   ...props
 }) {
-
-  const { isSignedIn } = props.putUserData
-  const userData = props.putUserData?.data
+  const {isSignedIn} = props.putUserData;
+  const userData = props.putUserData?.data;
 
   // deskripsi: "a"
   // feedBack: "asdadasdasd"
@@ -50,69 +49,77 @@ function FormData({
       !data.product_name ||
       !data.photoUrl ||
       !data.funding_end_date ||
-      !data.funding_goal) {
-      return true
+      !data.funding_goal
+    ) {
+      return true;
     }
-    return false
-  }
+    return false;
+  };
 
   const onSubmit = async () => {
     try {
-      await dispatch(setAlert({ ...props.alert, isLoading: true }))
+      await dispatch(setAlert({...props.alert, isLoading: true}));
       if (!userData) {
-        await dispatch(putUserData({ data: null, isAnonymous: false }))
+        await dispatch(putUserData({data: null, isAnonymous: false}));
       } else {
-        const photoToUpload = data.photoUrl.replace(regex, "")
+        const photoToUpload = data.photoUrl.replace(regex, '');
         const reference = storage().ref(photoToUpload);
         await reference.putFile(data.photoUrl);
         const url = await storage().ref(photoToUpload).getDownloadURL();
         const dataToUpload = {
           ...data,
           photoUrl: url,
-          favorite:[]
-        }
-        await dispatch(insertPostData(dataToUpload))
-        await dispatch(setAlert({ ...props.alert, isLoading: false }))
-        await dispatch(setAlert({ ...props.alert, isSuccess: true, msg: 'Permintaan Penggalangan Dana Berhasil Dilakukan.', status: 'Sukses' }))
-        navigation.navigate('Home')
+          favorite: [],
+        };
+        await dispatch(insertPostData(dataToUpload));
+        await dispatch(setAlert({...props.alert, isLoading: false}));
+        await dispatch(
+          setAlert({
+            ...props.alert,
+            isSuccess: true,
+            msg: 'Permintaan Penggalangan Dana Berhasil Dilakukan.',
+            status: 'Sukses',
+          }),
+        );
+        navigation.navigate('Home');
       }
     } catch (error) {
-      console.log(error.message)
-      await dispatch(setAlert({ ...props.alert, isLoading: false }))
-      await dispatch(setAlert({ ...props.alert, isSuccess: true, msg: error.message }))
+      console.log(error.message);
+      await dispatch(setAlert({...props.alert, isLoading: false}));
+      await dispatch(
+        setAlert({...props.alert, isSuccess: true, msg: error.message}),
+      );
     }
-  }
+  };
 
   return (
     <ScrollView>
-      {!isSignedIn && <Text style={{ marginVertical: 16, textAlign: 'center', color: color.red }}>Anda harus login terlebih dahulu untuk memulai penggalangan dana.</Text>}
-      <View style={{ marginBottom: 30, marginTop: 10 }}>
+      {!isSignedIn && (
         <Text
-          style={styles.title}>
-          Nama Produk
+          style={{marginVertical: 16, textAlign: 'center', color: color.red}}>
+          Anda harus login terlebih dahulu untuk memulai penggalangan dana.
         </Text>
+      )}
+      <View style={{marginBottom: 30, marginTop: 10}}>
+        <Text style={styles.title}>Nama Produk</Text>
         <TextInput
           editable={isSignedIn == undefined ? false : true}
           style={styles.textInput}
           onChangeText={e => {
-            onChange({ product_name: e });
+            onChange({product_name: e});
           }}
           value={data.product_name}
-        // editable={false}
+          // editable={false}
         />
       </View>
-      <View style={{ marginBottom: 30 }}>
-        <Text
-          style={styles.title}>
-          Pilih Kategori
-        </Text>
-        <View
-          style={styles.textInput}>
+      <View style={{marginBottom: 30}}>
+        <Text style={styles.title}>Pilih Kategori</Text>
+        <View style={styles.textInput}>
           <Picker
             enabled={isSignedIn == undefined ? false : true}
             selectedValue={data.category}
             onValueChange={(itemValue, itemIndex) => {
-              onChange({ category: itemValue });
+              onChange({category: itemValue});
             }}>
             <Picker.Item label="-- Pilih Kategori --" value="" />
             <Picker.Item label="Comics" value="Comics" />
@@ -132,11 +139,8 @@ function FormData({
           </Picker>
         </View>
       </View>
-      <View style={{ marginBottom: 30 }}>
-        <Text
-          style={styles.title}>
-          Deskripsi
-        </Text>
+      <View style={{marginBottom: 30}}>
+        <Text style={styles.title}>Deskripsi</Text>
         <TextInput
           editable={isSignedIn == undefined ? false : true}
           style={styles.textInput}
@@ -144,18 +148,15 @@ function FormData({
           numberOfLines={4}
           value={data.description}
           onChangeText={e => {
-            onChange({ description: e });
+            onChange({description: e});
           }}
         />
       </View>
-      <View style={{ marginBottom: 30 }}>
-        <Text
-          style={styles.title}>
-          Foto Produk
-        </Text>
+      <View style={{marginBottom: 30}}>
+        <Text style={styles.title}>Foto Produk</Text>
         {data.photoUrl ? (
           <Image
-            source={{ uri: data.photoUrl }}
+            source={{uri: data.photoUrl}}
             style={{
               width: 300,
               height: 300,
@@ -168,9 +169,14 @@ function FormData({
             }}
           />
         ) : (
-          <TouchableOpacity disabled={isSignedIn == undefined ? true : false} onPress={handleChoosePhoto}>
+          <TouchableOpacity
+            disabled={isSignedIn == undefined ? true : false}
+            onPress={handleChoosePhoto}>
             <View
-              style={[styles.textInput, { backgroundColor: color.grey, height: 150 }]}>
+              style={[
+                styles.textInput,
+                {backgroundColor: color.grey, height: 150},
+              ]}>
               <View
                 style={{
                   flex: 1,
@@ -184,8 +190,8 @@ function FormData({
                   backgroundColor: '#DFDFDF',
                   borderRadius: 5,
                 }}>
-                <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                  <View style={{ marginRight: 5 }}>
+                <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+                  <View style={{marginRight: 5}}>
                     <Entypo
                       name="camera"
                       style={{
@@ -209,29 +215,26 @@ function FormData({
           </TouchableOpacity>
         )}
       </View>
-      <View style={{ marginBottom: 30 }}>
-        <Text
-          style={styles.title}>
-          Target Dana Terkumpul
-        </Text>
+      <View style={{marginBottom: 30}}>
+        <Text style={styles.title}>Target Dana Terkumpul</Text>
         <TextInput
           editable={isSignedIn == undefined ? false : true}
           keyboardType="numeric"
           style={styles.textInput}
           value={data.funding_goal ? data.funding_goal : ''}
           onChangeText={e => {
-            onChange({ funding_goal: (e.replace(/[^0-9]/g, '')) });
+            onChange({funding_goal: e.replace(/[^0-9]/g, '')});
           }}
         />
       </View>
-      <View style={{ marginBottom: 30 }}>
-        <Text
-          style={styles.title}>
-          Tanggal Akhir Pengumpulan Dana
-        </Text>
+      <View style={{marginBottom: 30}}>
+        <Text style={styles.title}>Tanggal Akhir Pengumpulan Dana</Text>
         <DatePicker
           disabled={isSignedIn == undefined ? true : false}
-          style={[styles.textInput, { width: (Dimensions.get('window').width) - 32 }]}
+          style={[
+            styles.textInput,
+            {width: Dimensions.get('window').width - 32},
+          ]}
           date={data.funding_end_date}
           mode="date"
           placeholder="select date"
@@ -251,15 +254,12 @@ function FormData({
             // ... You can check the source to find the other keys.
           }}
           onDateChange={date => {
-            onChange({ funding_end_date: date });
+            onChange({funding_end_date: date});
           }}
         />
       </View>
-      <View style={{ marginBottom: 30 }}>
-        <Text
-          style={styles.title}>
-          Jelaskan Keuntungan Bagi Donatur
-        </Text>
+      <View style={{marginBottom: 30}}>
+        <Text style={styles.title}>Jelaskan Keuntungan Bagi Donatur</Text>
         <TextInput
           editable={isSignedIn == undefined ? false : true}
           style={styles.textInput}
@@ -267,11 +267,11 @@ function FormData({
           numberOfLines={4}
           value={data.feedback}
           onChangeText={e => {
-            onChange({ feedback: e });
+            onChange({feedback: e});
           }}
         />
       </View>
-      <View style={{ marginBottom: 30 }}>
+      <View style={{marginBottom: 30}}>
         <KreaButton
           onPress={onSubmit}
           disabled={isDisabled()}
@@ -314,5 +314,5 @@ const styles = StyleSheet.create({
   btnStyle: {
     marginBottom: 50,
     marginHorizontal: 16,
-  }
-})
+  },
+});

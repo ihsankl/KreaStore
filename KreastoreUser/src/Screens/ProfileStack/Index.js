@@ -1,16 +1,22 @@
-import React, { useEffect } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 
 import Header from '../../Components/Header';
-import { color } from '../../Theme/Color';
+import {color} from '../../Theme/Color';
 import KreaButton from '../../Components/KreaButton';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 const Index = ({navigation, ...props}) => {
-  const dataUser = props.getUserData?.data;
-  
+  const [modal, setModal] = useState(false);
+  const dataUser = props?.getUserData?.data;
+  console.log({dataUser});
   return (
-    <ScrollView contentContainerStyle={{ display: 'flex', flexGrow: 1, backgroundColor: color.accent3 }}>
+    <ScrollView
+      contentContainerStyle={{
+        display: 'flex',
+        flexGrow: 1,
+        backgroundColor: color.accent3,
+      }}>
       <Header title={'Profile'} noArrow right={<></>} />
       <View style={styles.container}>
         <KreaButton
@@ -37,27 +43,33 @@ const Index = ({navigation, ...props}) => {
           btnStyle={styles.button}
           text={'Buat Donasi'}
           onPress={() =>
-            dataUser?.isVerified === false
-              ? props.navigation.navigate('Verfy')
-              : props.navigation.navigate('Post Item')
+            dataUser?.isVerified === true
+              ? navigation.navigate('Post Item')
+              : dataUser.length === 0
+              ? navigation.navigate('Profile Info')
+              : navigation.navigate('Verfy')
           }
         />
         <KreaButton
           btnStyle={styles.button}
           text={'Buat Penjualan'}
           onPress={() =>
-            dataUser?.isVerified === false
-              ? props.navigation.navigate('Verfy')
-              : props.navigation.navigate('Post Item')
+            dataUser?.isVerified === true
+              ? navigation.navigate('Post Item')
+              : dataUser.length === 0
+              ? navigation.navigate('Profile Info')
+              : navigation.navigate('Verfy')
           }
         />
         <KreaButton
           btnStyle={styles.button}
           text={'Buat Artikel'}
           onPress={() =>
-            dataUser?.isVerified === false
-              ? props.navigation.navigate('Verfy')
-              : props.navigation.navigate('Post Item')
+            dataUser?.isVerified === true
+              ? navigation.navigate('Post Item')
+              : dataUser.length === 0
+              ? navigation.navigate('Profile Info')
+              : navigation.navigate('Verfy')
           }
         />
         <KreaButton
