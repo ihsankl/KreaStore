@@ -19,6 +19,7 @@ import { ParsedDate } from '../../../Utils/ParseDate';
 import { putUserData } from '../../../Redux/Action/userData';
 
 import { connect } from 'react-redux'
+import auth from '@react-native-firebase/auth';
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -110,6 +111,7 @@ function DataProfile({
     try {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
+      await auth().signOut()    
       await dispatch(putUserData({ data: null, isAnonymous: false, isSignedIn: false }))
     } catch (error) {
       console.log(error.message)
