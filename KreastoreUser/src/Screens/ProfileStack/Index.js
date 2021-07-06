@@ -17,6 +17,11 @@ const Index = props => {
         />
         <KreaButton
           btnStyle={styles.button}
+          text={'Verifikasi Account'}
+          onPress={() => props.navigation.navigate('Verfy Account')}
+        />
+        <KreaButton
+          btnStyle={styles.button}
           text={'History'}
           onPress={() => props.navigation.navigate('History')}
         />

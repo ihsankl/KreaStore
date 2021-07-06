@@ -295,24 +295,18 @@ const Index = ({navigation, ...props}) => {
                   {Formatter(5000)}
                 </Text>
               </View>
-              {/* <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <Image
-                  style={{
-                    width: 31,
-                    height: 31,
-                    alignItems: 'center',
-                    marginHorizontal: 10,
-                  }}
-                  source={require('../../assets/images/dana.png')}
-                />
-                <Text style={{color: color.text, fontWeight: 'bold'}}>
-                  {Formatter(0)}
-                </Text>
-              </View> */}
+              <View>
+                <TouchableOpacity onPress={() => navigation.navigate('Top Up')}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      color: color.primary,
+                      textDecorationLine: 'underline',
+                    }}>
+                    Top Up
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>

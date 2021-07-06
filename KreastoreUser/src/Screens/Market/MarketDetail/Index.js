@@ -31,6 +31,8 @@ const dummy = [
     price: 100000,
     description:
       'Enim amet ipsum aliqua ex reprehenderit fugiat labore ut sunt irure occaecat. Voluptate voluptate magna excepteur non quis nulla eiusmod ex consequat amet labore. Aute occaecat exercitation labore et. Ex laborum sit culpa aliquip minim pariatur aliqua irure do fugiat. Occaecat dolor mollit commodo nulla duis. Veniam ex enim eiusmod nulla ex excepteur esse irure adipisicing labore.',
+    stock: 5,
+    rating: 5,
   },
 ];
 
