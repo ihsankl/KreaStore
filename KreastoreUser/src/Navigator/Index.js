@@ -23,6 +23,7 @@ import MarketDetail from '../Screens/Market/MarketDetail/Index';
 import { TabBar } from '../Components/TabBar';
 import Loading from '../Components/Loading';
 import {
+  insertUserData,
   isAnonymous,
 } from '../Redux/Action/userData';
 import ModalInformation from '../Components/ModalInformation';
@@ -42,7 +43,7 @@ const Index = ({ dispatch, ...props }) => {
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return ()=>{ 
+    return () => {
       subscriber;
       logoutAnon();
     }; // unsubscribe on unmount
@@ -230,7 +231,7 @@ const ProfileInfoStack = ({ user, ...props }) => {
       <Stack.Screen
         options={{ headerShown: false }}
         name="Profile Info"
-        component={user ? Profile : LoginStack}
+        component={Profile}
       />
     </Stack.Navigator>
   );
@@ -336,7 +337,8 @@ const mapStateToProps = state => {
   return {
     getUserData: state.getUserData,
     alert: state.alert,
-    isAnonData: state.isAnonData
+    isAnonData: state.isAnonData,
+    inputUserData: state.inputUserData,
   };
 };
 export default connect(mapStateToProps)(Index);

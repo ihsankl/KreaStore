@@ -4,7 +4,7 @@ import { Text, TouchableOpacity, View, Alert, Modal, StyleSheet, Pressable } fro
 import { color } from '../../Theme/Color';
 import { connect } from 'react-redux'
 import storage from '@react-native-firebase/storage';
-import { getUserData, updateUser } from '../../Redux/Action/userData';
+import { getUserData, inputUserData, updateUser } from '../../Redux/Action/userData';
 import { setAlert } from '../../Redux/Action/alert';
 const regex = /^.*[\\\/]/
 
@@ -41,7 +41,7 @@ function Index({ navigation, dispatch, ...props }) {
   const onInit = async () => {
     try {
       await dispatch(setAlert({ ...props.alert, isLoading: true }))
-      await dispatch(getUserData(props.inputUserData.user.id))
+      await dispatch(getUserData(props.inputUserData?.user?.id))
       // console.log(props.inputUserData.user.id)
       await dispatch(setAlert({ ...props.alert, isLoading: false }))
     } catch (error) {
@@ -50,7 +50,7 @@ function Index({ navigation, dispatch, ...props }) {
       await dispatch(setAlert({ ...props.alert, isError: true, msg: error.message, status: "error" }))
     }
   }
-
+  
   const right = () => {
     return (
       <TouchableOpacity

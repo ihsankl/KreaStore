@@ -1,15 +1,41 @@
-import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import Header from '../../Components/Header';
-import {color} from '../../Theme/Color';
+import { color } from '../../Theme/Color';
 import KreaButton from '../../Components/KreaButton';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+import { getUserData, isAnonymous } from '../../Redux/Action/userData';
+import { setAlert } from '../../Redux/Action/alert';
 
-const Index = ({navigation, ...props}) => {
+const Index = ({ dispatch, navigation, ...props }) => {
   const [modal, setModal] = useState(false);
   const dataUser = props?.getUserData?.data;
-  console.log({dataUser});
+  console.log({ dataUser });
+
+  const onAnonlogout = async () => {
+    await dispatch(isAnonymous({ state: false }))
+  }
+
+  useEffect(() => {
+    initGetUser()
+    return () => {
+
+    }
+  }, [])
+
+  const initGetUser = async () => {
+    try {
+      await dispatch(setAlert({ ...props.alert, isLoading: true }))
+      await dispatch(getUserData(props.inputUserData?.user?.id))
+      await dispatch(setAlert({ ...props.alert, isLoading: false }))
+    } catch (error) {
+      console.log(error.message);
+      await dispatch(setAlert({ ...props.alert, isLoading: false }))
+      await dispatch(setAlert({ ...props.alert, isError: true, msg: error.message, status: "error" }))
+    }
+  }
+
   return (
     <ScrollView
       contentContainerStyle={{
@@ -22,7 +48,7 @@ const Index = ({navigation, ...props}) => {
         <KreaButton
           btnStyle={styles.button}
           text={'Profile'}
-          onPress={() => navigation.navigate('Profile Info')}
+          onPress={() => !!dataUser ? navigation.navigate('Profile Info') : onAnonlogout()}
         />
         <KreaButton
           btnStyle={styles.button}
@@ -46,8 +72,8 @@ const Index = ({navigation, ...props}) => {
             dataUser?.isVerified === true
               ? navigation.navigate('Post Item')
               : dataUser.length === 0
-              ? navigation.navigate('Profile Info')
-              : navigation.navigate('Verfy')
+                ? navigation.navigate('Profile Info')
+                : navigation.navigate('Verfy')
           }
         />
         <KreaButton
@@ -57,8 +83,8 @@ const Index = ({navigation, ...props}) => {
             dataUser?.isVerified === true
               ? navigation.navigate('Post Item')
               : dataUser.length === 0
-              ? navigation.navigate('Profile Info')
-              : navigation.navigate('Verfy')
+                ? navigation.navigate('Profile Info')
+                : navigation.navigate('Verfy')
           }
         />
         <KreaButton
@@ -68,8 +94,8 @@ const Index = ({navigation, ...props}) => {
             dataUser?.isVerified === true
               ? navigation.navigate('Post Item')
               : dataUser.length === 0
-              ? navigation.navigate('Profile Info')
-              : navigation.navigate('Verfy')
+                ? navigation.navigate('Profile Info')
+                : navigation.navigate('Verfy')
           }
         />
         <KreaButton
@@ -85,7 +111,6 @@ const Index = ({navigation, ...props}) => {
 
 const mapStateToProps = state => {
   return {
-    putUserData: state.putUserData,
     alert: state.alert,
     getUserData: state.getUserData,
     inputUserData: state.inputUserData,

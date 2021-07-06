@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, Image, Button, TouchableOpacity, BackHandler, Alert } from 'react-native';
 import { color } from '../../Theme/Color';
 import logo2 from '../../assets/images/logo2.png'
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 
-import { putUserData, getUserData, insertUserData, isAnonymous, inputUserData } from '../../Redux/Action/userData';
+import { isAnonymous, inputUserData } from '../../Redux/Action/userData';
 import { setAlert } from '../../Redux/Action/alert';
 import { connect } from 'react-redux'
 import KreaButton from '../../Components/KreaButton';
