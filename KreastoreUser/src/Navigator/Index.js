@@ -12,6 +12,7 @@ import Home from '../Screens/Home/Index';
 import Detail from '../Screens/Detail/Index';
 import History from '../Screens/History/Index';
 import Profile from '../Screens/Profile/Index';
+import Profiles from '../Screens/ProfileStack/Index';
 import Search from '../Screens/Search/Index';
 import PostItem from '../Screens/PostItem/Index';
 import TopUp from '../Screens/TopUp/Index';
@@ -20,9 +21,12 @@ import News from '../Screens/News/Index';
 import NewsDetail from '../Screens/News/NewsDetail/Index';
 import Market from '../Screens/Market/Index';
 import MarketDetail from '../Screens/Market/MarketDetail/Index';
-import Profiles from '../Screens/ProfileStack/Index';
 import {TabBar} from '../Components/TabBar';
-import {putUserData} from '../Redux/Action/userData';
+import {
+  getUserData,
+  insertUserData,
+  putUserData,
+} from '../Redux/Action/userData';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -40,20 +44,45 @@ const Index = ({dispatch, ...props}) => {
     };
   }, [user]);
 
-  useEffect(() => {
-    console.log('ONMOUNT', props.putUserData);
-    return () => {};
-  }, []);
-
   const onLogin = async () => {
     try {
       if (user) {
-        await dispatch(
+        const x = await dispatch(
           putUserData({user, isAnonymous: false, isSignedIn: true}),
+        );
+        const y = await dispatch(getUserData(x.value.user?._user?.uid));
+        if (!y?.value?.exists) {
+          const dataToInsert = {
+            id: x.value.user?._user?.uid,
+            posts: [],
+            photo: x.value.user?._user?.photoURL,
+            name: x.value.user?._user?.displayName,
+            email: x.value.user?._user?.email,
+            isVerified: false,
+          };
+          const z = await dispatch(
+            insertUserData(dataToInsert.id, dataToInsert),
+          );
+          console.log(z);
+        }
+      } else {
+        await dispatch(
+          putUserData({data: null, isAnonymous: false, isSignedIn: false}),
         );
       }
     } catch (error) {
       console.log(error.message);
+    }
+  };
+
+  const logoutAnon = async () => {
+    console.log('ON UNMOUNT');
+    if (user) {
+      await dispatch(putUserData({user, isAnonymous: false, isSignedIn: true}));
+    } else {
+      await dispatch(
+        putUserData({data: null, isAnonymous: false, isSignedIn: false}),
+      );
     }
   };
 
@@ -68,17 +97,6 @@ const Index = ({dispatch, ...props}) => {
     if (initializing) setInitializing(false);
   }
 
-  const logoutAnon = async () => {
-    console.log('ON UNMOUNT');
-    if (user) {
-      await dispatch(putUserData({user, isAnonymous: false, isSignedIn: true}));
-    } else {
-      await dispatch(
-        putUserData({data: null, isAnonymous: false, isSignedIn: false}),
-      );
-    }
-  };
-
   if (isLogin) {
     return <MainStack {...props} />;
   }
@@ -92,14 +110,8 @@ const BottomTab = ({...props}) => {
       <Tab.Screen name="Home" component={Home} />
       {/* <Tab.Screen name="Top Up" component={props.putUserData.isSignedIn ? TopUpStack : LoginStack} />
       <Tab.Screen name="Post Item" component={props.putUserData.isSignedIn ? PostItemStack : LoginStack} /> */}
-      <Tab.Screen
-        name="Store"
-        component={props.putUserData.isSignedIn ? MarketStack : MarketStack}
-      />
-      <Tab.Screen
-        name="News"
-        component={props.putUserData.isSignedIn ? NewsStack : NewsStack}
-      />
+      <Tab.Screen name="Store" component={MarketStack} />
+      <Tab.Screen name="News" component={NewsStack} />
       <Tab.Screen
         name="Profile"
         component={props.putUserData.isSignedIn ? ProfileStack : LoginStack}

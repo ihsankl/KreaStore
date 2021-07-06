@@ -9,7 +9,7 @@ const Header = ({
   title,
   elevation,
   noArrow,
-  right = DefaultRightMenu(),
+  right,
   noRight,
   callBack = () => {},
   children,
