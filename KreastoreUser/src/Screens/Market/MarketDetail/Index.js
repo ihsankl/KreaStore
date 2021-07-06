@@ -18,14 +18,15 @@ import CheckBox from '@react-native-community/checkbox';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionic from 'react-native-vector-icons/Ionicons';
 
-import {ParsedDate} from '../../Utils/ParseDate';
-import {color} from '../../Theme/Color';
-import KreaButton from '../../Components/KreaButton';
+import {ParsedDate} from '../../../Utils/ParseDate';
+import {color} from '../../../Theme/Color';
+import KreaButton from '../../../Components/KreaButton';
+import {Formatter} from '../../../Utils/Formatter';
 
 const dummy = [
   {
     id: '1',
-    image: require('../../assets/images/kantong-ajaib.png'),
+    image: require('../../../assets/images/kantong-ajaib.png'),
     label: 'Kantong Ajaib',
     price: 100000,
     description:
@@ -172,16 +173,18 @@ const Index = ({...props}) => {
                     marginTop: 20,
                   }}>
                   <Text style={styles.label}>{item.label}</Text>
-                  <Text style={styles.price}>{item.price}</Text>
+                  <Text style={styles.price}>{Formatter(item.price)}</Text>
                 </View>
-                <Text style={{textAlign: 'justify'}}>{item.description}</Text>
+                <Text style={{textAlign: 'justify', color: color.text}}>
+                  {item.description}
+                </Text>
 
                 <View style={styles.hr} />
 
                 {/* TAB CONTENT */}
 
                 <View style={{flex: 1, marginBottom: 10}}>
-                  <FlatList
+                  {/* <FlatList
                     contentContainerStyle={styles.supportContainer}
                     data={data[0].funder}
                     keyExtractor={user => user.user_id}
@@ -201,7 +204,7 @@ const Index = ({...props}) => {
                         </View>
                       </>
                     )}
-                  />
+                  /> */}
                 </View>
               </View>
             </View>

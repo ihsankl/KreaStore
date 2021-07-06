@@ -16,6 +16,7 @@ import {
 import firestore from '@react-native-firebase/firestore';
 import {connect} from 'react-redux';
 import Feather from 'react-native-vector-icons/dist/Feather';
+import Ionic from 'react-native-vector-icons/Ionicons';
 import {color} from '../../Theme/Color';
 import img1 from '../../assets/images/kantong-ajaib.png';
 import text_logo from '../../assets/images/text_logo.png';
@@ -152,7 +153,7 @@ const Index = ({navigation, ...props}) => {
     }
     return data.map((v, i) => {
       return (
-        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{justifyContent: 'center', alignItems: 'center'}} key={i}>
           <TouchableOpacity
             style={{width: '100%'}}
             key={i}
@@ -169,6 +170,17 @@ const Index = ({navigation, ...props}) => {
               source={img1}
               resizeMode="cover"
             />
+            <View
+              style={{
+                position: 'absolute',
+                marginTop: 18,
+                padding: 10,
+                right: 0,
+              }}>
+              <TouchableOpacity onPress={() => navigation.navigate('History')}>
+                <Ionic name="heart-outline" size={24} color={color.white} />
+              </TouchableOpacity>
+            </View>
             <View
               style={{
                 position: 'absolute',
@@ -211,10 +223,99 @@ const Index = ({navigation, ...props}) => {
           resizeMode="contain"
         />
         <TouchableOpacity onPress={() => navigation.navigate('History')}>
-          <Feather name="rotate-ccw" size={24} color={color.primary} />
+          <Ionic name="heart-outline" size={24} color={color.primary} />
         </TouchableOpacity>
       </View>
       <ScrollView contentContainerStyle={styles.contentContainer}>
+        <View
+          style={{
+            display: 'flex',
+            // padding: 16,
+            margin: 16,
+            backgroundColor: color.white,
+            borderRadius: 10,
+            elevation: 5,
+            minHeight: 100,
+          }}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+            <View style={{flexDirection: 'column'}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Image
+                  style={{width: 50, height: 50, alignItems: 'center'}}
+                  source={require('../../assets/images/ovo.png')}
+                />
+                <Text style={{color: color.text, fontWeight: 'bold'}}>
+                  {Formatter(120000)}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Image
+                  style={{
+                    width: 31,
+                    height: 31,
+                    alignItems: 'center',
+                    marginHorizontal: 10,
+                  }}
+                  source={require('../../assets/images/dana.png')}
+                />
+                <Text style={{color: color.text, fontWeight: 'bold'}}>
+                  {Formatter(5000)}
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Image
+                  style={{
+                    width: 31,
+                    height: 31,
+                    alignItems: 'center',
+                    marginHorizontal: 10,
+                    marginTop: 14,
+                  }}
+                  source={require('../../assets/images/shope.png')}
+                />
+                <Text style={{color: color.text, fontWeight: 'bold'}}>
+                  {Formatter(5000)}
+                </Text>
+              </View>
+              {/* <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Image
+                  style={{
+                    width: 31,
+                    height: 31,
+                    alignItems: 'center',
+                    marginHorizontal: 10,
+                  }}
+                  source={require('../../assets/images/dana.png')}
+                />
+                <Text style={{color: color.text, fontWeight: 'bold'}}>
+                  {Formatter(0)}
+                </Text>
+              </View> */}
+            </View>
+          </View>
+        </View>
         <View
           style={{
             flexDirection: 'row',

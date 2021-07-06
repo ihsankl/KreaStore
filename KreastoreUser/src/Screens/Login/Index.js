@@ -6,6 +6,7 @@ import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-si
 import auth from '@react-native-firebase/auth';
 
 import { putUserData, getUserData, insertUserData } from '../../Redux/Action/userData';
+import { setAlert } from '../../Redux/Action/alert';
 import { connect } from 'react-redux'
 import KreaButton from '../../Components/KreaButton';
 import logo_google from '../../assets/images/logo_google.png'
@@ -15,12 +16,15 @@ const Index = ({ dispatch, navigation, ...props }) => {
     const onLogin = async () => {
         try {
             await GoogleSignin.hasPlayServices();
+            await dispatch(setAlert({ ...props.alert, isLoading: true }))
             const user = await GoogleSignin.signIn();
             const { idToken } = user
             const googleCredential = auth.GoogleAuthProvider.credential(idToken);
             auth().signInWithCredential(googleCredential);
         } catch (error) {
             console.log(error.message)
+        } finally {
+            await dispatch(setAlert({ ...props.alert, isLoading: false }))
         }
     }
 

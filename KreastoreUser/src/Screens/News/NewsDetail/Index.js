@@ -78,7 +78,7 @@ const Index = props => {
         <View style={styles.containerComment}>
           <Text style={{fontWeight: 'bold', fontSize: 25}}>Comment :</Text>
           {data.comment.map(item => (
-            <View style={styles.card} key={item.id}>
+            <View style={styles.card} key={item.id_user}>
               <Image style={styles.imgUser} source={{uri: item.image}} />
               <Text style={{fontSize: 16}}>{item.user_name}</Text>
               <Text style={{fontSize: 16, paddingLeft: 20}}>

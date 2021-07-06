@@ -87,7 +87,8 @@ export function TabBar({state, descriptors, navigation}) {
       style={{
         flexDirection: 'row',
         height: 45,
-        backgroundColor: color.accent3,
+        backgroundColor: color.accent2,
+        elevation: 5
       }}>
       {state.routes.map((route, index) => {
         const {options} = descriptors[route.key];

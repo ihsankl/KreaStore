@@ -5,19 +5,29 @@ import FormData from './Component/FormData';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { color } from '../../Theme/Color';
 import { useEffect } from 'react';
+import { connect } from 'react-redux'
+import storage from '@react-native-firebase/storage';
 
 const Right = () => {
   return <View></View>;
 };
 
-export default function Index({...props}) {
+function Index({...props}) {
   const [photo, setPhoto] = useState(null);
+  const [userData, setUserData] = useState(null);
   const [body, setBody] = useState({});
+
+  useEffect(() => {
+    setUserData(props.getUserData.data)
+    return () => {
+      
+    }
+  }, [props.getUserData])
 
   // POST
   //   - user_id (USER string id)
   //   - status_acc (bool)
-  //   - image (string id)
+  //   - photoUrl (string id)
   //   - funding_goal
   //   - funding_start_date
   //   - funding_end_date
@@ -28,6 +38,8 @@ export default function Index({...props}) {
   //   - funding_completed (bool)
   //   - category (string)
   //   - product_name (string)
+  //   - feedback
+
 
   useMemo(() => setBody({}), []);
 
@@ -79,3 +91,13 @@ export default function Index({...props}) {
     </View>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    putUserData: state.putUserData,
+    alert: state.alert,
+    getUserData: state.getUserData,
+  }
+}
+
+export default connect(mapStateToProps)(Index);

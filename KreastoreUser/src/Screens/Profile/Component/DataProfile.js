@@ -8,6 +8,7 @@ import {
   ScrollView,
   Modal,
   StyleSheet,
+  Dimensions,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/dist/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -17,8 +18,12 @@ import KreaButton from '../../../Components/KreaButton';
 import { color } from '../../../Theme/Color';
 import { ParsedDate } from '../../../Utils/ParseDate';
 import { putUserData } from '../../../Redux/Action/userData';
+import { setAlert } from '../../../Redux/Action/alert';
 
 import { connect } from 'react-redux'
+import auth from '@react-native-firebase/auth';
+import DatePicker from 'react-native-datepicker';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -108,13 +113,39 @@ function DataProfile({
 
   const onSignOut = async () => {
     try {
+      await dispatch(setAlert({ ...props.alert, isLoading: true }))
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
+      await auth().signOut()
       await dispatch(putUserData({ data: null, isAnonymous: false, isSignedIn: false }))
     } catch (error) {
       console.log(error.message)
+    } finally {
+      await dispatch(setAlert({ ...props.alert, isLoading: false }))
     }
   }
+
+  const handleChoosePhoto = () => {
+    // ambil dari galery
+    launchImageLibrary({ noData: true }, response => {
+      console.log('respon', { response });
+      if (response.didCancel === true) {
+        setPhoto(null);
+      } else {
+        onChange({photo:response?.assets?.[0]?.uri})
+      }
+    });
+
+    // ambil dari camera langsung
+    // launchCamera({noData: true}, response => {
+    //   console.log({response});
+    //   if (response.didCancel === true) {
+    //     setPhoto(null);
+    //   } else {
+    //     setPhoto(response);
+    //   }
+    // });
+  };
 
   return (
     <>
@@ -122,11 +153,11 @@ function DataProfile({
       <ScrollView style={{ flexGrow: 1 }}>
         <View style={{ height: 250 }}>
           <TouchableOpacity
-            onPress={() => null}
+            onPress={handleChoosePhoto}
             disabled={flagEdit ? false : true}>
             <Image
               style={{
-                backgroundColor: 'grey',
+                backgroundColor: color.grey,
                 width: 150,
                 height: 150,
                 borderRadius: 100,
@@ -134,10 +165,10 @@ function DataProfile({
                 marginTop: 30,
               }}
               source={{
-                uri: data.pictureUrl,
+                uri: data?.photo,
               }}
             />
-            {flagEdit ? (
+            {flagEdit && (
               <Feather
                 name="camera"
                 style={{
@@ -148,7 +179,7 @@ function DataProfile({
                   fontSize: 25,
                 }}
               />
-            ) : null}
+            )}
           </TouchableOpacity>
         </View>
         <View>
@@ -158,7 +189,7 @@ function DataProfile({
           </Text>
           <TextInput
             style={styles.textInput}
-            value={data.name}
+            value={data?.name}
             editable={false}
           />
         </View>
@@ -169,11 +200,8 @@ function DataProfile({
           </Text>
           <TextInput
             style={styles.textInput}
-            value={data.email}
-            editable={flagEdit}
-            onChangeText={e => {
-              onChange({ email: e });
-            }}
+            value={data?.email}
+            editable={false}
           />
         </View>
         <View style={{ marginTop: 20 }}>
@@ -181,12 +209,28 @@ function DataProfile({
             style={styles.title}>
             Tanggal Lahir
           </Text>
-          <TextInput
-            style={styles.textInput}
-            value={ParsedDate(data.birthday)}
-            editable={flagEdit}
-            onChangeText={e => {
-              onChange({ birthday: e });
+          <DatePicker
+            disabled={!flagEdit}
+            style={[styles.textInput, { width: (Dimensions.get('window').width) - 32 }]}
+            date={data?.birthday}
+            mode="date"
+            placeholder="select date"
+            format="YYYY-MM-DD"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            customStyles={{
+              dateIcon: {
+                position: 'absolute',
+                left: 0,
+                top: 4,
+                marginLeft: 0,
+              },
+              dateInput: {
+                marginLeft: 36,
+              },
+            }}
+            onDateChange={date => {
+              onChange({ birthday: date });
             }}
           />
         </View>
@@ -199,14 +243,14 @@ function DataProfile({
             style={styles.textInput}
             multiline={true}
             numberOfLines={4}
-            value={data.bio}
+            value={data?.bio}
             editable={flagEdit}
             onChangeText={e => {
               onChange({ bio: e });
             }}
           />
         </View>
-        <KreaButton text="Keluar" onPress={onSignOut} btnStyle={{ marginHorizontal: 16, marginVertical: 16 }} btnColor={color.red} />
+
         <View
           style={{
             marginTop: 50,
@@ -239,6 +283,7 @@ function DataProfile({
             <KreaButton text="Simpan" onPress={() => { changeFlag(false); save('save'); }} />
           </View>
         )}
+        <KreaButton text="Keluar" onPress={onSignOut} btnStyle={{ marginHorizontal: 16, marginVertical: 16 }} btnColor={color.red} />
         <Modal
           animationType="slide"
           transparent={true}
@@ -288,10 +333,11 @@ function DataProfile({
 }
 
 const mapStateToProps = state => {
-    return {
-        putUserData: state.putUserData,
-        alert: state.alert,
-    }
+  return {
+    putUserData: state.putUserData,
+    alert: state.alert,
+    getUserData: state.getUserData,
+  }
 }
 
 export default connect(mapStateToProps)(DataProfile);

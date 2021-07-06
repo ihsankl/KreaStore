@@ -22,3 +22,10 @@ export const insertUserData = (id, data) => {
         payload: usersRef.doc(id).set(data),
     }
 }
+
+export const updateUser = (id, data) => {
+    return {
+        type: 'UPDATE_USER_DATA',
+        payload: usersRef.doc(id).update(data),
+    }
+}

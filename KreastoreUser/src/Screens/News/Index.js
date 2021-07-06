@@ -137,7 +137,7 @@ const Index = props => {
 
   return (
     <View style={styles.container}>
-      <Header title={'Berita'} noArrow noRight />
+      <Header title={'Berita'} noArrow right={<></>} />
       <View style={styles.containerList}>
         <FlatList
           data={data}
@@ -164,10 +164,10 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   card: {
-    width: '100%',
+    width: '95%',
     height: 100,
     backgroundColor: color.white,
-    borderRadius: 5,
+    borderRadius: 10,
     elevation: 5,
     padding: 10,
     margin: 5,
