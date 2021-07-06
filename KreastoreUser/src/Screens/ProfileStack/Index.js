@@ -1,38 +1,36 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, { useEffect } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import Header from '../../Components/Header';
-import {color} from '../../Theme/Color';
+import { color } from '../../Theme/Color';
 import KreaButton from '../../Components/KreaButton';
 import {connect} from 'react-redux';
-import {getUserData, updateUser} from '../../Redux/Action/userData';
 
 const Index = props => {
   const dataUser = props.getUserData.data;
-  console.log({dataUser});
   return (
-    <View style={{display: 'flex', flex: 1}}>
+    <ScrollView contentContainerStyle={{ display: 'flex', flexGrow: 1, backgroundColor: color.accent3 }}>
       <Header title={'Profile'} noArrow right={<></>} />
       <View style={styles.container}>
         <KreaButton
           btnStyle={styles.button}
           text={'Profile'}
-          onPress={() => props.navigation.navigate('Profile Info')}
+          onPress={() => navigation.navigate('Profile Info')}
         />
         <KreaButton
           btnStyle={styles.button}
           text={'Verifikasi Account'}
-          onPress={() => props.navigation.navigate('Verfy')}
+          onPress={() => navigation.navigate('Verfy')}
         />
         <KreaButton
           btnStyle={styles.button}
           text={'History'}
-          onPress={() => props.navigation.navigate('History')}
+          onPress={() => navigation.navigate('History')}
         />
         <KreaButton
           btnStyle={styles.button}
           text={'Top Up'}
-          onPress={() => props.navigation.navigate('Top Up')}
+          onPress={() => navigation.navigate('Top Up')}
         />
         <KreaButton
           btnStyle={styles.button}
@@ -68,7 +66,7 @@ const Index = props => {
           onPress={() => setModal(!modal)}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -77,6 +75,9 @@ const mapStateToProps = state => {
     putUserData: state.putUserData,
     alert: state.alert,
     getUserData: state.getUserData,
+    inputUserData: state.inputUserData,
+    allPostByFav: state.allPostByFav,
+    allPost: state.allPost,
   };
 };
 

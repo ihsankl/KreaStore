@@ -1,17 +1,19 @@
 import { combineReducers } from 'redux'
 import { alert } from './alert'
-import { getUserData, putUserData } from './userData'
-import { allPost, detailPost, insertPost, updatePost, allPostByFav } from './post'
+import { getUserData, isAnonData, inputUserData } from './userData'
+import { allPost, detailPost, insertPost, updatePost, allPostByFav, searchPost } from './post'
 
 const appReducers = combineReducers({
     alert,
     getUserData,
-    putUserData,
-    allPost, 
-    detailPost, 
-    insertPost, 
-    updatePost, 
+    allPost,
+    detailPost,
+    insertPost,
+    updatePost,
     allPostByFav,
+    searchPost,
+    isAnonData,
+    inputUserData,
 })
 
 export default appReducers

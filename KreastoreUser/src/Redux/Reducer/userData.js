@@ -1,14 +1,12 @@
-const putUserDataInitialState = {
-    data: null,
-    isAnonymous: false,
-    isSignedIn: false,
-}
-
 const getUserDataInitialState = {
-    data:[],
+    data: [],
     isSuccess: false,
     isError: false,
     isLoading: false,
+}
+
+const inputUserDataInitialState = {
+    data: null,
 }
 
 const insertUserDataInitialState = {
@@ -23,18 +21,8 @@ const updateUserDataInitialState = {
     isLoading: false,
 }
 
-export const putUserData = (state = putUserDataInitialState, action) => {
-    switch (action.type) {
-        case 'PUT_USER_DATA_FULFILLED':
-            return {
-                data: action.payload.user,
-                isAnonymous: action.payload.isAnonymous,
-                isSignedIn: action.payload.isSignedIn,
-            }
-
-        default:
-            return state;
-    }
+const isAnonymousInitialState = {
+    state: false
 }
 
 export const getUserData = (state = getUserDataInitialState, action) => {
@@ -121,5 +109,30 @@ export const updateUserData = (state = updateUserDataInitialState, action) => {
 
         default:
             return state;
+    }
+}
+
+export const isAnonData = (state = isAnonymousInitialState, action) => {
+    switch (action.type) {
+        case 'IS_ANONYMOUS_FULFILLED':
+            return {
+                ...action.payload
+            }
+
+        default:
+            return state
+    }
+}
+
+// INPUT_USER_DATA
+export const inputUserData = (state = inputUserDataInitialState, action) => {
+    switch (action.type) {
+        case 'INPUT_USER_DATA_FULFILLED':
+            return {
+                ...action.payload
+            }
+
+        default:
+            return state
     }
 }

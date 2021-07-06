@@ -14,6 +14,7 @@ import KreaButton from '../../Components/KreaButton';
 import SearchInput from '../../Components/SearchInput';
 import { getAllPost, getAllPostByFav } from '../../Redux/Action/post';
 import { setAlert } from '../../Redux/Action/alert';
+import { insertUserData } from '../../Redux/Action/userData';
 
 const postRef = firestore().collection('post');
 
@@ -66,8 +67,13 @@ const Index = ({ dispatch, navigation, ...props }) => {
 
   const onInit = async () => {
     try {
+      await dispatch(setAlert({ ...props.alert, isLoading: true }))
+      if (props.inputUserData?.user) {
+        await dispatch(insertUserData(props.inputUserData.user.id, props.inputUserData.user));
+      }
       await dispatch(getAllPostByFav())
       await dispatch(getAllPost())
+      await dispatch(setAlert({ ...props.alert, isLoading: false }))
     } catch (error) {
       console.log(error.message);
       await dispatch(setAlert({ ...props.alert, isLoading: false }))
@@ -78,7 +84,7 @@ const Index = ({ dispatch, navigation, ...props }) => {
   const RenderFavorites = ({ item, index }) => {
     return (
       <TouchableOpacity style={styles.imgContainer} onPress={() => navigation.navigate('Detail')}>
-        <Image style={styles.img} source={img1} resizeMode="cover" />
+        <Image style={styles.img} source={item?.photoUrl} resizeMode="cover" />
         <Text style={styles.imgText}>{item?.product_name}</Text>
         <Feather name="star" size={24} style={styles.starIcon} color={color.white} />
         <View style={styles.layer} />
@@ -151,7 +157,7 @@ const RenderContents = ({ data }) => {
   return data.map((v, i) => {
     return (
       <TouchableOpacity style={{ width: '100%' }} key={i}>
-        <Image style={{ borderRadius: 8, marginTop: 16, height: 225, width: '100%', minWidth: 300, maxWidth: 400, }} source={{uri:v?.photoUrl}} resizeMode="cover" />
+        <Image style={{ borderRadius: 8, marginTop: 16, height: 225, width: '100%', minWidth: 300, maxWidth: 400, }} source={{ uri: v?.photoUrl }} resizeMode="cover" />
         <View style={{ position: 'absolute', bottom: 0, backgroundColor: `${color.white}50`, left: 0, right: 0, padding: 8 }}>
           <Text style={{ color: color.text, fontSize: 18 }}>{v?.product_name}</Text>
           <Text style={{ color: color.text, fontSize: 12 }}>{v?.description}</Text>
@@ -171,7 +177,7 @@ const RenderCategories = ({ item }) => {
 
 const mapStateToProps = state => {
   return {
-    putUserData: state.putUserData,
+    inputUserData: state.inputUserData,
     alert: state.alert,
     allPostByFav: state.allPostByFav,
     allPost: state.allPost,

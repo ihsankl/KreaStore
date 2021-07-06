@@ -2,17 +2,24 @@ import firestore from '@react-native-firebase/firestore';
 
 const usersRef = firestore().collection('users');
 
-export const putUserData = (data) => {
-    return {
-        type: 'PUT_USER_DATA',
-        payload: Promise.resolve(data),
-    }
-}
-
 export const getUserData = (id) => {
     return {
         type: 'GET_USER_DATA',
         payload: usersRef.doc(id).get(),
+    }
+}
+
+export const inputUserData = (data) => {
+    return {
+        type: 'INPUT_USER_DATA',
+        payload: Promise.resolve(data),
+    }
+}
+
+export const isAnonymous = (data) => {
+    return {
+        type: 'IS_ANONYMOUS',
+        payload: Promise.resolve(data),
     }
 }
 

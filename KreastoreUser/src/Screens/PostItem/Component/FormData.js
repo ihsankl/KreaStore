@@ -69,6 +69,7 @@ function FormData({
         const dataToUpload = {
           ...data,
           photoUrl: url,
+          favorite:[]
         }
         await dispatch(insertPostData(dataToUpload))
         await dispatch(setAlert({ ...props.alert, isLoading: false }))

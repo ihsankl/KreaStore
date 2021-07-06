@@ -19,6 +19,13 @@ const getDetailPostInitialState = {
     isLoading: false,
 }
 
+const searchPostDataInitialState = {
+    data: [],
+    isSuccess: false,
+    isError: false,
+    isLoading: false,
+}
+
 const insertPostDataInitialState = {
     isSuccess: false,
     isError: false,
@@ -184,6 +191,45 @@ export const updatePost = (state = updatePostDataInitialState, action) => {
 
         case 'UPDATE_POST_DATA_FULFILLED':
             return {
+                isLoading: false,
+                isError: false,
+                isSuccess: true,
+            }
+
+        default:
+            return state;
+    }
+}
+
+// SEARCH_POST_DATA
+export const searchPost = (state = updatePostDataInitialState, action) => {
+    switch (action.type) {
+        case 'SEARCH_POST_DATA_PENDING':
+            return {
+                data: [],
+                isLoading: true,
+                isError: false,
+                isSuccess: false,
+            }
+
+        case 'SEARCH_POST_DATA_REJECTED':
+            return {
+                data: [],
+                isLoading: false,
+                isError: true,
+                isSuccess: false,
+            }
+
+        case 'SEARCH_POST_DATA_FULFILLED':
+            const data = [];
+            action.payload.forEach(docs => {
+                let currentId = docs.id;
+                let appObj = { ...docs.data(), ['id']: currentId };
+                data.push(appObj);
+            });
+
+            return {
+                data: data,
                 isLoading: false,
                 isError: false,
                 isSuccess: true,

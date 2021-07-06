@@ -31,6 +31,26 @@ function Index({ navigation, dispatch, ...props }) {
     }
   }, [props.getUserData])
 
+  useEffect(() => {
+    onInit()
+    return () => {
+
+    }
+  }, [])
+
+  const onInit = async () => {
+    try {
+      await dispatch(setAlert({ ...props.alert, isLoading: true }))
+      await dispatch(getUserData(props.inputUserData.user.id))
+      // console.log(props.inputUserData.user.id)
+      await dispatch(setAlert({ ...props.alert, isLoading: false }))
+    } catch (error) {
+      console.log(error.message);
+      await dispatch(setAlert({ ...props.alert, isLoading: false }))
+      await dispatch(setAlert({ ...props.alert, isError: true, msg: error.message, status: "error" }))
+    }
+  }
+
   const right = () => {
     return (
       <TouchableOpacity
@@ -96,7 +116,8 @@ function Index({ navigation, dispatch, ...props }) {
 
 const mapStateToProps = state => {
   return {
-    putUserData: state.putUserData,
+    // inputUserData.user.id
+    inputUserData: state.inputUserData,
     alert: state.alert,
     getUserData: state.getUserData,
   }

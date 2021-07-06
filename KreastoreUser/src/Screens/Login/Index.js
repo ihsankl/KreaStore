@@ -5,7 +5,7 @@ import logo2 from '../../assets/images/logo2.png'
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 
-import { putUserData, getUserData, insertUserData } from '../../Redux/Action/userData';
+import { putUserData, getUserData, insertUserData, isAnonymous, inputUserData } from '../../Redux/Action/userData';
 import { setAlert } from '../../Redux/Action/alert';
 import { connect } from 'react-redux'
 import KreaButton from '../../Components/KreaButton';
@@ -21,9 +21,10 @@ const Index = ({ dispatch, navigation, ...props }) => {
             const { idToken } = user
             const googleCredential = auth.GoogleAuthProvider.credential(idToken);
             auth().signInWithCredential(googleCredential);
+            await dispatch(inputUserData(user))
+            await dispatch(setAlert({ ...props.alert, isLoading: false }))
         } catch (error) {
             console.log(error.message)
-        } finally {
             await dispatch(setAlert({ ...props.alert, isLoading: false }))
         }
     }
@@ -33,10 +34,11 @@ const Index = ({ dispatch, navigation, ...props }) => {
             if (navigation.canGoBack()) {
                 navigation.pop()
             } else {
-                await dispatch(putUserData({ ...props.putUserData.data, isAnonymous: true }))
+                await dispatch(isAnonymous({ state: true }))
             }
         } catch (error) {
             console.log(error.message)
+            await dispatch(setAlert({ ...props.alert, isError: true, msg: error.message, status: 'error' }))
         }
     }
 
@@ -57,7 +59,8 @@ const Index = ({ dispatch, navigation, ...props }) => {
 
 const mapStateToProps = state => {
     return {
-        putUserData: state.putUserData,
+        getUserData: state.getUserData,
+        inputUserData: state.inputUserData,
         alert: state.alert,
     }
 }

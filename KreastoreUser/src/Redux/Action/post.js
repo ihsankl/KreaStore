@@ -36,3 +36,13 @@ export const updatePostData = (id, data) => {
         payload: postRef.doc(id).update(data),
     }
 }
+
+export const searchPostData = (query) => {
+    return {
+        type: 'SEARCH_POST_DATA',
+        payload: postRef.doc(id)
+            .where('product_name', ">=", query)
+            .where('product_name', "<", `${query}z`)
+            .get(),
+    }
+}
