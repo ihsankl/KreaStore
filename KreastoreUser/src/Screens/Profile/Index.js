@@ -1,21 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DataProfile from './Component/DataProfile';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View, Alert, Modal, StyleSheet, Pressable } from 'react-native';
 import { color } from '../../Theme/Color';
+import { connect } from 'react-redux'
+import { getUserData, updateUser } from '../../Redux/Action/userData';
+import { setAlert } from '../../Redux/Action/alert';
 
 const dummy = {
-  name: 'Alghifari Fikri',
-  email: 'alghi7733@gmail.com',
-  birthday: '1997-12-26',
-  bio: 'Saya adalah seorang fullstack developer yang membutuhkan dana untuk membuat startup',
-  pictureUrl:
+  name: '-',
+  email: '-',
+  birthday: '-',
+  bio: '-',
+  photo:
     'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
 };
-export default function Index(props) {
+
+function Index({ navigation, dispatch, ...props }) {
   const [dataOld, setDataOld] = useState(dummy);
   const [data, setData] = useState(dummy);
   const [edit, setEdit] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible2, setModalVisible2] = useState(true);
+
+  useEffect(() => {
+    setDataOld(props.getUserData.data)
+    setData(props.getUserData.data)
+    return () => {
+
+    }
+  }, [props.getUserData])
 
   const right = () => {
     return (
@@ -37,11 +50,19 @@ export default function Index(props) {
     setData(temp);
   };
 
-  const onSave = e => {
-    if (e === 'cancel') {
-      setData(dataOld);
-    } else {
-      setData(data);
+  const onSave = async (e) => {
+    try {
+      if (e === 'cancel') {
+        setData(dataOld);
+      } else {
+        await dispatch(setAlert({ ...props.alert, isLoading: true }))
+        await dispatch(updateUser(props.getUserData.data?.id, data))
+        await dispatch(getUserData(props.getUserData.data?.id))
+      }
+    } catch (error) {
+      console.log(error.message)
+    } finally {
+      await dispatch(setAlert({ ...props.alert, isLoading: false }))
     }
   };
 
@@ -61,3 +82,17 @@ export default function Index(props) {
     </View>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    putUserData: state.putUserData,
+    alert: state.alert,
+    getUserData: state.getUserData,
+  }
+}
+
+export default connect(mapStateToProps)(Index);
+
+const styles = StyleSheet.create({
+
+});
