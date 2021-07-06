@@ -3,8 +3,10 @@ import DataProfile from './Component/DataProfile';
 import { Text, TouchableOpacity, View, Alert, Modal, StyleSheet, Pressable } from 'react-native';
 import { color } from '../../Theme/Color';
 import { connect } from 'react-redux'
+import storage from '@react-native-firebase/storage';
 import { getUserData, updateUser } from '../../Redux/Action/userData';
 import { setAlert } from '../../Redux/Action/alert';
+const regex = /^.*[\\\/]/
 
 const dummy = {
   name: '-',
@@ -55,7 +57,15 @@ function Index({ navigation, dispatch, ...props }) {
         setData(dataOld);
       } else {
         await dispatch(setAlert({ ...props.alert, isLoading: true }))
-        await dispatch(updateUser(props.getUserData.data?.id, data))
+        const photoToUpload = data.photo.replace(regex, "")
+        const reference = storage().ref(photoToUpload);
+        await reference.putFile(data.photo);
+        const url = await storage().ref(photoToUpload).getDownloadURL();
+        const dataToUpload = {
+          ...data,
+          photo: url,
+        }
+        await dispatch(updateUser(props.getUserData.data?.id, dataToUpload))
         await dispatch(getUserData(props.getUserData.data?.id))
         await dispatch(setAlert({ ...props.alert, isLoading: false }))
         await dispatch(setAlert({ ...props.alert, isSuccess: true, msg: 'Berhasil Update Profile!', status: "Sukses" }))
@@ -63,7 +73,7 @@ function Index({ navigation, dispatch, ...props }) {
     } catch (error) {
       console.log(error.message)
       await dispatch(setAlert({ ...props.alert, isLoading: false }))
-      await dispatch(setAlert({ ...props.alert, isError: true, message: error.message, status: "error" }))
+      await dispatch(setAlert({ ...props.alert, isError: true, msg: error.message, status: "error" }))
     }
   };
 

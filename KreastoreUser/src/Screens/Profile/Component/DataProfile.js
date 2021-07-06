@@ -23,6 +23,7 @@ import { setAlert } from '../../../Redux/Action/alert';
 import { connect } from 'react-redux'
 import auth from '@react-native-firebase/auth';
 import DatePicker from 'react-native-datepicker';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -124,13 +125,35 @@ function DataProfile({
     }
   }
 
+  const handleChoosePhoto = () => {
+    // ambil dari galery
+    launchImageLibrary({ noData: true }, response => {
+      console.log('respon', { response });
+      if (response.didCancel === true) {
+        setPhoto(null);
+      } else {
+        onChange({photo:response?.assets?.[0]?.uri})
+      }
+    });
+
+    // ambil dari camera langsung
+    // launchCamera({noData: true}, response => {
+    //   console.log({response});
+    //   if (response.didCancel === true) {
+    //     setPhoto(null);
+    //   } else {
+    //     setPhoto(response);
+    //   }
+    // });
+  };
+
   return (
     <>
       <Header title={'Profil Pengguna'} right={right()} />
       <ScrollView style={{ flexGrow: 1 }}>
         <View style={{ height: 250 }}>
           <TouchableOpacity
-            onPress={() => null}
+            onPress={handleChoosePhoto}
             disabled={flagEdit ? false : true}>
             <Image
               style={{
@@ -145,7 +168,7 @@ function DataProfile({
                 uri: data?.photo,
               }}
             />
-            {flagEdit ? (
+            {flagEdit && (
               <Feather
                 name="camera"
                 style={{
@@ -156,7 +179,7 @@ function DataProfile({
                   fontSize: 25,
                 }}
               />
-            ) : null}
+            )}
           </TouchableOpacity>
         </View>
         <View>
@@ -179,9 +202,6 @@ function DataProfile({
             style={styles.textInput}
             value={data?.email}
             editable={false}
-            onChangeText={e => {
-              onChange({ email: e });
-            }}
           />
         </View>
         <View style={{ marginTop: 20 }}>
@@ -230,7 +250,7 @@ function DataProfile({
             }}
           />
         </View>
-        
+
         <View
           style={{
             marginTop: 50,
