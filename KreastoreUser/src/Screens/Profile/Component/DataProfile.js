@@ -17,7 +17,7 @@ import Header from '../../../Components/Header';
 import KreaButton from '../../../Components/KreaButton';
 import { color } from '../../../Theme/Color';
 import { ParsedDate } from '../../../Utils/ParseDate';
-import { putUserData } from '../../../Redux/Action/userData';
+import { inputUserData, getUserData } from '../../../Redux/Action/userData';
 import { setAlert } from '../../../Redux/Action/alert';
 
 import { connect } from 'react-redux'
@@ -117,7 +117,8 @@ function DataProfile({
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
       await auth().signOut()
-      await dispatch(putUserData({ data: null, isAnonymous: false, isSignedIn: false }))
+      await dispatch(inputUserData({data:null}))
+      await dispatch(getUserData(''))
     } catch (error) {
       console.log(error.message)
     } finally {

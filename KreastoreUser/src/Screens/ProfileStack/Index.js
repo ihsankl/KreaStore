@@ -5,8 +5,10 @@ import Header from '../../Components/Header';
 import { color } from '../../Theme/Color';
 import KreaButton from '../../Components/KreaButton';
 import { connect } from 'react-redux';
-import { getUserData, isAnonymous } from '../../Redux/Action/userData';
+import { getUserData, inputUserData, isAnonymous } from '../../Redux/Action/userData';
 import { setAlert } from '../../Redux/Action/alert';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
 
 const Index = ({ dispatch, navigation, ...props }) => {
   const [modal, setModal] = useState(false);
@@ -33,6 +35,21 @@ const Index = ({ dispatch, navigation, ...props }) => {
       console.log(error.message);
       await dispatch(setAlert({ ...props.alert, isLoading: false }))
       await dispatch(setAlert({ ...props.alert, isError: true, msg: error.message, status: "error" }))
+    }
+  }
+
+  const onSignOut = async () => {
+    try {
+      await dispatch(setAlert({ ...props.alert, isLoading: true }))
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      await auth().signOut()
+      await dispatch(inputUserData({data:null}))
+      await dispatch(getUserData(''))
+    } catch (error) {
+      console.log(error.message)
+    } finally {
+      await dispatch(setAlert({ ...props.alert, isLoading: false }))
     }
   }
 
@@ -71,7 +88,7 @@ const Index = ({ dispatch, navigation, ...props }) => {
           onPress={() =>
             dataUser?.isVerified === true
               ? navigation.navigate('Post Item')
-              : dataUser.length === 0
+              : !!dataUser
                 ? navigation.navigate('Profile Info')
                 : navigation.navigate('Verfy')
           }
@@ -82,7 +99,7 @@ const Index = ({ dispatch, navigation, ...props }) => {
           onPress={() =>
             dataUser?.isVerified === true
               ? navigation.navigate('Post Item')
-              : dataUser.length === 0
+              : !!dataUser
                 ? navigation.navigate('Profile Info')
                 : navigation.navigate('Verfy')
           }
@@ -93,16 +110,17 @@ const Index = ({ dispatch, navigation, ...props }) => {
           onPress={() =>
             dataUser?.isVerified === true
               ? navigation.navigate('Post Item')
-              : dataUser.length === 0
+              : !!dataUser
                 ? navigation.navigate('Profile Info')
                 : navigation.navigate('Verfy')
           }
         />
         <KreaButton
+          disabled={!dataUser}
           btnStyle={styles.button}
           btnColor={color.red}
           text={'Keluar'}
-          onPress={() => setModal(!modal)}
+          onPress={onSignOut}
         />
       </View>
     </ScrollView>
