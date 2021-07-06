@@ -19,7 +19,8 @@ import Payment from '../Screens/Payment/Index';
 import News from '../Screens/News/Index';
 import NewsDetail from '../Screens/News/NewsDetail/Index';
 import Market from '../Screens/Market/Index';
-import MarketDetail from '../Screens/MarketDetail/Index';
+import MarketDetail from '../Screens/Market/MarketDetail/Index';
+import Profiles from '../Screens/ProfileStack/Index';
 import {TabBar} from '../Components/TabBar';
 import {putUserData} from '../Redux/Action/userData';
 
@@ -124,11 +125,25 @@ const MainStack = ({...props}) => {
         name="History"
         component={HistoryStack}
       />
+
       <Stack.Screen
         options={{headerShown: false}}
         name="Profile"
         component={ProfileStack}
       />
+
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="Profile Info"
+        component={ProfileInfoStack}
+      />
+
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="Post Item"
+        component={PostItemStack}
+      />
+
       <Stack.Screen
         options={{headerShown: false}}
         name="Search"
@@ -200,6 +215,18 @@ const ProfileStack = () => {
       <Stack.Screen
         options={{headerShown: false}}
         name="Profile"
+        component={Profiles}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const ProfileInfoStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="Profile Info"
         component={Profile}
       />
     </Stack.Navigator>

@@ -16,6 +16,7 @@ import {
 import firestore from '@react-native-firebase/firestore';
 import {connect} from 'react-redux';
 import Feather from 'react-native-vector-icons/dist/Feather';
+import Ionic from 'react-native-vector-icons/Ionicons';
 import {color} from '../../Theme/Color';
 import img1 from '../../assets/images/kantong-ajaib.png';
 import text_logo from '../../assets/images/text_logo.png';
@@ -152,7 +153,7 @@ const Index = ({navigation, ...props}) => {
     }
     return data.map((v, i) => {
       return (
-        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{justifyContent: 'center', alignItems: 'center'}} key={i}>
           <TouchableOpacity
             style={{width: '100%'}}
             key={i}
@@ -169,6 +170,17 @@ const Index = ({navigation, ...props}) => {
               source={img1}
               resizeMode="cover"
             />
+            <View
+              style={{
+                position: 'absolute',
+                marginTop: 18,
+                padding: 10,
+                right: 0,
+              }}>
+              <TouchableOpacity onPress={() => navigation.navigate('History')}>
+                <Ionic name="heart-outline" size={24} color={color.white} />
+              </TouchableOpacity>
+            </View>
             <View
               style={{
                 position: 'absolute',
@@ -211,7 +223,7 @@ const Index = ({navigation, ...props}) => {
           resizeMode="contain"
         />
         <TouchableOpacity onPress={() => navigation.navigate('History')}>
-          <Feather name="rotate-ccw" size={24} color={color.primary} />
+          <Ionic name="heart-outline" size={24} color={color.primary} />
         </TouchableOpacity>
       </View>
       <ScrollView contentContainerStyle={styles.contentContainer}>
