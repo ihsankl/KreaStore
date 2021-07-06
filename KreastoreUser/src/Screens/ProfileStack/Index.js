@@ -35,10 +35,11 @@ const Index = props => {
           text={'Buat Donasi'}
           onPress={() => props.navigation.navigate('Post Item')}
         />
+        <KreaButton btnStyle={styles.button} text={'Buat Penjualan'} />
         <KreaButton
           btnStyle={styles.button}
-          text={'Buat Penjualan'}
-          onPress={() => setModal(!modal)}
+          text={'Buat Artikel'}
+          onPress={() => props.navigation.navigate('Post Item')}
         />
         <KreaButton
           btnStyle={styles.button}
