@@ -38,7 +38,7 @@ const Index = props => {
           btnStyle={styles.button}
           text={'Buat Donasi'}
           onPress={() =>
-            dataUser.isVerified === false
+            dataUser?.isVerified === false
               ? props.navigation.navigate('Verfy')
               : props.navigation.navigate('Post Item')
           }
@@ -47,7 +47,7 @@ const Index = props => {
           btnStyle={styles.button}
           text={'Buat Penjualan'}
           onPress={() =>
-            dataUser.isVerified === false
+            dataUser?.isVerified === false
               ? props.navigation.navigate('Verfy')
               : props.navigation.navigate('Post Item')
           }
@@ -56,7 +56,7 @@ const Index = props => {
           btnStyle={styles.button}
           text={'Buat Artikel'}
           onPress={() =>
-            dataUser.isVerified === false
+            dataUser?.isVerified === false
               ? props.navigation.navigate('Verfy')
               : props.navigation.navigate('Post Item')
           }
