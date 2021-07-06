@@ -18,6 +18,9 @@ import { connect } from 'react-redux';
 import { putUserData } from '../../../Redux/Action/userData';
 import { insertPostData } from '../../../Redux/Action/post';
 import { setAlert } from '../../../Redux/Action/alert';
+import storage from '@react-native-firebase/storage';
+
+const regex = /^.*[\\\/]/
 
 function FormData({
   data,
@@ -59,9 +62,17 @@ function FormData({
       if (!userData) {
         await dispatch(putUserData({ data: null, isAnonymous: false }))
       } else {
-        await dispatch(insertPostData(data))
+        const photoToUpload = data.photoUrl.replace(regex, "")
+        const reference = storage().ref(photoToUpload);
+        await reference.putFile(data.photoUrl);
+        const url = await storage().ref(photoToUpload).getDownloadURL();
+        const dataToUpload = {
+          ...data,
+          photoUrl: url,
+        }
+        await dispatch(insertPostData(dataToUpload))
         await dispatch(setAlert({ ...props.alert, isLoading: false }))
-        await dispatch(setAlert({ ...props.alert, isSuccess: true, msg: 'Permintaan Penggalangan Dana Berhasil Dilakukan.', status:'Sukses' }))
+        await dispatch(setAlert({ ...props.alert, isSuccess: true, msg: 'Permintaan Penggalangan Dana Berhasil Dilakukan.', status: 'Sukses' }))
         navigation.navigate('Home')
       }
     } catch (error) {
