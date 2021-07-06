@@ -17,6 +17,12 @@ const insertUserDataInitialState = {
     isLoading: false,
 }
 
+const updateUserDataInitialState = {
+    isSuccess: false,
+    isError: false,
+    isLoading: false,
+}
+
 export const putUserData = (state = putUserDataInitialState, action) => {
     switch (action.type) {
         case 'PUT_USER_DATA_FULFILLED':
@@ -79,6 +85,34 @@ export const insertUserData = (state = insertUserDataInitialState, action) => {
             }
 
         case 'INSERT_USER_DATA_FULFILLED':
+            return {
+                isLoading: false,
+                isError: false,
+                isSuccess: true,
+            }
+
+        default:
+            return state;
+    }
+}
+
+export const updateUserData = (state = updateUserDataInitialState, action) => {
+    switch (action.type) {
+        case 'UPDATE_USER_DATA_PENDING':
+            return {
+                isLoading: true,
+                isError: false,
+                isSuccess: false,
+            }
+
+        case 'UPDATE_USER_DATA_REJECTED':
+            return {
+                isLoading: false,
+                isError: true,
+                isSuccess: false,
+            }
+
+        case 'UPDATE_USER_DATA_FULFILLED':
             return {
                 isLoading: false,
                 isError: false,

@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {connect} from 'react-redux';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { connect } from 'react-redux';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import auth from '@react-native-firebase/auth';
 
 // SCREENS HERE
@@ -21,7 +21,8 @@ import News from '../Screens/News/Index';
 import NewsDetail from '../Screens/News/NewsDetail/Index';
 import Market from '../Screens/Market/Index';
 import MarketDetail from '../Screens/Market/MarketDetail/Index';
-import {TabBar} from '../Components/TabBar';
+import { TabBar } from '../Components/TabBar';
+import Loading from '../Components/Loading';
 import {
   getUserData,
   insertUserData,
@@ -32,7 +33,7 @@ const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 
-const Index = ({dispatch, ...props}) => {
+const Index = ({ dispatch, ...props }) => {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
   const isLogin = props.putUserData.isSignedIn || props.putUserData.isAnonymous;
@@ -48,7 +49,7 @@ const Index = ({dispatch, ...props}) => {
     try {
       if (user) {
         const x = await dispatch(
-          putUserData({user, isAnonymous: false, isSignedIn: true}),
+          putUserData({ user, isAnonymous: false, isSignedIn: true }),
         );
         const y = await dispatch(getUserData(x.value.user?._user?.uid));
         if (!y?.value?.exists) {
@@ -67,7 +68,7 @@ const Index = ({dispatch, ...props}) => {
         }
       } else {
         await dispatch(
-          putUserData({data: null, isAnonymous: false, isSignedIn: false}),
+          putUserData({ data: null, isAnonymous: false, isSignedIn: false }),
         );
       }
     } catch (error) {
@@ -78,10 +79,10 @@ const Index = ({dispatch, ...props}) => {
   const logoutAnon = async () => {
     console.log('ON UNMOUNT');
     if (user) {
-      await dispatch(putUserData({user, isAnonymous: false, isSignedIn: true}));
+      await dispatch(putUserData({ user, isAnonymous: false, isSignedIn: true }));
     } else {
       await dispatch(
-        putUserData({data: null, isAnonymous: false, isSignedIn: false}),
+        putUserData({ data: null, isAnonymous: false, isSignedIn: false }),
       );
     }
   };
@@ -98,13 +99,13 @@ const Index = ({dispatch, ...props}) => {
   }
 
   if (isLogin) {
-    return <MainStack {...props} />;
-  }
 
-  return <LoginStack />;
+    return (<><Loading visible={props.alert.isLoading} /><MainStack {...props} /></>);
+  }
+  return (<><Loading visible={props.alert.isLoading} /><LoginStack {...props} /></>);
 };
 
-const BottomTab = ({...props}) => {
+const BottomTab = ({ ...props }) => {
   return (
     <Tab.Navigator tabBar={TabBar}>
       <Tab.Screen name="Home" component={Home} />
@@ -120,74 +121,74 @@ const BottomTab = ({...props}) => {
   );
 };
 
-const MainStack = ({...props}) => {
+const MainStack = ({ ...props }) => {
   return (
-    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
-      <Stack.Screen options={{headerShown: false}} name="Home">
+    <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
+      <Stack.Screen options={{ headerShown: false }} name="Home">
         {() => <BottomTab {...props} />}
       </Stack.Screen>
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="Detail"
         component={Detail}
       />
 
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="Top Up"
         component={TopUpStack}
       />
 
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="History"
         component={HistoryStack}
       />
 
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="Profile"
         component={ProfileStack}
       />
 
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="Profile Info"
         component={ProfileInfoStack}
       />
 
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="Post Item"
         component={PostItemStack}
       />
 
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="Search"
         component={SearchStack}
       />
 
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="News"
         component={NewsStack}
       />
 
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="News Detail"
         component={NewsDetailStack}
       />
 
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="Market"
         component={MarketStack}
       />
 
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="MarketDetail"
         component={MarketDetailStack}
       />
@@ -197,9 +198,9 @@ const MainStack = ({...props}) => {
 
 const LoginStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+    <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="Login"
         component={Login}
       />
@@ -208,9 +209,9 @@ const LoginStack = () => {
 };
 
 const HistoryStack = () => (
-  <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+  <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
     <Stack.Screen
-      options={{headerShown: false}}
+      options={{ headerShown: false }}
       name="History"
       component={History}
     />
@@ -218,9 +219,9 @@ const HistoryStack = () => (
 );
 
 const SearchStack = () => (
-  <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+  <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
     <Stack.Screen
-      options={{headerShown: false}}
+      options={{ headerShown: false }}
       name="Search"
       component={Search}
     />
@@ -229,9 +230,9 @@ const SearchStack = () => (
 
 const ProfileStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+    <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="Profile"
         component={Profiles}
       />
@@ -241,9 +242,9 @@ const ProfileStack = () => {
 
 const ProfileInfoStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+    <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="Profile Info"
         component={Profile}
       />
@@ -253,9 +254,9 @@ const ProfileInfoStack = () => {
 
 const PostItemStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+    <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="PostItem"
         component={PostItem}
       />
@@ -265,9 +266,9 @@ const PostItemStack = () => {
 
 const TopUpStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+    <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="TopUp"
         component={TopUp}
       />
@@ -277,9 +278,9 @@ const TopUpStack = () => {
 
 const PaymentStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+    <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="Payment"
         component={Payment}
       />
@@ -289,9 +290,9 @@ const PaymentStack = () => {
 
 const NewsStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+    <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="News"
         component={News}
       />
@@ -301,9 +302,9 @@ const NewsStack = () => {
 
 const NewsDetailStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+    <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="News"
         component={NewsDetail}
       />
@@ -313,9 +314,9 @@ const NewsDetailStack = () => {
 
 const MarketStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+    <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="Market"
         component={Market}
       />
@@ -325,9 +326,9 @@ const MarketStack = () => {
 
 const MarketDetailStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+    <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="MarketDetail"
         component={MarketDetail}
       />

@@ -17,13 +17,15 @@ export const getUserData = (id) => {
 }
 
 export const insertUserData = (id, data) => {
-//     USER
-//   - post_id (POST string id)
-//   - photo
-//   - nickname
-//   - isVerified (bool)
     return {
         type: 'INSERT_USER_DATA',
         payload: usersRef.doc(id).set(data),
+    }
+}
+
+export const updateUser = (id, data) => {
+    return {
+        type: 'UPDATE_USER_DATA',
+        payload: usersRef.doc(id).update(data),
     }
 }
