@@ -114,7 +114,7 @@ const BottomTab = ({...props}) => {
       <Tab.Screen name="News" component={NewsStack} />
       <Tab.Screen
         name="Profile"
-        component={props.putUserData.isSignedIn ? ProfileStack : LoginStack}
+        component={props.putUserData.isSignedIn ? ProfileStack : ProfileStack}
       />
     </Tab.Navigator>
   );
