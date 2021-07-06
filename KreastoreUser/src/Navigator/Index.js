@@ -12,6 +12,7 @@ import Home from '../Screens/Home/Index';
 import Detail from '../Screens/Detail/Index';
 import History from '../Screens/History/Index';
 import Profile from '../Screens/Profile/Index';
+import Profiles from '../Screens/ProfileStack/Index';
 import Search from '../Screens/Search/Index';
 import PostItem from '../Screens/PostItem/Index';
 import TopUp from '../Screens/TopUp/Index';
