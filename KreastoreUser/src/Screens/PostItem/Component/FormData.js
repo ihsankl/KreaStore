@@ -17,6 +17,8 @@ import DatePicker from 'react-native-datepicker';
 import { color } from '../../../Theme/Color';
 import { connect } from 'react-redux';
 import { putUserData } from '../../../Redux/Action/userData';
+import { insertPostData } from '../../../Redux/Action/post';
+import { setAlert } from '../../../Redux/Action/alert';
 
 function FormData({
   data,
@@ -40,23 +42,33 @@ function FormData({
 
   const isDisabled = () => {
     if (
-      !data.deskripsi ||
-      !data.feedBack ||
-      !data.kategori ||
-      !data.namaProduk ||
+      !data.description ||
+      !data.feedback ||
+      !data.category ||
+      !data.product_name ||
       !data.photoUrl ||
-      !data.tanggalAkhir ||
-      !data.total) {
+      !data.funding_end_date ||
+      !data.funding_goal) {
       return true
     }
     return false
   }
 
   const onSubmit = async () => {
-    if (!userData) {
-      await dispatch(putUserData({ data: null, isAnonymous: false }))
-    } else {
-      console.log('Berhasil')
+    try {
+      await dispatch(setAlert({ ...props.alert, isLoading: true }))
+      if (!userData) {
+        await dispatch(putUserData({ data: null, isAnonymous: false }))
+      } else {
+        await dispatch(insertPostData(data))
+        await dispatch(setAlert({ ...props.alert, isLoading: false }))
+        await dispatch(setAlert({ ...props.alert, isSuccess: true, msg: 'Permintaan Penggalangan Dana Berhasil Dilakukan.', status:'Sukses' }))
+        navigation.navigate('Home')
+      }
+    } catch (error) {
+      console.log(error.message)
+      await dispatch(setAlert({ ...props.alert, isLoading: false }))
+      await dispatch(setAlert({ ...props.alert, isSuccess: true, msg: error.message }))
     }
   }
 
@@ -72,9 +84,9 @@ function FormData({
           editable={isSignedIn == undefined ? false : true}
           style={styles.textInput}
           onChangeText={e => {
-            onChange({ namaProduk: e });
+            onChange({ product_name: e });
           }}
-          value={data.namaProduk}
+          value={data.product_name}
         // editable={false}
         />
       </View>
@@ -87,10 +99,9 @@ function FormData({
           style={styles.textInput}>
           <Picker
             enabled={isSignedIn == undefined ? false : true}
-            style={{ fontFamily: 'Poppins-Regular' }}
-            selectedValue={data.kategori}
+            selectedValue={data.category}
             onValueChange={(itemValue, itemIndex) => {
-              onChange({ kategori: itemValue });
+              onChange({ category: itemValue });
             }}>
             <Picker.Item label="-- Pilih Kategori --" value="" />
             <Picker.Item label="Comics" value="Comics" />
@@ -120,9 +131,9 @@ function FormData({
           style={styles.textInput}
           multiline={true}
           numberOfLines={4}
-          value={data.deskripsi}
+          value={data.description}
           onChangeText={e => {
-            onChange({ deskripsi: e });
+            onChange({ description: e });
           }}
         />
       </View>
@@ -196,9 +207,9 @@ function FormData({
           editable={isSignedIn == undefined ? false : true}
           keyboardType="numeric"
           style={styles.textInput}
-          value={data.total ? data.total : ''}
+          value={data.funding_goal ? data.funding_goal : ''}
           onChangeText={e => {
-            onChange({ total: (e.replace(/[^0-9]/g, '')) });
+            onChange({ funding_goal: (e.replace(/[^0-9]/g, '')) });
           }}
         />
       </View>
@@ -210,7 +221,7 @@ function FormData({
         <DatePicker
           disabled={isSignedIn == undefined ? true : false}
           style={[styles.textInput, { width: (Dimensions.get('window').width) - 32 }]}
-          date={data.tanggalAkhir}
+          date={data.funding_end_date}
           mode="date"
           placeholder="select date"
           format="YYYY-MM-DD"
@@ -229,7 +240,7 @@ function FormData({
             // ... You can check the source to find the other keys.
           }}
           onDateChange={date => {
-            onChange({ tanggalAkhir: date });
+            onChange({ funding_end_date: date });
           }}
         />
       </View>
@@ -243,9 +254,9 @@ function FormData({
           style={styles.textInput}
           multiline={true}
           numberOfLines={4}
-          value={data.feedBack}
+          value={data.feedback}
           onChangeText={e => {
-            onChange({ feedBack: e });
+            onChange({ feedback: e });
           }}
         />
       </View>
@@ -265,6 +276,7 @@ const mapStateToProps = state => {
   return {
     putUserData: state.putUserData,
     alert: state.alert,
+    getUserData: state.getUserData,
   };
 };
 export default connect(mapStateToProps)(FormData);

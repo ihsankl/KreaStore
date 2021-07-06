@@ -21,9 +21,7 @@ const Loading = ({ visible, ...props }) => {
 
 const mapStateToProps = state => {
     return {
-        putUserData: state.putUserData,
         alert: state.alert,
-        getUserData: state.getUserData,
     }
 }
 

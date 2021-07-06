@@ -20,7 +20,6 @@ function Index({ navigation, dispatch, ...props }) {
   const [data, setData] = useState(dummy);
   const [edit, setEdit] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalVisible2, setModalVisible2] = useState(true);
 
   useEffect(() => {
     setDataOld(props.getUserData.data)

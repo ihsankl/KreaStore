@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import auth from '@react-native-firebase/auth';
 
@@ -28,9 +26,10 @@ import {
   insertUserData,
   putUserData,
 } from '../Redux/Action/userData';
+import ModalInformation from '../Components/ModalInformation';
+import { setAlert } from '../Redux/Action/alert';
 
 const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 
 const Index = ({ dispatch, ...props }) => {
@@ -77,7 +76,6 @@ const Index = ({ dispatch, ...props }) => {
   };
 
   const logoutAnon = async () => {
-    console.log('ON UNMOUNT');
     if (user) {
       await dispatch(putUserData({ user, isAnonymous: false, isSignedIn: true }));
     } else {
@@ -98,9 +96,24 @@ const Index = ({ dispatch, ...props }) => {
     if (initializing) setInitializing(false);
   }
 
+  const onCloseModal = async () => {
+    await dispatch(setAlert({ ...props.alert, isSuccess: false, isError: false }))
+  }
+
   if (isLogin) {
 
-    return (<><Loading visible={props.alert.isLoading} /><MainStack {...props} /></>);
+    return (
+      <>
+        <Loading visible={props.alert.isLoading} />
+        <ModalInformation
+          visible={props.alert.isSuccess || props.alert.isError}
+          msg={props.alert.msg}
+          status={props.alert.status}
+          onDismiss={onCloseModal}
+        />
+        <MainStack {...props} />
+      </>
+    );
   }
   return (<><Loading visible={props.alert.isLoading} /><LoginStack {...props} /></>);
 };
