@@ -22,6 +22,7 @@ function Index({ navigation, dispatch, ...props }) {
   const [data, setData] = useState(dummy);
   const [edit, setEdit] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [isEditPhoto, setisEditPhoto] = useState(false)
 
   useEffect(() => {
     setDataOld(props.getUserData.data)
@@ -50,7 +51,7 @@ function Index({ navigation, dispatch, ...props }) {
       await dispatch(setAlert({ ...props.alert, isError: true, msg: error.message, status: "error" }))
     }
   }
-  
+
   const right = () => {
     return (
       <TouchableOpacity
@@ -77,15 +78,19 @@ function Index({ navigation, dispatch, ...props }) {
         setData(dataOld);
       } else {
         await dispatch(setAlert({ ...props.alert, isLoading: true }))
-        const photoToUpload = data.photo.replace(regex, "")
-        const reference = storage().ref(photoToUpload);
-        await reference.putFile(data.photo);
-        const url = await storage().ref(photoToUpload).getDownloadURL();
-        const dataToUpload = {
-          ...data,
-          photo: url,
+        if (isEditPhoto) {
+          const photoToUpload = data.photo.replace(regex, "")
+          const reference = storage().ref(photoToUpload);
+          await reference.putFile(data.photo);
+          const url = await storage().ref(photoToUpload).getDownloadURL();
+          const dataToUpload = {
+            ...data,
+            photo: url,
+          }
+          await dispatch(updateUser(props.getUserData.data?.id, dataToUpload))
+        } else {
+          await dispatch(updateUser(props.getUserData.data?.id, data))
         }
-        await dispatch(updateUser(props.getUserData.data?.id, dataToUpload))
         await dispatch(getUserData(props.getUserData.data?.id))
         await dispatch(setAlert({ ...props.alert, isLoading: false }))
         await dispatch(setAlert({ ...props.alert, isSuccess: true, msg: 'Berhasil Update Profile!', status: "Sukses" }))
@@ -108,6 +113,8 @@ function Index({ navigation, dispatch, ...props }) {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         right={right}
+        isEditPhoto={isEditPhoto}
+        setisEditPhoto={setisEditPhoto}
         {...props}
       />
     </View>
