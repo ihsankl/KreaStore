@@ -136,7 +136,7 @@ const Index = ({ route, navigation, ...props }) => {
     return (
       <View style={styles.carousel}>
         <ParallaxImage
-          source={{ uri: item.illustration }}
+          source={{ uri: item }}
           containerStyle={styles.imageContainer}
           style={styles.image}
           parallaxFactor={0.4}
@@ -328,27 +328,30 @@ const Index = ({ route, navigation, ...props }) => {
                         hasParallaxImages={true}
                       />
                     </>
-                  ) : tab == '2' && !!data[0].fund &&
+                  ) : tab == '2' && !!data[0].funder &&
                   <FlatList
                     contentContainerStyle={styles.supportContainer}
                     data={data[0]?.funder}
                     keyExtractor={user => user.user_id}
                     onEndReachedThreshold={0.5}
-                    renderItem={({ item }) => (
-                      <>
-                        <View style={styles.support}>
-                          <Image style={styles.imgUser} source={item.image} />
-                          <View style={styles.supportData}>
-                            <Text style={styles.userSupport}>
-                              {item.username}
-                            </Text>
-                            <Text style={styles.totalSupport}>
-                              {`Mendonasikan ${item?.total} kreapoin`}
-                            </Text>
+                    renderItem={({ item }) => {
+                      console.log(item)
+                      return (
+                        <>
+                          <View style={styles.support}>
+                            <Feather name="user" size={50} />
+                            <View style={styles.supportData}>
+                              <Text style={styles.userSupport}>
+                                {item?.username}
+                              </Text>
+                              <Text style={styles.totalSupport}>
+                                {`Mendonasikan ${item?.total} kreapoin`}
+                              </Text>
+                            </View>
                           </View>
-                        </View>
-                      </>
-                    )}
+                        </>
+                      )
+                    }}
                   />
                   }
                 </View>
@@ -526,6 +529,7 @@ const styles = StyleSheet.create({
   support: {
     flexDirection: 'row',
     marginBottom: 10,
+    alignItems:'center',
   },
   supportData: {
     justifyContent: 'center',
