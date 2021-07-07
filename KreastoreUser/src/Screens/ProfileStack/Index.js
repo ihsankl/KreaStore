@@ -81,7 +81,7 @@ const Index = ({dispatch, navigation, ...props}) => {
         <KreaButton
           btnStyle={styles.button}
           text={'Verifikasi Account'}
-          onPress={() => navigation.navigate('Verfy')}
+          onPress={() => navigation.navigate('verify')}
         />
         <KreaButton
           btnStyle={styles.button}
@@ -101,7 +101,7 @@ const Index = ({dispatch, navigation, ...props}) => {
               ? navigation.navigate('Post Item')
               : dataUser === undefined
               ? onAnonlogout()
-              : navigation.navigate('Verfy')
+              : navigation.navigate('verify')
           }
         />
         <KreaButton
@@ -112,7 +112,7 @@ const Index = ({dispatch, navigation, ...props}) => {
               ? navigation.navigate('Post Item')
               : dataUser === undefined
               ? onAnonlogout()
-              : navigation.navigate('Verfy')
+              : navigation.navigate('verify')
           }
         />
         <KreaButton
@@ -123,7 +123,7 @@ const Index = ({dispatch, navigation, ...props}) => {
               ? navigation.navigate('Post Item')
               : dataUser === undefined
               ? onAnonlogout()
-              : navigation.navigate('Verfy')
+              : navigation.navigate('verify')
           }
         />
         <KreaButton

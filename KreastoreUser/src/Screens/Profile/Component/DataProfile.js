@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   TextInput,
@@ -12,18 +12,21 @@ import {
 } from 'react-native';
 import Feather from 'react-native-vector-icons/dist/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 import Header from '../../../Components/Header';
 import KreaButton from '../../../Components/KreaButton';
-import { color } from '../../../Theme/Color';
-import { ParsedDate } from '../../../Utils/ParseDate';
-import { inputUserData, getUserData } from '../../../Redux/Action/userData';
-import { setAlert } from '../../../Redux/Action/alert';
+import {color} from '../../../Theme/Color';
+import {ParsedDate} from '../../../Utils/ParseDate';
+import {inputUserData, getUserData} from '../../../Redux/Action/userData';
+import {setAlert} from '../../../Redux/Action/alert';
 
-import { connect } from 'react-redux'
+import {connect} from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import DatePicker from 'react-native-datepicker';
-import { launchImageLibrary } from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -93,8 +96,8 @@ const styles = StyleSheet.create({
     borderBottomColor: color.text,
     borderBottomColor: color.grey,
     borderBottomWidth: 1,
-    fontFamily: 'Poppins-Regular'
-  }
+    fontFamily: 'Poppins-Regular',
+  },
 });
 
 function DataProfile({
@@ -110,30 +113,29 @@ function DataProfile({
   flagEdit,
   ...props
 }) {
-
   const onSignOut = async () => {
     try {
-      await dispatch(setAlert({ ...props.alert, isLoading: true }))
+      await dispatch(setAlert({...props.alert, isLoading: true}));
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
-      await auth().signOut()
-      await dispatch(inputUserData({data:null}))
-      await dispatch(getUserData(''))
+      await auth().signOut();
+      await dispatch(inputUserData({data: null}));
+      await dispatch(getUserData(''));
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     } finally {
-      await dispatch(setAlert({ ...props.alert, isLoading: false }))
+      await dispatch(setAlert({...props.alert, isLoading: false}));
     }
-  }
+  };
 
   const handleChoosePhoto = () => {
     // ambil dari galery
-    launchImageLibrary({ noData: true }, response => {
-      console.log('respon', { response });
+    launchImageLibrary({noData: true}, response => {
+      console.log('respon', {response});
       if (response.didCancel === true) {
         setPhoto(null);
       } else {
-        onChange({photo:response?.assets?.[0]?.uri})
+        onChange({photo: response?.assets?.[0]?.uri});
       }
     });
 
@@ -151,8 +153,8 @@ function DataProfile({
   return (
     <>
       <Header title={'Profil Pengguna'} right={right()} />
-      <ScrollView style={{ flexGrow: 1 }}>
-        <View style={{ height: 250 }}>
+      <ScrollView style={{flexGrow: 1}}>
+        <View style={{height: 250}}>
           <TouchableOpacity
             onPress={handleChoosePhoto}
             disabled={flagEdit ? false : true}>
@@ -184,35 +186,29 @@ function DataProfile({
           </TouchableOpacity>
         </View>
         <View>
-          <Text
-            style={styles.title}>
-            Nama Lengkap
-          </Text>
+          <Text style={styles.title}>Nama Lengkap</Text>
           <TextInput
             style={styles.textInput}
             value={data?.name}
             editable={false}
           />
         </View>
-        <View style={{ marginTop: 20 }}>
-          <Text
-            style={styles.title}>
-            Email
-          </Text>
+        <View style={{marginTop: 20}}>
+          <Text style={styles.title}>Email</Text>
           <TextInput
             style={styles.textInput}
             value={data?.email}
             editable={false}
           />
         </View>
-        <View style={{ marginTop: 20 }}>
-          <Text
-            style={styles.title}>
-            Tanggal Lahir
-          </Text>
+        <View style={{marginTop: 20}}>
+          <Text style={styles.title}>Tanggal Lahir</Text>
           <DatePicker
             disabled={!flagEdit}
-            style={[styles.textInput, { width: (Dimensions.get('window').width) - 32 }]}
+            style={[
+              styles.textInput,
+              {width: Dimensions.get('window').width - 32},
+            ]}
             date={data?.birthday}
             mode="date"
             placeholder="select date"
@@ -231,15 +227,12 @@ function DataProfile({
               },
             }}
             onDateChange={date => {
-              onChange({ birthday: date });
+              onChange({birthday: date});
             }}
           />
         </View>
-        <View style={{ marginTop: 20 }}>
-          <Text
-            style={styles.title}>
-            Bio Singkat
-          </Text>
+        <View style={{marginTop: 20}}>
+          <Text style={styles.title}>Bio Singkat</Text>
           <TextInput
             style={styles.textInput}
             multiline={true}
@@ -247,7 +240,7 @@ function DataProfile({
             value={data?.bio}
             editable={flagEdit}
             onChangeText={e => {
-              onChange({ bio: e });
+              onChange({bio: e});
             }}
           />
         </View>
@@ -281,10 +274,21 @@ function DataProfile({
               borderRadius: 10,
               marginHorizontal: 16,
             }}>
-            <KreaButton text="Simpan" onPress={() => { changeFlag(false); save('save'); }} />
+            <KreaButton
+              text="Simpan"
+              onPress={() => {
+                changeFlag(false);
+                save('save');
+              }}
+            />
           </View>
         )}
-        <KreaButton text="Keluar" onPress={onSignOut} btnStyle={{ marginHorizontal: 16, marginVertical: 16 }} btnColor={color.red} />
+        <KreaButton
+          text="Keluar"
+          onPress={onSignOut}
+          btnStyle={{marginHorizontal: 16, marginVertical: 16}}
+          btnColor={color.red}
+        />
         <Modal
           animationType="slide"
           transparent={true}
@@ -338,7 +342,7 @@ const mapStateToProps = state => {
     putUserData: state.putUserData,
     alert: state.alert,
     getUserData: state.getUserData,
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps)(DataProfile);
