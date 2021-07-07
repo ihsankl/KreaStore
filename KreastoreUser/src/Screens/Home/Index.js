@@ -3,10 +3,9 @@ import { StyleSheet, Text, View, Button, TouchableOpacity, Alert, BackHandler, S
 import firestore from '@react-native-firebase/firestore';
 import { connect } from 'react-redux';
 import Feather from 'react-native-vector-icons/dist/Feather';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { useIsFocused } from '@react-navigation/native';
 
 import { color } from '../../Theme/Color';
-import img1 from '../../assets/images/kantong-ajaib.png'
 import text_logo from '../../assets/images/text_logo.png'
 import { Formatter } from '../../Utils/Formatter'
 import { ProgressBar } from '@react-native-community/progress-bar-android';
@@ -57,13 +56,14 @@ const dummyCategories = [
 ]
 
 const Index = ({ dispatch, navigation, ...props }) => {
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     onInit()
     return () => {
 
     }
-  }, [])
+  }, [isFocused])
 
   const onInit = async () => {
     try {
@@ -89,15 +89,15 @@ const Index = ({ dispatch, navigation, ...props }) => {
       }
     } catch (error) {
       console.log(error.message)
-      // await dispatch(setAlert({ ...props.alert, isLoading: false }))
-      // await dispatch(setAlert({ ...props.alert, isError: true, msg: error.message, status: "error" }))
+      await dispatch(setAlert({ ...props.alert, isLoading: false }))
+      await dispatch(setAlert({ ...props.alert, isError: true, msg: error.message, status: "error" }))
     }
   }
 
   const RenderFavorites = ({ item, index }) => {
     return (
-      <TouchableOpacity style={styles.imgContainer} onPress={() => navigation.navigate('Detail')}>
-        <Image style={styles.img} source={{ uri: item?.photoUrl }} resizeMode="cover" />
+      <TouchableOpacity style={styles.imgContainer} onPress={() => navigation.navigate('Detail', { id: item?.id })}>
+        <Image style={styles.img} source={{ uri: item?.photoUrl?.[0] }} resizeMode="cover" />
         <Text style={styles.imgText}>{item?.product_name}</Text>
         <Feather name="star" size={24} style={styles.starIcon} color={color.white} />
         <View style={styles.layer} />
@@ -170,7 +170,7 @@ const RenderContents = ({ data }) => {
   return data.map((v, i) => {
     return (
       <TouchableOpacity style={{ width: '100%' }} key={i}>
-        <Image style={{ borderRadius: 8, marginTop: 16, height: 225, width: '100%', minWidth: 300, maxWidth: 400, }} source={{ uri: v?.photoUrl }} resizeMode="cover" />
+        <Image style={{ borderRadius: 8, marginTop: 16, height: 225, width: '100%', minWidth: 300, maxWidth: 400, }} source={{ uri: v?.photoUrl?.[0] }} resizeMode="cover" />
         <View style={{ position: 'absolute', bottom: 0, backgroundColor: `${color.white}50`, left: 0, right: 0, padding: 8 }}>
           <Text style={{ color: color.text, fontSize: 18 }}>{v?.product_name}</Text>
           <Text style={{ color: color.text, fontSize: 12 }}>{v?.description}</Text>

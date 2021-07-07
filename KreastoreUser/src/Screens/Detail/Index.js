@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Text,
   View,
@@ -8,56 +8,32 @@ import {
   Animated,
   Modal,
 } from 'react-native';
-import {ProgressBar} from '@react-native-community/progress-bar-android';
+import { ProgressBar } from '@react-native-community/progress-bar-android';
 import {
   TouchableHighlight,
   TouchableOpacity,
 } from 'react-native-gesture-handler';
-import Carousel, {ParallaxImage} from 'react-native-snap-carousel';
+import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 import CheckBox from '@react-native-community/checkbox';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionic from 'react-native-vector-icons/Ionicons';
 
-import {ParsedDate} from '../../Utils/ParseDate';
-import {color} from '../../Theme/Color';
+import { ParsedDate } from '../../Utils/ParseDate';
+import { color } from '../../Theme/Color';
 import KreaButton from '../../Components/KreaButton';
+import _ from "underscore";
+import { connect } from 'react-redux';
 
 const dummy = [
   {
     id: '1',
-    image: require('../../assets/images/kantong-ajaib.png'),
-    label: 'Kantong Ajaib',
+    photoUrl: ["https://firebasestorage.googleapis.com/v0/b/kreastore-867f3.appspot.com/o/rn_image_picker_lib_temp_c1cdfb44-c560-40f7-b954-b4ad63d8bc7c.png?alt=media&token=9e448ebe-2412-4768-bdd5-a2dfebcc600d"],
+    product_name: 'Kantong Ajaib',
     funding_goal: '720.000',
     funding_total: '240.000',
     funding_start_date: '2021-06-20',
     funding_end_date: '2021-07-01',
-    images: [
-      {
-        title: 'Beautiful and dramatic Antelope Canyon',
-        subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-        illustration: 'https://i.imgur.com/UYiroysl.jpg',
-      },
-      {
-        title: 'Earlier this morning, NYC',
-        subtitle: 'Lorem ipsum dolor sit amet',
-        illustration: 'https://i.imgur.com/UPrs1EWl.jpg',
-      },
-      {
-        title: 'White Pocket Sunset',
-        subtitle: 'Lorem ipsum dolor sit amet et nuncat ',
-        illustration: 'https://i.imgur.com/MABUbpDl.jpg',
-      },
-      {
-        title: 'Acrocorinth, Greece',
-        subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-        illustration: 'https://i.imgur.com/KZsmUi2l.jpg',
-      },
-      {
-        title: 'The lone tree, majestic landscape of New Zealand',
-        subtitle: 'Lorem ipsum dolor sit amet',
-        illustration: 'https://i.imgur.com/2nCt3Sbl.jpg',
-      },
-    ],
+
     description:
       'Enim amet ipsum aliqua ex reprehenderit fugiat labore ut sunt irure occaecat. Voluptate voluptate magna excepteur non quis nulla eiusmod ex consequat amet labore. Aute occaecat exercitation labore et. Ex laborum sit culpa aliquip minim pariatur aliqua irure do fugiat. Occaecat dolor mollit commodo nulla duis. Veniam ex enim eiusmod nulla ex excepteur esse irure adipisicing labore.',
     funder: [
@@ -95,7 +71,7 @@ const dummy = [
   },
 ];
 
-const Index = ({...props}) => {
+const Index = ({ route, navigation, ...props }) => {
   const [data, setData] = useState(dummy);
   const [tab, setTab] = useState(1);
   const [modal, setModal] = useState(false);
@@ -115,6 +91,21 @@ const Index = ({...props}) => {
       checked: false,
     },
   ]);
+  const allData = props.allPost.data
+  const { id } = route.params;
+
+  useEffect(() => {
+    getDetail()
+    return () => {
+
+    }
+  }, [])
+
+  const getDetail = () => {
+    const x = _.findWhere(allData, { id: id })
+    setData([x])
+    console.log([x])
+  }
 
   const carouselRef = useRef(null);
 
@@ -141,11 +132,11 @@ const Index = ({...props}) => {
     }
   };
 
-  const renderItem = ({item, index}, parallaxProps) => {
+  const renderItem = ({ item, index }, parallaxProps) => {
     return (
       <View style={styles.carousel}>
         <ParallaxImage
-          source={{uri: item.illustration}}
+          source={{ uri: item.illustration }}
           containerStyle={styles.imageContainer}
           style={styles.image}
           parallaxFactor={0.4}
@@ -187,12 +178,12 @@ const Index = ({...props}) => {
     console.log(isReport);
   };
 
-  const renderCheckbox = ({item}) => {
+  const renderCheckbox = ({ item }) => {
     return (
       <View style={styles.checkboxContainer}>
         <CheckBox
           value={item.checked}
-          tintColors={{true: color.primary}}
+          tintColors={{ true: color.primary }}
           onValueChange={() => isCheck(item.id)}
         />
         <Text
@@ -208,23 +199,23 @@ const Index = ({...props}) => {
 
   return (
     <>
-      <View style={{backgroundColor: color.white, display: 'flex'}}>
+      <View style={{ backgroundColor: color.white, display: 'flex' }}>
         <FlatList
           data={data}
           keyExtractor={item => item.id}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <View>
               <Ionic
                 name="chevron-back-outline"
                 style={[
                   styles.back,
-                  {color: tab == 2 ? color.white : color.grey},
+                  { color: tab == 2 ? color.white : color.grey },
                 ]}
-                onPress={() => props.navigation.navigate('Home')}
+                onPress={() => navigation.navigate('Home')}
               />
               <Animated.Image
-                style={[styles.image, {height: animated}]}
-                source={item.image}
+                style={[styles.image, { height: animated }]}
+                source={{ uri: item?.photoUrl?.[0] }}
               />
 
               <View
@@ -234,49 +225,49 @@ const Index = ({...props}) => {
                     paddingTop: 30,
                   },
                 ]}>
-                <Text style={styles.label}>{item.label}</Text>
+                <Text style={styles.label}>{item?.product_name}</Text>
                 {tab != 1 && (
                   <>
                     <View style={styles.funding}>
-                      <Text style={{fontSize: 18}}>{`${Math.trunc(
-                        (item.funding_total / item.funding_goal) * 100,
+                      <Text style={{ fontSize: 18 }}>{`${Math.trunc(
+                        (item?.funding_total / item?.funding_goal) * 100,
                       )}%`}</Text>
                       <Text
                         style={{
                           fontSize: 12,
-                        }}>{`Rp. ${item.funding_total} dari Rp. ${item.funding_goal}`}</Text>
+                        }}>{`Rp. ${item?.funding_total} dari Rp. ${item?.funding_goal}`}</Text>
                     </View>
                     <ProgressBar
                       styleAttr="Horizontal"
                       indeterminate={false}
                       progress={
-                        ((item.funding_total / item.funding_goal) * 100) / 100
+                        ((item?.funding_total / item?.funding_goal) * 100) / 100
                       }
                       color={color.primary}
                     />
                     <View style={styles.funding}>
                       <Text style={styles.text}>
-                        {ParsedDate(item.funding_start_date, 'years')}
+                        {ParsedDate(item?.funding_start_date, 'years')}
                       </Text>
                       <Text style={styles.text}>
                         {Math.trunc(
                           Math.floor(
-                            (new Date(item.funding_end_date).getTime() -
+                            (new Date(item?.funding_end_date).getTime() -
                               new Date().getTime()) /
-                              (1000 * 60 * 60 * 24),
+                            (1000 * 60 * 60 * 24),
                           ),
                         ) <= 0
                           ? 'Donasi sudah ditutup'
                           : Math.trunc(
-                              Math.floor(
-                                (new Date(item.funding_end_date).getTime() -
-                                  new Date().getTime()) /
-                                  (1000 * 60 * 60 * 24),
-                              ),
-                            ) + 'hari tersisa'}
+                            Math.floor(
+                              (new Date(item?.funding_end_date).getTime() -
+                                new Date().getTime()) /
+                              (1000 * 60 * 60 * 24),
+                            ),
+                          ) + 'hari tersisa'}
                       </Text>
                       <Text style={styles.text}>
-                        {data[0].funder.length} Pendukung
+                        {data[0]?.funder?.length} Pendukung
                       </Text>
                     </View>
                   </>
@@ -314,15 +305,15 @@ const Index = ({...props}) => {
 
                 {/* TAB CONTENT */}
 
-                <View style={{flex: 1, marginBottom: 10}}>
+                <View style={{ flex: 1, marginBottom: 10 }}>
                   {tab == '1' ? (
                     <>
                       <FlatList
                         data={data}
                         keyExtractor={item => item.id}
-                        renderItem={({item}) => (
+                        renderItem={({ item }) => (
                           <View>
-                            <Text>{item.description}</Text>
+                            <Text>{item?.description}</Text>
                           </View>
                         )}
                       />
@@ -332,36 +323,34 @@ const Index = ({...props}) => {
                         sliderWidth={300}
                         sliderHeight={300}
                         itemWidth={300 - 60}
-                        data={dummy[0].images}
+                        data={data[0]?.photoUrl}
                         renderItem={renderItem}
                         hasParallaxImages={true}
                       />
                     </>
-                  ) : tab == '2' ? (
-                    <FlatList
-                      contentContainerStyle={styles.supportContainer}
-                      data={data[0].funder}
-                      keyExtractor={user => user.user_id}
-                      onEndReachedThreshold={0.5}
-                      renderItem={({item}) => (
-                        <>
-                          <View style={styles.support}>
-                            <Image style={styles.imgUser} source={item.image} />
-                            <View style={styles.supportData}>
-                              <Text style={styles.userSupport}>
-                                {item.username}
-                              </Text>
-                              <Text style={styles.totalSupport}>
-                                {`Mendonasikan ${item.total} kreapoin`}
-                              </Text>
-                            </View>
+                  ) : tab == '2' && !!data[0].fund &&
+                  <FlatList
+                    contentContainerStyle={styles.supportContainer}
+                    data={data[0]?.funder}
+                    keyExtractor={user => user.user_id}
+                    onEndReachedThreshold={0.5}
+                    renderItem={({ item }) => (
+                      <>
+                        <View style={styles.support}>
+                          <Image style={styles.imgUser} source={item.image} />
+                          <View style={styles.supportData}>
+                            <Text style={styles.userSupport}>
+                              {item.username}
+                            </Text>
+                            <Text style={styles.totalSupport}>
+                              {`Mendonasikan ${item?.total} kreapoin`}
+                            </Text>
                           </View>
-                        </>
-                      )}
-                    />
-                  ) : (
-                    <Text>3</Text>
-                  )}
+                        </View>
+                      </>
+                    )}
+                  />
+                  }
                 </View>
               </View>
             </View>
@@ -402,10 +391,10 @@ const Index = ({...props}) => {
           <View style={styles.modalView}>
             {type == 'report' ? (
               <>
-                <Text style={{fontSize: 30, fontWeight: 'bold'}}>
+                <Text style={{ fontSize: 30, fontWeight: 'bold' }}>
                   Laporkan Item
                 </Text>
-                <Text style={{fontSize: 18}}>Kenapa melaporkan item ini ?</Text>
+                <Text style={{ fontSize: 18 }}>Kenapa melaporkan item ini ?</Text>
                 <FlatList
                   data={reporting}
                   renderItem={renderCheckbox}
@@ -417,14 +406,14 @@ const Index = ({...props}) => {
                 <Text>donasi</Text>
               </>
             )}
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <KreaButton
-                btnStyle={{marginRight: 8}}
+                btnStyle={{ marginRight: 8 }}
                 text={'Batal'}
                 onPress={() => setModal(!modal)}
               />
               <KreaButton
-                btnStyle={{backgroundColor: color.red}}
+                btnStyle={{ backgroundColor: color.red }}
                 text={'Kirim'}
                 onPress={sendReport}
               />
@@ -437,7 +426,17 @@ const Index = ({...props}) => {
   );
 };
 
-export default Index;
+const mapStateToProps = state => {
+  return {
+    inputUserData: state.inputUserData,
+    alert: state.alert,
+    allPostByFav: state.allPostByFav,
+    allPost: state.allPost,
+  }
+}
+
+export default connect(mapStateToProps)(Index);
+
 
 const styles = StyleSheet.create({
   back: {

@@ -13,10 +13,12 @@ import {
 import {setAlert} from '../../Redux/Action/alert';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
+import { useIsFocused } from '@react-navigation/native';
 
 const Index = ({dispatch, navigation, ...props}) => {
   const [modal, setModal] = useState(false);
   const dataUser = props?.getUserData?.data;
+  const isFocused = useIsFocused();
   console.log({dataUser});
 
   const onAnonlogout = async () => {
@@ -24,9 +26,11 @@ const Index = ({dispatch, navigation, ...props}) => {
   };
 
   useEffect(() => {
-    initGetUser();
+    if (isFocused) {
+      initGetUser();
+    }
     return () => {};
-  }, []);
+  }, [isFocused]);
 
   const initGetUser = async () => {
     try {

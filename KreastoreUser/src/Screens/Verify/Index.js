@@ -21,9 +21,9 @@ const Index = props => {
     return () => {};
   }, []);
 
-  const isNext = () => {
-    setNext(true);
-  };
+  // const isNext = () => {
+  //   setNext(true);
+  // };
 
   //untuk generate OTP
   const generateOTP = () => {
@@ -119,7 +119,7 @@ const Index = props => {
                   }}
                   pinCount={4}
                   code={code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
-                  onCodeChanged={code => setCode(code.replace(/[^0-9]/g, ''))}
+                  onCodeChanged={code => setCode(code)}
                   autoFocusOnLoad
                   codeInputFieldStyle={styles.underlineStyleBase}
                   codeInputHighlightStyle={styles.underlineStyleHighLighted}
@@ -144,7 +144,7 @@ const Index = props => {
               <KreaButton
                 btnStyle={{margin: 24}}
                 text={'Lanjut'}
-                onPress={() => isValidasiCode()}
+                onPress={isValidasiCode}
                 disabled={code.length < 4 && true}
               />
             </View>
@@ -169,7 +169,7 @@ const Index = props => {
                   keyboardType="phone-pad"
                   value={phone}
                   onChangeText={e => {
-                    setPhone(e.replace(/[^0-9]/g, ''));
+                    setPhone(e);
                   }}
                 />
               </View>
@@ -178,7 +178,7 @@ const Index = props => {
               <KreaButton
                 btnStyle={{margin: 24}}
                 text={'Lanjut'}
-                onPress={() => isNext()}
+                onPress={() => setNext(true)}
                 disabled={phone.length < 9 && true}
               />
             </View>
